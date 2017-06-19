@@ -27,9 +27,17 @@
 * `lib\Image.php` 图片类Image
 * `lib\User.php` 用户类User
 * `config\conf.php` 配置文件
-* `upload\` 图文件目录
+* `uploads\` 图文件目录
 * `thumbs\` 缓存图目录
 * `data\userdata` 用户数据
 * `data\imagedata` 图片数据
 
+#### 用户数据字段划分
 
+这部分写入userdata文件中    
+
+* id(自增，从1开始)
+* username(用户名，没有的话以创建时间生成一个)
+* password(没有的话为空，加密算法为sha1)
+* ip(ipv4和ipv6视为两个用户)
+* anonymous(是否匿名，0为否，1为是)
