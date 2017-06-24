@@ -56,7 +56,8 @@ class User {
 	public static function addData($file, $content) {
 		$fp = fopen($file, 'a+') or die('can not open file: ' . $file);
 		
-		// 中间加1是|所占字节，最后加2为换行和回车
+		// 中间加1是|所占字节，最后加2为换行和回车(还是改为读到\r\n停止呢)
+		// TODO: 更改为更合适的方法，目前方法需要上一行长度和下面相同
 		fseek($fp, 0 - (10 + 1 + 20 + 1 + 40 + 1 + 40 + 1 + 1 + 2), SEEK_END);
 		$line = fgets($fp);
 		// 如果第一行没有的话，直接将id赋值为1

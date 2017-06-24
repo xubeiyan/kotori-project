@@ -3,28 +3,29 @@
 * 入口文件
 */
 
+// 调用Util类，获取一些基本信息
+require 'lib/Util.php';
 // 检查配置文件状态
 if(!file_exists('config/conf.php')) {
-	// TODO: 更改输出模式
-	die('miss configuation file -> config/conf.php');
+	//die('miss configuation file -> config/conf.php');
+	Util::err('missConfigurationFile');
 }
 
-// 导入配置文件
+// 导入配置文件，配置变量$config
 require 'config/conf.php';
 global $config;
 
-// 浏览图片
-//if (isset($_GET))
+$clientInfo = Util::getClientInfo();
+
+// 路由GET部分
+if ($clientInfo['requestMethod'] == 'GET') {
+	
+} else if ($clientInfo['requestMethod'] == 'POST') {
+	
+} else {
+	Util::err('notAllowedReqMethod');
+}
 	
 require 'lib/User.php';
 
-$content = Array (
-	'id' => '0',
-	'username' => 'abc',
-	'password' => sha1('sasadfasdfsa'),
-	'ip' => '[::1]',
-	'anonymous' => '0'
-);
-
-User::addData('data/userdata', $content);
 ?>

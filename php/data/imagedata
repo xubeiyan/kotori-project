@@ -1,0 +1,2 @@
+# 图片信息，id是上传时间的md5散列值，size单位为KB，filename为md5值+扩展名，uploader为上传者id，上传时间是yyyyMMdd hh:mm:ss
+# id(32)|size(5)|filename(37)|uploader(10)|uploadtime(17)|r18(1)
