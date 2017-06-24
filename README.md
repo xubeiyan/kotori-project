@@ -26,9 +26,16 @@
 * `index.php` 入口文件
 * `lib\Image.php` 图片类Image
 * `lib\User.php` 用户类User
+* `lib\Util.php` 杂项类Util
 * `config\conf.php` 配置文件
 * `uploads\` 图文件目录
 * `thumbs\` 缓存图目录
+* `templates\default\uploadFile.html` 上传文件
+* `templates\default\login.html` 登录
+* `templates\default\register.html` 注册
+* `templates\default\userinfo.html` 用户信息
+* `templates\default\list.html` 图片列表 
+* `templates\default\error.html` 错误页面
 * `data\userdata` 用户数据
 * `data\imagedata` 图片数据
 
