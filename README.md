@@ -41,3 +41,35 @@
 * password(没有的话为空，加密算法为sha1)
 * ip(ipv4和ipv6视为两个用户)
 * anonymous(是否匿名，0为否，1为是)
+
+#### 图片数据字段划分
+
+这部分写入imagedata文件中
+
+* id(估计是按照某个散列函数随机生成)
+* size(图片大小)
+* filename(文件名)
+* uploader(上传者，这里估计是用户id)
+* uploadtime(上传时间)
+* r18(咳咳咳)
+
+#### 路由
+
+>暂时先想到这么多    
+
+###### GET方法
+
+* `/` 跳转到`/upload`
+* `/upload` 上传图片
+* `/random` 随机访问个图片
+* `/register` 注册新账户
+* `/login` 通过设置`operation`值来决定是登录还是注销
+* `/userinfo` 用户信息
+* `/list` 
+
+###### POST方法
+
+* `/uploadpost`
+* `/registerpost`
+* `/loginpost`
+* `/userinfopost`
