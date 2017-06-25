@@ -70,7 +70,7 @@
 * `/upload` 上传图片
 * `/random` 随机访问个图片
 * `/register` 注册新账户
-* `/login` 通过设置`operation`值来决定是登录还是注销
+* `/login` 登录
 * `/userinfo` 用户信息
 * `/list` 
 
