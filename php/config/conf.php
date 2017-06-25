@@ -19,8 +19,8 @@ $config = Array (
 		
 	),
 	'site' => Array(
-		'rewriteURI' => true,			#是否启用Rewrite URI
-		'tepmplate' => 'default',		#使用模板名称
+		'rewriteURI' => false,			#是否启用Rewrite URI
+		'template' => 'default',		#使用模板名称
 	)
 );
 ?>
