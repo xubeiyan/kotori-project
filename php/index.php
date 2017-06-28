@@ -52,13 +52,13 @@ if ($clientInfo['requestMethod'] == 'GET') {
 // 路由POST部分
 } else if ($clientInfo['requestMethod'] == 'POST') {
 	// 上传图片
-	if ($client['query'] == 'uploadpost') {
+	if ($clientInfo['query'] == 'uploadpost') {
+		print('!');
+	} else if ($clientInfo['query'] == 'registerpost') {
 		
-	} else if ($client['query'] == 'registerpost') {
+	} else if ($clientInfo['query'] == 'loginpost') {
 		
-	} else if ($client['query'] == 'loginpost') {
-		
-	} else if ($client['query'] == 'userinfopost') {
+	} else if ($clientInfo['query'] == 'userinfopost') {
 		
 	} else {
 		Util::err('notAllowedReqQuery');

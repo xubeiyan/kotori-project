@@ -1,6 +1,8 @@
 var area = document.getElementById('area'),
 	preview = document.getElementById('preview'),
-	file = document.getElementById('file');
+	file = document.getElementById('file'),
+	upload = document.getElementById('uploadButton'),
+	imgObj = {};
 	
 area.addEventListener("dragleave", function(e) {
 	e.preventDefault();
@@ -37,6 +39,8 @@ area.addEventListener("drop", function (e) {
 	var str = '<img id="uploadImg" src="' + img + '"><p>图片名称：' + filename + '</p>' +
 			'<p>大小:' + filesize + 'KB</p>';
 	preview.innerHTML = str;
+	upload.style.display = "block";
+	imgObj = img;
 });
 
 area.addEventListener("click", function () {
@@ -51,7 +55,7 @@ file.addEventListener("change", function (e) {
 	}
 	
 	if (fileList[0].type.indexOf('image') == -1) {
-		console.log('拖放的不是图片...');
+		console.log('选择的不是图片...');
 		return false;
 	}
 	
@@ -67,4 +71,18 @@ file.addEventListener("change", function (e) {
 	var str = '<img id="uploadImg" src="' + img + '"><p>图片名称：' + filename + '</p>' +
 			'<p>大小:' + filesize + 'KB</p>';
 	preview.innerHTML = str;
+	upload.style.display = "block";
+	imgObj = img;
+});
+
+upload.addEventListener("click", function () {
+	var xhr = new XMLHttpRequest(),
+		formData = new FormData();
+		
+	xhr.open('POST', '?uploadpost', true);
+	xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+	
+	formData.append('img', imgObj);
+	
+	xhr.send(formData);
 });
