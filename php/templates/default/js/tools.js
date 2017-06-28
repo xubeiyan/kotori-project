@@ -40,7 +40,7 @@ area.addEventListener("drop", function (e) {
 			'<p>大小:' + filesize + 'KB</p>';
 	preview.innerHTML = str;
 	upload.style.display = "block";
-	imgObj = img;
+	imgObj = fileList[0];
 });
 
 area.addEventListener("click", function () {
@@ -72,7 +72,7 @@ file.addEventListener("change", function (e) {
 			'<p>大小:' + filesize + 'KB</p>';
 	preview.innerHTML = str;
 	upload.style.display = "block";
-	imgObj = img;
+	imgObj = fileList[0];
 });
 
 upload.addEventListener("click", function () {
