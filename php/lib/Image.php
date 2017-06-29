@@ -1,9 +1,15 @@
 <?php
 /**
 * Image类
+* 负责图片文件上传
+* 方法有uploadFile(上传文件)
 */
 class Image {
-	// 上传文件
+	/**
+	* 上传文件
+	* 参数：$img(需要上传的文件数组，目前是$_FILES['img'])
+	* 参数：$file(要写入的imagedata文件)
+	*/
 	public static function uploadFile($img, $file) {
 		
 		if (empty($img)) {
@@ -33,7 +39,7 @@ class Image {
 		
 		$filePath = 'uploads/' . $imageArray['filename'];
 		if (move_uploaded_file($img['tmp_name'], $filePath)) {
-			print 'uploaded to folder ' . $filePath;
+			print 'uploaded to folder ' . $filePath . "\r\n";
 			fwrite($fp, $string);
 			fwrite($fp, "\r\n");
 			fclose($fp);
@@ -44,7 +50,10 @@ class Image {
 		}
 	}
 
-	// 生成图片信息字符串
+	/**
+	* 生成图片信息字符串
+	* 具体请参考data\imagedata文件头部说明
+	*/
 	public static function imagedataArray2String($imageArray) {
 		// 判断数组长度是否为5
 		if (count($imageArray) != 6) {
@@ -56,8 +65,11 @@ class Image {
 		return $detailString;
 	}
 	
-	// 图片信息检查
-	// 目前只有扩展名检查诶嘿（喂节操呢
+	/** 
+	* 图片格式检查
+	* 目前只有扩展名检查诶嘿（喂节操呢
+	* TODO: 增加个内容检查？
+	*/
 	public static function imageFormatVerify($image) {
 		global $config;
 		$extArray = explode('.', $image['name']);
