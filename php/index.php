@@ -17,11 +17,14 @@ global $config;
 // 调用Util类，获取一些基本信息
 $clientInfo = Util::getClientInfo();
 
-//var_dump($clientInfo);
+// 调用User类，建立SESSION
 require 'lib/User.php';
 // 使用SESSION
 session_start();
 User::sessionCheck($config['user']['userDataFile'], $clientInfo['remoteAddr']);
+
+// 调用Image类
+require 'lib/Image.php';
 
 if ($config['site']['rewriteURI'] == true) {
 	
@@ -61,7 +64,8 @@ if ($clientInfo['requestMethod'] == 'GET') {
 		//print_r($_FILES['img']);
 		//print '<img src=' . $_POST['img'] . '>';
 		if (isset($_FILES['img'])) {
-			$result = Util::uploadFile($_FILES['img']);
+			$imageDataFile = $config['file']['imageDataFile'];
+			$result = Image::uploadFile($_FILES['img'], $imageDataFile);
 			print $result;
 			exit();
 		} else {
