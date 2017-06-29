@@ -39,11 +39,31 @@ class Util {
 		// 未找到处理该路由的方法
 		} else if ($errType = 'notAllowedReqQuery') {
 			
+		// 上传图片失败	
+		} else if ($errType = 'uploadFileFailed') {
+			die('IO::Error!');
 		// 未找到的错误
 		} else {
 			
 		}
 		exit();
+	}
+	
+	// 上传文件
+	public static function uploadFile($img) {
+		if (empty($img)) {
+			return 'empty';
+		}
+		$fileName = $img['name'];
+		$fileSize = $img['size'];
+		
+		$filePath = 'uploads/' . $fileName;
+		if (move_uploaded_file($img['tmp_name'], $filePath)) {
+			print 'uploaded to folder ' . $filePath;
+			return 'success';
+		} else {
+			return 'fail';
+		}
 	}
 
 }

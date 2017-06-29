@@ -17,7 +17,11 @@ global $config;
 // 调用Util类，获取一些基本信息
 $clientInfo = Util::getClientInfo();
 
-//print_r($clientInfo);
+//var_dump($clientInfo);
+require 'lib/User.php';
+// 使用SESSION
+session_start();
+User::sessionCheck($config['user']['userDataFile'], $clientInfo['remoteAddr']);
 
 if ($config['site']['rewriteURI'] == true) {
 	
@@ -30,6 +34,7 @@ if ($clientInfo['requestMethod'] == 'GET') {
 		exit();
 	// 上传文件	
 	} else if ($clientInfo['query'] == 'upload') {
+		//var_dump($_SESSION['currentUser']);
 		Util::template('uploadFile.html');
 	// 随机访问图片
 	} else if ($clientInfo['query'] == 'random') {
@@ -53,7 +58,15 @@ if ($clientInfo['requestMethod'] == 'GET') {
 } else if ($clientInfo['requestMethod'] == 'POST') {
 	// 上传图片
 	if ($clientInfo['query'] == 'uploadpost') {
-		print('!');
+		//print_r($_FILES['img']);
+		//print '<img src=' . $_POST['img'] . '>';
+		if (isset($_FILES['img'])) {
+			$result = Util::uploadFile($_FILES['img']);
+			print $result;
+			exit();
+		} else {
+			Util::err('uploadFileFailed');
+		}
 	} else if ($clientInfo['query'] == 'registerpost') {
 		
 	} else if ($clientInfo['query'] == 'loginpost') {
@@ -68,6 +81,6 @@ if ($clientInfo['requestMethod'] == 'GET') {
 	Util::err('notAllowedReqMethod');
 }
 	
-require 'lib/User.php';
+
 
 ?>

@@ -10,7 +10,7 @@ class User {
 		if (count($detailArray) != 5) {
 			die('the length of user detail string is invaild(in array2string)...');
 		}
-		$format = '%-10s|%-20s|%-40s|%-50s|%s';
+		$format = '%-10s|%-20s|%-40s|%-40s|%s';
 		$detailString = sprintf($format, $detailArray['id'], $detailArray['username'], 
 			$detailArray['password'], $detailArray['ip'], $detailArray['anonymous']);
 		return $detailString;
@@ -18,7 +18,9 @@ class User {
 	
 	// 将用户资料字符串转为数组
 	public static function detailStringtoArray($detailString) {
+		//print($detailString);
 		$splitString = explode('|', $detailString);
+		//print_r($splitString);
 		// 增加一个数组长度判断
 		if (count($splitString) != 5) {
 			die('the length of user detail string is invaild(in string2array)...');
@@ -59,12 +61,14 @@ class User {
 	
 	// 增加新用户信息
 	public static function addData($file, $content) {
+		//print('enter addData');
 		$fp = fopen($file, 'a+') or die('can not open file: ' . $file);
 		
 		// 中间加1是|所占字节，最后加2为换行和回车(还是改为读到\r\n停止呢)
 		// TODO: 更改为更合适的方法，目前方法需要上一行长度和下面相同
 		fseek($fp, 0 - (10 + 1 + 20 + 1 + 40 + 1 + 40 + 1 + 1 + 2), SEEK_END);
 		$line = fgets($fp);
+		
 		// 如果第一行没有的话，直接将id赋值为1
 		if ($line[0] == '#') {
 			$content['id'] = 1;
@@ -78,6 +82,7 @@ class User {
 		fwrite($fp, $write) or die('write userdata file failed!');
 		fwrite($fp, "\r\n");
 		fclose($fp);
+		return $content;
 	}
 	
 	// 生成随机匿名帐号
@@ -88,16 +93,60 @@ class User {
 		}
 		
 		// 使用kotori+当前时间戳的md5的前20位作为用户名
-		$content['username'] = substr(md5('kotori' + mktime()), 0, 20);
+		$content['username'] = substr(md5('kotori' + time()), 0, 20);
 		$content['password'] = sha1('kotori');
 		$content['anonymous'] = '1';
 		
-		self::addData($file, $content);
+		$content = self::addData($file, $content);
+		return $content;
 	}
 	
 	// 检查分配SESSION
-	public static function sessionCheck() {
+	public static function sessionCheck($file, $currentIP) {
 		
+		$fp = fopen($file, 'r+') or die('can not open file: ' . $file);
+	
+		// 跳过前面的#行
+		for ($line = fgets($fp); $line[0] == '#'; $line = fgets($fp));
+		
+		// 若是没有记录则生成一行然后返回
+		if (feof($fp)) {
+			fclose($fp);
+			$content = self::addAnonymous($file, Array('ip' => $currentIP));
+			$_SESSION['currentUser'] = $content;
+			return;
+		} 
+		
+		// var_dump($line);
+		// var_dump(self::detailStringtoArray($line));
+		// 跳过ip不符合的几行
+		
+		$ip = self::detailStringtoArray($line)['ip'];
+		//var_dump($ip);
+
+		// while($line != '' || $ip = self::detailStringtoArray($line)['ip'] != $currentIP) {
+			// $line = fgets($fp);
+			// print $line;
+		// }
+		
+		for (; $ip != $currentIP; ) {
+			// print('line:' . $line);
+			$line = fgets($fp);
+			if ($line == '') {
+				break;
+			}
+			$ip = self::detailStringtoArray($line)['ip'];
+		}
+		
+		// 如果已经到了文件结尾
+		if (feof($fp)) {
+			fclose($fp);
+			$content = self::addAnonymous($file, Array('ip' => $currentIP));
+		} else if ($currentIP == $ip) {
+			$content = self::detailStringtoArray($line);
+			fclose($fp);
+		}
+		$_SESSION['currentUser'] = $content;		
 	}
 }
 
