@@ -39,6 +39,10 @@ class Util {
 		// 未找到处理该路由的方法
 		} else if ($errType = 'notAllowedReqQuery') {
 			
+		// 不允许的文件类型
+		} else if ($errType = 'notAllowFileType') {
+			print('不支持的文件类型');
+			return;
 		// 上传图片失败	
 		} else if ($errType = 'uploadFileFailed') {
 			die('IO::Error!');
@@ -49,22 +53,6 @@ class Util {
 		exit();
 	}
 	
-	// 上传文件
-	public static function uploadFile($img) {
-		if (empty($img)) {
-			return 'empty';
-		}
-		$fileName = $img['name'];
-		$fileSize = $img['size'];
-		
-		$filePath = 'uploads/' . $fileName;
-		if (move_uploaded_file($img['tmp_name'], $filePath)) {
-			print 'uploaded to folder ' . $filePath;
-			return 'success';
-		} else {
-			return 'fail';
-		}
-	}
-
+	
 }
 ?>
