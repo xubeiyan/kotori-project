@@ -41,7 +41,11 @@ if ($clientInfo['requestMethod'] == 'GET') {
 		Util::template('uploadFile.html');
 	// 随机访问图片
 	} else if ($clientInfo['query'] == 'random') {
-	
+		$imageArray = Image::randomImage($config['file']['imageDataFile']);
+		
+		$templateArray = Image::generateRandomTemplate($imageArray); 
+		// Image::generateHeader($imageArray['filename']);
+		Util::template('random.html', $templateArray);
 	// 列出图片
 	} else if ($clientInfo['query'] == 'list') {
 		

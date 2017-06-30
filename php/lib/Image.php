@@ -124,14 +124,8 @@ class Image {
 		for (; $selectLine > 0; $selectLine -= 1, $line = fgets($fp));
 		// print($line);
 		$imageArray = self::imagedataString2Array($line);
-		$imageInfo = Array(
-			'id' => $imageArray['id'],
-			'size' => round($imageArray['size'] / 1024) . 'KB',
-			'filename' => $imageArray['filename'],
-			'uploader' => $imageArray['uploader'],
-			'uploadtime' => substr($imageArray['uploadtime'], 0, 4) . '年' . substr($imageArray['uploadtime'], 4, 2) . '月' . substr($imageArray['uploadtime'], 6, 2) . '日' . substr($imageArray['uploadtime'], 8),
-		); 
-		return $imageInfo;
+
+		return $imageArray;
 	}
 	
 	/**
@@ -150,6 +144,21 @@ class Image {
 		} else if ($ext == 'webp') {
 			header('Content-type: image/webp');
 		}
+	}
+	
+	/**
+	* 根据随机访问的图片访问
+	*/
+	public static function generateRandomTemplate($imageArray) {
+		global $config;
+		$imageInfo = Array(
+			'%imgPath%' => $config['file']['uploadFolder'] . '/' . $imageArray['filename'],
+			'%filename%' => $imageArray['filename'],
+			'%size%' => round($imageArray['size'] / 1024) . 'KB',
+			'%uploader%' => $imageArray['uploader'],
+			'%uploadtime%' => substr($imageArray['uploadtime'], 0, 4) . '年' . substr($imageArray['uploadtime'], 4, 2) . '月' . substr($imageArray['uploadtime'], 6, 2) . '日' . substr($imageArray['uploadtime'], 8),
+		);
+		return $imageInfo;
 	}
 }
 ?>
