@@ -46,7 +46,7 @@ class Image {
 			return 'success';
 		} else {
 			fclose($fp);
-			return 'fail';
+			return 'fail, error number: ' . $img['error'];
 		}
 	}
 
@@ -106,6 +106,7 @@ class Image {
 	
 	/**
 	* 随机访问图片
+	* 返回可读的
 	*/
 	public static function randomImage($file) {
 		$fp = fopen($file, 'r') or die('can not open file: ' . $file);
@@ -123,8 +124,14 @@ class Image {
 		for (; $selectLine > 0; $selectLine -= 1, $line = fgets($fp));
 		// print($line);
 		$imageArray = self::imagedataString2Array($line);
-		
-		return $imageArray;
+		$imageInfo = Array(
+			'id' => $imageArray['id'],
+			'size' => round($imageArray['size'] / 1024) . 'KB',
+			'filename' => $imageArray['filename'],
+			'uploader' => $imageArray['uploader'],
+			'uploadtime' => substr($imageArray['uploadtime'], 0, 4) . '年' . substr($imageArray['uploadtime'], 4, 2) . '月' . substr($imageArray['uploadtime'], 6, 2) . '日' . substr($imageArray['uploadtime'], 8),
+		); 
+		return $imageInfo;
 	}
 	
 	/**
