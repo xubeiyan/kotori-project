@@ -106,10 +106,15 @@ class Image {
 		global $config;
 		$extArray = explode('.', $image['name']);
 		$ext = array_pop($extArray);
+		
+		// 全部转换为小写，不然大写扩展名无法上传
+		$ext = strtolower($ext);
+		
 		$allowFileType = $config['file']['allowFileType'];
 		// print_r($allowFileType);
 		// print($ext);
 		if (!in_array($ext, $allowFileType)) {
+			
 			Util::err('notAllowFileType');
 		}
 		
