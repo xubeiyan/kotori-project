@@ -31,6 +31,7 @@
 * `uploads\` 图文件目录
 * `thumbs\` 缓存图目录
 * `templates\default\uploadFile.html` 上传文件
+* `templates\default\random.html` 随机访问
 * `templates\default\login.html` 登录
 * `templates\default\register.html` 注册
 * `templates\default\userinfo.html` 用户信息
@@ -56,9 +57,9 @@
 * id(估计是按照某个散列函数随机生成)
 * size(图片大小)
 * filename(文件名)
-* uploader(上传者，这里估计是用户id)
+* uploader(上传用户id)
 * uploadtime(上传时间)
-* r18(咳咳咳)
+* r18(咳咳咳，你懂的)
 
 #### 路由
 
@@ -80,3 +81,8 @@
 * `/registerpost`
 * `/loginpost`
 * `/userinfopost`
+
+### 目前进展
+
+* upload页面基本完成
+* random页面基本完成
