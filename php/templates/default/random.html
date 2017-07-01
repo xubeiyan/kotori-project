@@ -7,11 +7,26 @@
 </head>
 <body>
 <img src="%imgPath%" id="uploadImg" />
-<div id="preview">
+<div id="preview" class="autoLR">
 	<p>文件名: %filename%</p>
 	<p>上传者: %uploader%</p>
 	<p>大小: %size%</p>
 	<p>上传时间: %uploadtime%</p>
+</div>
+<div id="footer" class="autoLR">
+	<ul class="footer-left">
+		<li>&copy;2017</li>
+		<li>-</li>
+		<li title="某个图床">Kotori Project</li>
+		<li title="奇怪的按钮"><a href="?random">随便看看</a></li>
+	</ul>
+	<ul class="footer-right">
+		<li><a href="?login">想传更大文件</a></li>
+		<li><a href="?register">想签定契约</a></li>
+		<li>|</li>
+		<li><a href="https://github.com/xubeiyan/kotori-project">Github</a></li>
+	</ul>
+	
 </div>
 </body>
 <!--<script type="text/javascript" src="%template%/js/tools.js"></script>-->
