@@ -51,10 +51,10 @@ if ($clientInfo['requestMethod'] == 'GET') {
 		
 	// 注册
 	} else if ($clientInfo['query'] == 'register') {
-		
+		print('契约还没准备好...');
 	// 登录	
 	} else if ($clientInfo['query'] == 'login') {
-		
+		print('已经...塞不下了...');
 	// 用户信息	
 	} else if ($clientInfo['query'] == 'userinfo') {
 		
@@ -89,7 +89,4 @@ if ($clientInfo['requestMethod'] == 'GET') {
 } else {
 	Util::err('notAllowedReqMethod');
 }
-	
-
-
 ?>
