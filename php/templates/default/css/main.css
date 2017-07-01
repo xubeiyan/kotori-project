@@ -4,8 +4,6 @@ div#area {
 	line-height:200px;
 	text-align:center;
 	background-color: #EEE;
-	margin-left: auto;
-	margin-right: auto;
 	cursor: pointer;
 }
 div#area:hover {
@@ -13,8 +11,11 @@ div#area:hover {
 }
 
 div#preview {
-	margin-left: auto;
-	margin-right: auto;
+	width: 600px;
+}
+
+div#footer {
+	margin-top:5px;
 	width: 600px;
 }
 
@@ -35,4 +36,40 @@ input#uploadButton {
 	height:30px;
 	margin-left:auto;
 	margin-right:auto;
+}
+
+div.autoLR {
+	margin-left: auto;
+	margin-right: auto;
+}
+
+ul.footer-left {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	float: left;
+}
+
+ul.footer-left li{
+	display: inline-block;
+}
+
+ul.footer-right {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	float:right;
+}
+
+ul.footer-right li{
+	display: inline-block;
+}
+
+
+a {
+	color: #999;
+	text-decoration: none;
+}
+a:hover {
+	text-decoration: underline;
 }

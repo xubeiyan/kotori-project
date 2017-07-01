@@ -7,9 +7,23 @@
 </head>
 <body>
 <input type="file" id="file"/>
-<div id="area">点击上传或将图片拖到此处</div>
+<div id="area" class="autoLR" title="目前支持5M以下的jpg, png, gif, webp">点击上传或将图片拖到此处</div>
 <input type="button" id="uploadButton" value="上传"/>
-<div id="preview"></div>
+<div id="preview" class="autoLR"></div>
+<div id="footer" class="autoLR">
+	<ul class="footer-left">
+		<li>&copy;2017</li>
+		<li>-</li>
+		<li title="某个图床">Kotori Project</li>
+	</ul>
+	<ul class="footer-right">
+		<li><a href="?login">想传更大文件</a></li>
+		<li><a href="?register">想签定契约</a></li>
+		<li>|</li>
+		<li><a href="https://github.com/xubeiyan/kotori-project">Github</a></li>
+	</ul>
+	
+</div>
 </body>
 <script type="text/javascript" src="%template%/js/tools.js"></script>
 </html>
