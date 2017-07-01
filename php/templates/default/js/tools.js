@@ -63,8 +63,8 @@ file.addEventListener("change", function (e) {
 		filename = fileList[0].name,
 		filesize = Math.floor((fileList[0].size) / 1024);
 		
-	if (filesize > 5000) {
-		console.log('文件大小不能超过5000K！');
+	if (filesize > 10240) {
+		console.log('文件大小不能超过10M！');
 		return false;
 	}
 	
@@ -85,4 +85,22 @@ upload.addEventListener("click", function () {
 	formData.append('img', imgObj);
 	
 	xhr.send(formData);
+	
+	xhr.onreadystatechange = function() {
+		// 隐藏上传按钮
+		uploadButton.style.display = 'none';
+		
+		if (xhr.readyState == 4 && xhr.status == 200) {
+			var responseArray = JSON.parse(xhr.responseText);
+			if (responseArray['status'] == 'success') {
+				preview.innerHTML = '<p>上传成功！</p>' +
+					'<p>上传路径:' + responseArray['savePath'] + '</p>';
+			} else if (responseArray['status'] == 'fail'){
+				preview.innerHTML = '<p>上传失败！</p>' +
+					'<p>出错原因:' + responseArray['error'] + '</p>';
+			}
+		} else {
+			preview.innerHTML = 'AJAX readyState:' + xhr.readyState + ' AJAX Status:' + xhr.status;
+		}
+	}
 });

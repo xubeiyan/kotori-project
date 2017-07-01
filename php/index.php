@@ -70,6 +70,7 @@ if ($clientInfo['requestMethod'] == 'GET') {
 		if (isset($_FILES['img'])) {
 			$imageDataFile = $config['file']['imageDataFile'];
 			$result = Image::uploadFile($_FILES['img'], $imageDataFile);
+			header('Content-type:application/json');
 			print $result;
 			exit();
 		} else {

@@ -39,14 +39,26 @@ class Image {
 		
 		$filePath = 'uploads/' . $imageArray['filename'];
 		if (move_uploaded_file($img['tmp_name'], $filePath)) {
-			print 'uploaded to folder ' . $filePath . "\r\n";
+			// print 'uploaded to folder ' . $filePath . "\r\n";
 			fwrite($fp, $string);
 			fwrite($fp, "\r\n");
 			fclose($fp);
-			return 'success';
+			
+			$returnArray = Array (
+				'status' => 'success',
+				'error' => '',
+				'savePath' => $filePath,
+			);
+			return json_encode($returnArray, JSON_UNESCAPED_UNICODE);
 		} else {
 			fclose($fp);
-			return 'fail, error number: ' . $img['error'];
+			
+			$returnArray = Array (
+				'status' => 'fail',
+				'error' => $img['error'],
+				'savePath' => '',
+			);
+			return json_encode($returnArray, JSON_UNESCAPED_UNICODE);
 		}
 	}
 
