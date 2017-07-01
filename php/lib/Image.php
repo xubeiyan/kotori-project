@@ -139,7 +139,11 @@ class Image {
 		$selectLine = rand(0, $lineNum - 1);
 		// print($selectLine);
 		for (; $selectLine > 0; $selectLine -= 1, $line = fgets($fp));
-		// print($line);
+		
+		if ($line == '') {
+			Util::err('noImageforRandom');
+		}
+		
 		$imageArray = self::imagedataString2Array($line);
 
 		return $imageArray;
@@ -168,6 +172,7 @@ class Image {
 	*/
 	public static function generateRandomTemplate($imageArray) {
 		global $config;
+
 		$imageInfo = Array(
 			'%imgPath%' => $config['file']['uploadFolder'] . '/' . $imageArray['filename'],
 			'%filename%' => $imageArray['filename'],

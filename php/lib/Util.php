@@ -39,6 +39,9 @@ class Util {
 		// 未找到配置文件
 		if ($errType == 'missConfigurationFile') {
 			
+		// 未找到图像
+		} else if ($errType == 'noImageforRandom' ) {
+			die('there is not any image for random');
 		// 不允许的请求方法
 		} else if ($errType == 'notAllowedReqMethod' ) {
 		
