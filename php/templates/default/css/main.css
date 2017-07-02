@@ -19,6 +19,12 @@ div#footer {
 	width: 600px;
 }
 
+div#footer-wide {
+	margin-top:5px;
+	margin-bottom:5px;
+	width:1000px;
+}
+
 img#uploadImg {
 	width: 600px;
 	display: block;
