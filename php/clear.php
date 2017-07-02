@@ -23,4 +23,8 @@ array_map('unlink', glob($imageFolder . '/*'));
 
 echo '<p>已清空uploads目录</p>';
 
+array_map('unlink', glob($thumbFolder . '/*'));
+
+echo '<p>已清空thumbs目录</p>';
+
 ?>
