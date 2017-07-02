@@ -42,12 +42,15 @@ class Util {
 		// 未找到图像
 		} else if ($errType == 'noImageforRandom' ) {
 			die('there is not any image for random');
+		// 未为列表模式找到图像
+		} else if ($errType == 'noImageforList' ) {
+			die('there is not any image for list');
 		// 不允许的请求方法
 		} else if ($errType == 'notAllowedReqMethod' ) {
 		
 		// 未找到处理该路由的方法
 		} else if ($errType = 'notAllowedReqQuery') {
-			
+			print($errinfo['query']);
 		// 不允许的文件类型
 		} else if ($errType = 'notAllowFileType') {
 			print('不支持的文件类型');
