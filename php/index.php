@@ -47,19 +47,35 @@ if ($clientInfo['requestMethod'] == 'GET') {
 		// Image::generateHeader($imageArray['filename']);
 		Util::template('random.html', $templateArray);
 	// 列出图片
-	} else if ($clientInfo['query'] == 'list') {
+	} else if (substr($clientInfo['query'], 0, 4) == 'list') {
+		$listArray = explode('=', $clientInfo['query']);
+		// 检测是否提供了页面值，否则赋值为1
+		if (!isset($listArray[1]) || !is_numeric($listArray[1]) || $listArray[1] <= 0) {
+			$listArray[1] = 1;
+		} else {
+			$listArray[1] = intval($listArray[1]);
+		}
+		$imageListArray = Image::generateImageList($listArray[1], $config['file']['imagePerPage']);
+		// var_dump($listArray[1]);
+		$templateArray = Image::generateListTemplate($imageListArray); 
 		
+		Util::template('list.html', $templateArray);
 	// 注册
 	} else if ($clientInfo['query'] == 'register') {
+		header('Content-type:text/html; charset=utf-8');
 		print('契约还没准备好...');
 	// 登录	
 	} else if ($clientInfo['query'] == 'login') {
+		header('Content-type:text/html; charset=utf-8');
 		print('已经...塞不下了...');
 	// 用户信息	
 	} else if ($clientInfo['query'] == 'userinfo') {
 		
 	} else {
-		Util::err('notAllowedReqQuery');
+		$errInfo = Array(
+			'query' => $clientInfo['query'],
+		);
+		Util::err('notAllowedReqQuery', $errInfo);
 	}
 // 路由POST部分
 } else if ($clientInfo['requestMethod'] == 'POST') {

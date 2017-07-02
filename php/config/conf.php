@@ -18,7 +18,7 @@ $config = Array (
 		'uploadFolder' => 'uploads',
 		'thumbFolder' => 'thumbs',
 		'imageDataFile' => 'data/imagedata',#图片信息所在位置
-		'imagePerPage' => 20,
+		'imagePerPage' => 10,
 		'thumbWidth' => 200,				#略缩图宽度 
 	),
 	'site' => Array(
