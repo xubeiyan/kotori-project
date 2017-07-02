@@ -17,7 +17,9 @@ $config = Array (
 		'allowFileType' => Array('jpg', 'png', 'webp', 'gif'),
 		'uploadFolder' => 'uploads',
 		'thumbFolder' => 'thumbs',
-		'imageDataFile' => 'data/imagedata'	#图片信息所在位置
+		'imageDataFile' => 'data/imagedata',#图片信息所在位置
+		'imagePerPage' => 20,
+		'thumbWidth' => 200,				#略缩图宽度 
 	),
 	'site' => Array(
 		'rewriteURI' => false,				#是否启用Rewrite URI
