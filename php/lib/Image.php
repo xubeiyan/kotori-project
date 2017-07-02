@@ -168,7 +168,7 @@ class Image {
 	}
 	
 	/**
-	* 根据随机访问的图片访问
+	* 生成随机访问的模板数组
 	*/
 	public static function generateRandomTemplate($imageArray) {
 		global $config;
@@ -181,6 +181,121 @@ class Image {
 			'%uploadtime%' => substr($imageArray['uploadtime'], 0, 4) . '年' . substr($imageArray['uploadtime'], 4, 2) . '月' . substr($imageArray['uploadtime'], 6, 2) . '日' . substr($imageArray['uploadtime'], 8),
 		);
 		return $imageInfo;
+	}
+	
+	/**
+	* 生成列表访问的模板数组
+	*/
+	public static function generateListTemplate($array) {
+		$imagelist = '';
+		
+		foreach ($array as $value) {
+			$imagelist .= '<a href="uploads/' . $value['filename'] . '"><img style="width:200px" src="'. Image::getThumb($value['filename']). '" /></a>';
+		}
+		
+		$imageListTemplate = Array(
+			'%imagelist%' => $imagelist,
+		);
+		return $imageListTemplate;
+	}
+	
+	/**
+	* 根据页数和每页图片数提供图片链接
+	*/
+	public static function generateImageList($page, $imgPerPage) {
+		global $config;
+		$fp = fopen($config['file']['imageDataFile'], 'r') or die ('can not open file: ' . $config['file']['imageDataFile']);
+		
+		// 将传入的的页面值减1
+		$skipImage = ($page - 1) * $imgPerPage; 
+		$imageInfoArray = Array();
+		
+		// print('image per page: ' . $imgPerPage);
+
+		// 跳过#开头的注释行
+		for ($line = fgets($fp); $line[0] == '#'; $line = fgets($fp));
+		
+		// 跳过前面的$skipImage行
+		for (; $skipImage > 0; $line = fgets($fp), $skipImage -= 1);
+		
+		if ($line == '') {
+			Util::err('noImageforList');
+		}
+		
+		for (; $imgPerPage > 0 && $line != ''; $imgPerPage -= 1, $line = fgets($fp)) {
+			// print_r($line);
+			$imageArray = self::imagedataString2Array($line);
+			array_push($imageInfoArray, $imageArray);
+		}
+		
+		fclose($fp);
+		return $imageInfoArray;
+	}
+	
+	/**
+	* 生成略缩图thumbs
+	* 返回略缩图路径
+	*/
+	public static function getThumb($imageFile) {
+		global $config;
+		
+		$thumbFolder = $config['file']['thumbFolder'];
+		if (file_exists($thumbFolder . '/' . $imageFile)) {
+			return $thumbFolder . '/' . $imageFile;
+		}
+		
+		$uploadFolder = $config['file']['uploadFolder'];
+		if (!file_exists($uploadFolder . '/' . $imageFile)) {
+			die('file ' . $imageFile . ' seems not to exsit...');
+		}
+		
+		// $imgInfo = getimagesize($uploadFolder . '/' . $imageFile);
+		
+		$filenameArray = explode('.', $imageFile);
+		$ext = array_pop($filenameArray);
+		if ($ext == 'jpg') {
+			$img = imagecreatefromjpeg($uploadFolder . '/' . $imageFile);
+		} else if ($ext == 'png') {
+			$img = imagecreatefrompng($uploadFolder . '/' . $imageFile);
+		} else if ($ext == 'webp') {
+			$img = imagecreatefromwebp($uploadFolder . '/' . $imageFile);
+		} else if ($ext == 'gif') {
+			if (!copy($uploadFolder . '/' . $imageFile, $thumbFolder . '/' . $imageFile)) {
+				die('copy gif file failed...');
+			}
+			return $thumbFolder . '/' . $imageFile;
+		}
+		if (!$img) {
+			die('the file seems to fail to open...');
+		}
+		
+		
+		$width = imagesx($img);
+		$height = imagesy($img);
+		
+		$newWidth = $config['file']['thumbWidth'];
+		$newHeight = round($height / $width * $newWidth);
+		$newImage = imagecreatetruecolor($newWidth, $newHeight);
+		
+		if (!imagecopyresampled($newImage, $img, 0, 0, 0, 0, $newWidth, $newHeight, $width, $height)) {
+			die('resize failed!');
+		}
+		
+		if ($ext == 'jpg') {
+			$result = imagejpeg($newImage, $thumbFolder . '/' . $imageFile);
+		} else if ($ext == 'png') {
+			$result = imagepng($newImage, $thumbFolder . '/' . $imageFile);
+		} else if ($ext == 'webp') {
+			$result = imagewebp($newImage, $thumbFolder . '/' . $imageFile);
+		} else if ($ext == 'gif') {
+			
+		}
+		
+		if (!$result) {
+			die('can not create a new image...');
+		}
+		
+		return $thumbFolder . '/' . $imageFile;
 	}
 }
 ?>
