@@ -31,8 +31,8 @@ area.addEventListener("drop", function (e) {
 		filename = fileList[0].name,
 		filesize = Math.floor((fileList[0].size) / 1024);
 		
-	if (filesize > 5000) {
-		console.log('文件大小不能超过5000K！');
+	if (filesize > 10240) {
+		console.log('文件大小不能超过10M！');
 		return false;
 	}
 	
@@ -77,8 +77,40 @@ file.addEventListener("change", function (e) {
 
 upload.addEventListener("click", function () {
 	var xhr = new XMLHttpRequest(),
-		formData = new FormData();
+		formData = new FormData(),
+		preview = document.getElementById("preview"),
+		progress = preview.appendChild(document.createElement("p"));
 		
+	progress.appendChild(document.createTextNode("上传中"));
+	progress.id = "progress";	
+		
+	xhr.upload.addEventListener("progress", function(e) {
+		var pc = parseInt(100 - (e.loaded / e.total * 100));
+		progress.style.backgroundPosition = pc + "% 0";
+	}, false);
+		
+	xhr.onreadystatechange = function() {
+		// 隐藏上传按钮
+		uploadButton.style.display = 'none';
+		
+		if (xhr.readyState == 4 && xhr.status == 200) {
+			var responseArray = JSON.parse(xhr.responseText),
+				folder = preview.appendChild(document.createElement("p"));
+				
+			if (responseArray['status'] == 'success') {
+				progress.className = "success";
+				progress.innerHTML = "上传成功";
+				
+				folder.innerHTML = '上传路径:' + responseArray['savePath'];
+			} else if (responseArray['status'] == 'fail'){
+				progress.className = "failed";
+				progress.innerHTML = "上传失败";
+
+				folder.innerHTML = '出错原因:' + responseArray['error'];
+			}
+		}
+	}
+	
 	xhr.open('POST', '?uploadpost', true);
 	xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
 	
@@ -86,21 +118,4 @@ upload.addEventListener("click", function () {
 	
 	xhr.send(formData);
 	
-	xhr.onreadystatechange = function() {
-		// 隐藏上传按钮
-		uploadButton.style.display = 'none';
-		
-		if (xhr.readyState == 4 && xhr.status == 200) {
-			var responseArray = JSON.parse(xhr.responseText);
-			if (responseArray['status'] == 'success') {
-				preview.innerHTML = '<p>上传成功！</p>' +
-					'<p>上传路径:' + responseArray['savePath'] + '</p>';
-			} else if (responseArray['status'] == 'fail'){
-				preview.innerHTML = '<p>上传失败！</p>' +
-					'<p>出错原因:' + responseArray['error'] + '</p>';
-			}
-		} else {
-			preview.innerHTML = 'AJAX readyState:' + xhr.readyState + ' AJAX Status:' + xhr.status;
-		}
-	}
 });

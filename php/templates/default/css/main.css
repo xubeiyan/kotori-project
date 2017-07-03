@@ -14,6 +14,23 @@ div#preview {
 	width: 600px;
 }
 
+div#preview p#progress{
+	display: block;
+	width: 600px;
+	padding: 0;
+	margin: 2px 0;
+	border: 1px inset #466;
+	border-radius: 2px;
+}
+
+p#progress.success {
+	background: #0c0 none 0 0 no-repeat;
+}
+
+p#progress.failed {
+	background: #c00 none 0 0 no-repeat;
+}
+
 div#list {
 	width:1000px;
 }
