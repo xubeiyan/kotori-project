@@ -81,18 +81,19 @@ upload.addEventListener("click", function () {
 		preview = document.getElementById("preview"),
 		progress = preview.appendChild(document.createElement("p"));
 		
+	// 隐藏上传按钮
+	uploadButton.style.display = 'none';
+	
 	progress.appendChild(document.createTextNode("上传中"));
 	progress.id = "progress";	
 		
 	xhr.upload.addEventListener("progress", function(e) {
 		var pc = parseInt(100 - (e.loaded / e.total * 100));
+		// console.log(pc);
 		progress.style.backgroundPosition = pc + "% 0";
 	}, false);
 		
 	xhr.onreadystatechange = function() {
-		// 隐藏上传按钮
-		uploadButton.style.display = 'none';
-		
 		if (xhr.readyState == 4 && xhr.status == 200) {
 			var responseArray = JSON.parse(xhr.responseText),
 				folder = preview.appendChild(document.createElement("p"));
