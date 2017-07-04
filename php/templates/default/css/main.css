@@ -31,31 +31,8 @@ p#progress.failed {
 	background: #c00 none 0 0 no-repeat;
 }
 
-div#list-container {
-	width: 1100px;
-	display: flex;
-	align-items: center;
-}
-
-div#list-container a:hover {
-	text-decoration: none;
-}
-
 div#list {
 	width:1000px;
-}
-
-div.page-switch {
-	width: 50px;
-	height: 100px;
-	text-align: center;
-	background-color: #EEE;
-	cursor: pointer;
-	line-height: 100px;
-}
-
-div.page-switch:hover {
-	background-color: #DDD;
 }
 
 div#footer {

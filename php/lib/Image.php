@@ -189,25 +189,15 @@ class Image {
 	/**
 	* 生成列表访问的模板数组
 	*/
-	public static function generateListTemplate($array, $currentPage) {
+	public static function generateListTemplate($array) {
 		$imagelist = '';
 		
 		foreach ($array as $value) {
 			$imagelist .= '<a href="uploads/' . $value['filename'] . '"><img style="width:200px" src="'. Image::getThumb($value['filename']). '" /></a>';
 		}
 		
-		if ($currentPage == 1) {
-			$prev = 1;
-			$next = 2;
-		} else {
-			$prev = $currentPage - 1;
-			$next = $currentPage + 1;
-		}
-		
 		$imageListTemplate = Array(
 			'%imagelist%' => $imagelist,
-			'%prev%' => $prev,
-			'%next%' => $next,
 		);
 		return $imageListTemplate;
 	}

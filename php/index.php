@@ -57,7 +57,7 @@ if ($clientInfo['requestMethod'] == 'GET') {
 		}
 		$imageListArray = Image::generateImageList($listArray[1], $config['file']['imagePerPage']);
 		// var_dump($listArray[1]);
-		$templateArray = Image::generateListTemplate($imageListArray, $listArray[1]); 
+		$templateArray = Image::generateListTemplate($imageListArray); 
 		
 		Util::template('list.html', $templateArray);
 	// 注册
