@@ -156,6 +156,9 @@ class Image {
 		$filenameArray = explode('.', $filename);
 		$ext = array_pop($filenameArray);
 		
+		// 增加一个转换成小写的步骤
+		$ext = strtolower($ext);
+		
 		if ($ext == 'gif') {
 			header('Content-type: image/gif');
 		} else if ($ext == 'png') {
@@ -253,6 +256,9 @@ class Image {
 		
 		$filenameArray = explode('.', $imageFile);
 		$ext = array_pop($filenameArray);
+		// 增加一个转换成小写的步骤
+		$ext = strtolower($ext);
+		
 		if ($ext == 'jpg') {
 			$img = imagecreatefromjpeg($uploadFolder . '/' . $imageFile);
 		} else if ($ext == 'png') {
