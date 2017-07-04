@@ -6,13 +6,18 @@
 <title>文件列表</title>
 </head>
 <body>
-<div id="list" class="autoLR">%imagelist%</div>
+<div id="list-container" class="autoLR">
+	<a href="?list=%prev%"><div class="page-switch">&lt;</div></a>
+	<div id="list">%imagelist%</div>
+	<a href="?list=%next%"><div class="page-switch">&gt;</div></a>
+</div>
 <div id="footer-wide" class="autoLR">
 	<ul class="footer-left">
 		<li>&copy;2017</li>
 		<li>-</li>
 		<li title="某个图床">Kotori Project</li>
 		<li title="奇怪的按钮"><a href="?random">随便看看</a></li>
+		<li title="奇怪的按钮"><a href="?upload">上传图片</a></li>
 	</ul>
 	<ul class="footer-right">
 		<li><a href="?login">想传更大文件</a></li>
