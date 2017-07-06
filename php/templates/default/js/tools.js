@@ -91,7 +91,7 @@ upload.addEventListener("click", function () {
 		var pc = parseInt(100 - (e.loaded / e.total * 100));
 		if (e.lengthComputable) {
 			progress.style.backgroundPosition = pc + "% 0";
-			progress.innerText = progress.innerText + ' ' + e.loaded + '/' + e.total;
+			progress.innerText = progress.innerText.split(' ')[0] + ' ' + e.loaded + '/' + e.total;
 			console.log(e.loaded + '/' + e.total);
 		}
 	}, false);
@@ -103,7 +103,7 @@ upload.addEventListener("click", function () {
 				
 			if (responseArray['status'] == 'success') {
 				progress.className = "success";
-				progress.innerHTML = "上传成功 " + progress.innerText.split(' ')[1];
+				progress.innerHTML = "上传成功";
 				
 				folder.innerHTML = '上传路径:' + responseArray['savePath'];
 			} else if (responseArray['status'] == 'fail'){

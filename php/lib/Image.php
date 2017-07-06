@@ -282,7 +282,7 @@ class Image {
 			return $thumbFolder . '/' . $imageFile;
 		}
 		if (!$img) {
-			die('the file seems to fail to open...');
+			die('the file ' . $imageFile . ' seems to fail to open...');
 		}
 		
 		
