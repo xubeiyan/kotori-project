@@ -81,7 +81,6 @@ if ($clientInfo['requestMethod'] == 'GET') {
 } else if ($clientInfo['requestMethod'] == 'POST') {
 	// 上传图片
 	if ($clientInfo['query'] == 'uploadpost') {
-		//print_r($_FILES['img']);
 		//print '<img src=' . $_POST['img'] . '>';
 		if (isset($_FILES['img'])) {
 			$imageDataFile = $config['file']['imageDataFile'];

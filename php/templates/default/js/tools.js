@@ -89,8 +89,11 @@ upload.addEventListener("click", function () {
 		
 	xhr.upload.addEventListener("progress", function(e) {
 		var pc = parseInt(100 - (e.loaded / e.total * 100));
-		// console.log(pc);
-		progress.style.backgroundPosition = pc + "% 0";
+		if (e.lengthComputable) {
+			progress.style.backgroundPosition = pc + "% 0";
+			progress.innerText = progress.innerText + ' ' + e.loaded + '/' + e.total;
+			console.log(e.loaded + '/' + e.total);
+		}
 	}, false);
 		
 	xhr.onreadystatechange = function() {
@@ -100,7 +103,7 @@ upload.addEventListener("click", function () {
 				
 			if (responseArray['status'] == 'success') {
 				progress.className = "success";
-				progress.innerHTML = "上传成功";
+				progress.innerHTML = "上传成功 " + progress.innerText.split(' ')[1];
 				
 				folder.innerHTML = '上传路径:' + responseArray['savePath'];
 			} else if (responseArray['status'] == 'fail'){
@@ -113,7 +116,7 @@ upload.addEventListener("click", function () {
 	}
 	
 	xhr.open('POST', '?uploadpost', true);
-	xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+	xhr.setRequestHeader('X-FILENAME', 'XMLHttpRequest');
 	
 	formData.append('img', imgObj);
 	

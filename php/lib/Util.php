@@ -49,14 +49,14 @@ class Util {
 		} else if ($errType == 'notAllowedReqMethod' ) {
 		
 		// 未找到处理该路由的方法
-		} else if ($errType = 'notAllowedReqQuery') {
+		} else if ($errType == 'notAllowedReqQuery') {
 			print($errinfo['query']);
 		// 不允许的文件类型
-		} else if ($errType = 'notAllowFileType') {
+		} else if ($errType == 'notAllowFileType') {
 			print('不支持的文件类型');
 			return;
 		// 上传图片失败	
-		} else if ($errType = 'uploadFileFailed') {
+		} else if ($errType == 'uploadFileFailed') {
 			die('IO::Error!');
 		// 未找到的错误
 		} else {
