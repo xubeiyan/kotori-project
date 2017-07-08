@@ -58,6 +58,46 @@ div.page-switch:hover {
 	background-color: #DDD;
 }
 
+div#login-panel {
+	width: 200px;
+	border: 1px solid #DDD;
+	border-radius: 5px;
+	background-color: #EEE;
+	padding:20px 200px 20px 200px;
+}
+
+div#login-panel label {
+	display:block;
+}
+
+div#login-panel input#register-button {
+	width: 100%;
+	height: 30px;
+	border: 0px;
+	background-color: #CCC;
+	border-radius :2px;
+	cursor: pointer;
+}
+
+div#login-panel input#register-button:hover {
+	background-color: #999;
+}
+
+div#login-panel input.input-box {
+	width: 188px;
+	height: 25px;
+	font-size: 16px;
+	border-radius:2px;
+	border: 1px solid #333;
+	margin-top: 2px;
+	margin-bottom: 5px;
+	padding-left: 5px;
+	padding-right: 5px;
+}
+div#login-panel div#error-msg {
+	color: red;
+}
+
 div#footer {
 	margin-top:5px;
 	width: 600px;
@@ -87,6 +127,8 @@ input#uploadButton {
 	margin-left:auto;
 	margin-right:auto;
 }
+
+
 
 div.autoLR {
 	margin-left: auto;
@@ -119,6 +161,12 @@ ul.footer-right li{
 a {
 	color: #999;
 	text-decoration: none;
+}
+
+a.important {
+	color: #333;
+	text-shadow: #CCC 0.1em 0.1em 0.2em;
+	/* font-weight: bold; */
 }
 a:hover {
 	text-decoration: underline;
