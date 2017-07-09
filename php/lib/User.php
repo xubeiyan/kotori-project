@@ -85,6 +85,49 @@ class User {
 		return $content;
 	}
 	
+	// 增加注册用户
+	public static function addUserData($file, $content) {
+		// 检查各项是否设置
+		if (!isset($content['username'])) {
+			die('the username seems not to set...');
+		}
+		
+		if (!isset($content['password'])) {
+			die('the password seems not to set...');
+		}
+		
+		if (!isset($content['ip'])) {
+			die('the ip seems not to set...');
+		}
+		
+		$fp = fopen($file, 'r') or die('can not open file: ' . $file);
+		
+		// 跳过前面的#行
+		for ($line = fgets($fp); $line[0] == '#'; $line = fgets($fp));
+		
+		// 貌似登入之前必然可能写入一行匿名用户信息，所以认为必然不可能到达文件结尾
+		for (; !feof($fp); $line = fgets($fp)) {
+			if ($content['username'] != self::detailStringtoArray($line)['username']) {
+				continue;
+			} else {
+				break;
+			}
+		}
+	
+		if (feof($fp)) {
+			$content['password'] = sha1($content['password']);
+			
+			if ($result = self::addData($file, $content)) {
+				$_SESSION['currentUser'] = $content;
+			} else {
+				die('write to userdata file failed');
+			}
+			return $result;
+		}
+		
+		return 'user exists';
+	}
+	
 	// 生成随机匿名帐号
 	// 看起来目前$content里只需要提供ip
 	public static function addAnonymous($file, $content) {
@@ -103,6 +146,9 @@ class User {
 	
 	// 检查分配SESSION
 	public static function sessionCheck($file, $currentIP) {
+		if (isset($_SESSION['currentUser'])) {
+			return;
+		}
 		
 		$fp = fopen($file, 'r+') or die('can not open file: ' . $file);
 	
@@ -147,6 +193,29 @@ class User {
 			fclose($fp);
 		}
 		$_SESSION['currentUser'] = $content;		
+	}
+	
+	// 生成注册登录列表
+	public static function generateRegisterandLoginList($uri) {
+		$returnArray = Array();
+		// 是否登录
+		if ($_SESSION['currentUser']['anonymous'] == '0') {
+			$returnArray['%userinfo%'] = '<li>' . $_SESSION['currentUser']['id'] . '</li>' .
+					'<li><a href="?logout">注销</a></li>';
+			return $returnArray;
+		} else {
+			if ($uri == 'login') {
+				$returnArray['%userinfo%'] = '<li><a href="?register">想签定契约</a></li>';
+				return $returnArray;
+			} else if ($uri == 'register') {
+				$returnArray['%userinfo%'] = '<li><a href="?login">想传更大文件</a></li>';
+				return $returnArray;
+			}
+		}
+		
+		$returnArray['%userinfo%'] = '<li><a href="?login">想传更大文件</a></li>
+					<li><a href="?register">想签定契约</a></li>';
+		return $returnArray;
 	}
 }
 

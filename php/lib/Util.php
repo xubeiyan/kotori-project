@@ -23,6 +23,7 @@ class Util {
 		//print $file;
 		$fileContent = file_get_contents($templateFolder .'/' . $templateFile);
 		$fileContent = str_replace('%template%', $templateFolder, $fileContent);
+		
 		// $templateInfo非空则替换
 		if ($templateInfo != Array()) {
 			foreach ($templateInfo as $key => $value) {
