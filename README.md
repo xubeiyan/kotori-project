@@ -73,8 +73,10 @@
 * `/random` 随机访问个图片
 * `/register` 注册新账户
 * `/login` 登录
+* `/logout` 注销登录
 * `/userinfo` 用户信息
-* `/list` 
+* `/list` 列出图片
+
 
 ###### POST方法
 
@@ -87,7 +89,8 @@
 
 * upload页面基本完成
 * random页面基本完成
-* list页面基本完成（list=[数字]这种可以跳转页面，已加上前后跳转页面按钮）
+* list页面基本完成（list=[数字]这种可以跳转页面，已加上前后跳转页面按钮）    
+* register和login页面姑且搭好了框架    
 
 ### 遇到问题
 
