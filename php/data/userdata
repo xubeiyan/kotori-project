@@ -1,4 +1,4 @@
 # ipv6地址需加括号（什么即使是v6也只有39位！），password使用sha1散列（php自带那个好复杂）
 # id(10)  |username(20)        |password(40)                            |ip(40)                       |anonymous(1)
-1         |2a2f18d54ba6cb1ed61a|aadd05f3bc234dd77717eb7d5f39e13ac7718473|127.0.0.1                               |1
-2         |993cc7cd6f21f3c7f22b|aadd05f3bc234dd77717eb7d5f39e13ac7718473|::1                                     |1
+1         |86f3e71b53134ff8ae61|aadd05f3bc234dd77717eb7d5f39e13ac7718473|::1                                     |1
+2         |a                   |86f7e437faa5a7fce15d1ddcb9eaeaea377667b8|::1                                     |0
