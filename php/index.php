@@ -38,7 +38,8 @@ if ($clientInfo['requestMethod'] == 'GET') {
 	// 上传文件	
 	} else if ($clientInfo['query'] == 'upload') {
 		//var_dump($_SESSION['currentUser']);
-		Util::template('uploadFile.html');
+		$templateArray = User::generateRegisterandLoginList($clientInfo['query']);
+		Util::template('uploadFile.html', $templateArray);
 	// 随机访问图片
 	} else if ($clientInfo['query'] == 'random') {
 		$imageArray = Image::randomImage($config['file']['imageDataFile']);
@@ -62,15 +63,18 @@ if ($clientInfo['requestMethod'] == 'GET') {
 		Util::template('list.html', $templateArray);
 	// 注册
 	} else if ($clientInfo['query'] == 'register') {
-		header('Content-type:text/html; charset=utf-8');
-		print('契约还没准备好...');
+		Util::template('register.html');
 	// 登录	
 	} else if ($clientInfo['query'] == 'login') {
-		header('Content-type:text/html; charset=utf-8');
-		print('已经...塞不下了...');
+		$templateArray = User::generateRegisterandLoginList($clientInfo['query']);
+		Util::template('login.html', $templateArray);
 	// 用户信息	
 	} else if ($clientInfo['query'] == 'userinfo') {
-		
+		Util::template('userinfo.html');
+	// 清除session，跳转至首页
+	} else if ($clientInfo['query'] == 'logout') {
+		session_unset();
+		header('refresh:0;url=.');
 	} else {
 		$errInfo = Array(
 			'query' => $clientInfo['query'],
@@ -92,7 +96,18 @@ if ($clientInfo['requestMethod'] == 'GET') {
 			Util::err('uploadFileFailed');
 		}
 	} else if ($clientInfo['query'] == 'registerpost') {
+		$returnArray = Array();
 		
+		$registerInfo = Array();
+		$registerInfo['username'] = $_POST['username'];
+		$registerInfo['password'] = $_POST['password'];
+		$registerInfo['ip'] = $clientInfo['remoteAddr'];
+		$registerInfo['anonymous'] = '0';
+		$returnArray['api'] = User::addUserData($config['user']['userDataFile'], $registerInfo);
+		$returnArray['currentUser'] = $_SESSION['currentUser'];
+		print json_encode($returnArray, JSON_UNESCAPED_UNICODE);
+		// print_r($_POST);
+		// print_r($_SESSION['currentUser']);
 	} else if ($clientInfo['query'] == 'loginpost') {
 		
 	} else if ($clientInfo['query'] == 'userinfopost') {
