@@ -83,6 +83,19 @@ div#login-panel input#register-button:hover {
 	background-color: #999;
 }
 
+div#login-panel input#login-button {
+	width: 100%;
+	height: 30px;
+	border: 0px;
+	background-color: #DDD;
+	border-radius :2px;
+	cursor: pointer;
+}
+
+div#login-panel input#login-button:hover {
+	background-color: #CCC;
+}
+
 div#login-panel input.input-box {
 	width: 188px;
 	height: 25px;

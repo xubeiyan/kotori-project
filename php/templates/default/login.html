@@ -3,18 +3,23 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <link rel="stylesheet" type="text/css" href="%template%/css/main.css" />
-<title>上传图片</title>
+<title>登录</title>
 </head>
 <body>
-<input type="file" id="file"/>
-<div id="area" class="autoLR" title="目前支持5M以下的jpg, png, gif, webp">点击上传或将图片拖到此处</div>
-<input type="button" id="uploadButton" value="上传"/>
-<div id="preview" class="autoLR"></div>
+<div id="login-panel" class="autoLR">
+	<label>用户名</label>
+	<input id="username" type="text" class="input-box" placeholder="username"/>
+	<label>密码</label>
+	<input id="password" type="password" class="input-box" placeholder="password"/>
+	<input id="login-button" type="button" value="登录">
+	<div id="error-msg"></div>
+</div>
 <div id="footer" class="autoLR">
 	<ul class="footer-left">
 		<li>&copy;2017</li>
 		<li>-</li>
 		<li title="请多上传webp图片以测试bug">Kotori Project</li>
+		<li title="奇怪的按钮"><a class="important" href="?upload">上传文件</a></li>
 		<li title="奇怪的按钮"><a href="?random">随便看看</a></li>
 		<li title="奇怪的按钮"><a href="?list">文件列表</a></li>
 	</ul>
@@ -26,5 +31,5 @@
 	
 </div>
 </body>
-<script type="text/javascript" src="%template%/js/tools.js"></script>
+<script type="text/javascript" src="%template%/js/login.js"></script>
 </html>
