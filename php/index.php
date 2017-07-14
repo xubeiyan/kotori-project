@@ -37,7 +37,7 @@ if ($clientInfo['requestMethod'] == 'GET') {
 		exit();
 	// 上传文件	
 	} else if ($clientInfo['query'] == 'upload') {
-		//var_dump($_SESSION['currentUser']);
+		// var_dump($_SESSION['currentUser']);
 		$templateArray = User::generateRegisterandLoginList($clientInfo['query']);
 		Util::template('uploadFile.html', $templateArray);
 	// 随机访问图片
@@ -95,6 +95,7 @@ if ($clientInfo['requestMethod'] == 'GET') {
 		} else {
 			Util::err('uploadFileFailed');
 		}
+	// 注册
 	} else if ($clientInfo['query'] == 'registerpost') {
 		$returnArray = Array();
 		
@@ -105,10 +106,19 @@ if ($clientInfo['requestMethod'] == 'GET') {
 		$registerInfo['anonymous'] = '0';
 		$returnArray['api'] = User::addUserData($config['user']['userDataFile'], $registerInfo);
 		$returnArray['currentUser'] = $_SESSION['currentUser'];
-		print json_encode($returnArray, JSON_UNESCAPED_UNICODE);
+		echo json_encode($returnArray, JSON_UNESCAPED_UNICODE);
+		
 		// print_r($_POST);
 		// print_r($_SESSION['currentUser']);
 	} else if ($clientInfo['query'] == 'loginpost') {
+		$loginInfo = Array();
+		$loginInfo['username'] = $_POST['username'];
+		$loginInfo['password'] = $_POST['password'];
+		
+		$returnArray = Array();
+		$returnArray['info'] = User::login($config['user']['userDataFile'], $loginInfo);
+		
+		echo json_encode($returnArray, JSON_UNESCAPED_UNICODE);
 		
 	} else if ($clientInfo['query'] == 'userinfopost') {
 		

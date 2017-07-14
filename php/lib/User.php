@@ -59,6 +59,34 @@ class User {
 		fclose($fp);
 	}
 	
+	// 用户登录
+	public static function login($file, $content) {
+		if (!isset($content['username']) || !isset($content['password'])) {
+			die('username or password is not set!');
+		}
+		
+		$fp = fopen($file, 'r') or die('can not open file: ' . $file);
+	
+		// 跳过前面的#行
+		for ($line = fgets($fp); $line[0] == '#'; $line = fgets($fp));
+		
+		for (; !feof($fp); $line = fgets($fp)) {
+			$userdataArray = self::detailStringtoArray($line);
+			if ($content['username'] == $userdataArray['username']) {
+				if (sha1($content['password']) == $userdataArray['password']) {
+					$_SESSION['currentUser'] = $userdataArray;
+					return 'right';
+				} else {
+					return 'password wrong';
+				}
+			}
+			continue;
+			
+		}
+		
+		return 'no user';
+	}
+	
 	// 增加新用户信息
 	public static function addData($file, $content) {
 		//print('enter addData');
@@ -118,7 +146,7 @@ class User {
 			$content['password'] = sha1($content['password']);
 			
 			if ($result = self::addData($file, $content)) {
-				$_SESSION['currentUser'] = $content;
+				$_SESSION['currentUser'] = $result;
 			} else {
 				die('write to userdata file failed');
 			}
@@ -200,8 +228,8 @@ class User {
 		$returnArray = Array();
 		// 是否登录
 		if ($_SESSION['currentUser']['anonymous'] == '0') {
-			$returnArray['%userinfo%'] = '<li>' . $_SESSION['currentUser']['id'] . '</li>' .
-					'<li><a href="?logout">注销</a></li>';
+			$returnArray['%userinfo%'] = '<li>' . $_SESSION['currentUser']['id'] . '</li>
+				<li><a href="?logout">注销</a></li>';
 			return $returnArray;
 		} else {
 			if ($uri == 'login') {
