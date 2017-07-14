@@ -90,7 +90,8 @@
 * upload页面基本完成
 * random页面基本完成
 * list页面基本完成（list=[数字]这种可以跳转页面，已加上前后跳转页面按钮）    
-* register和login页面姑且搭好了框架    
+* register和login页面基本完成
+* userinfo页面姑且写好了框架   
 
 ### 遇到问题
 
