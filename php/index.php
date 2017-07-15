@@ -44,7 +44,8 @@ if ($clientInfo['requestMethod'] == 'GET') {
 	} else if ($clientInfo['query'] == 'random') {
 		$imageArray = Image::randomImage($config['file']['imageDataFile']);
 		
-		$templateArray = Image::generateRandomTemplate($imageArray); 
+		$templateArray = Image::generateRandomTemplate($imageArray);
+		$templateArray = array_merge($templateArray, User::generateRegisterandLoginList($clientInfo['query']));
 		// Image::generateHeader($imageArray['filename']);
 		Util::template('random.html', $templateArray);
 	// 列出图片
@@ -59,7 +60,7 @@ if ($clientInfo['requestMethod'] == 'GET') {
 		$imageListArray = Image::generateImageList($listArray[1], $config['file']['imagePerPage']);
 		// var_dump($listArray[1]);
 		$templateArray = Image::generateListTemplate($imageListArray, $listArray[1]); 
-		
+		$templateArray = array_merge($templateArray, User::generateRegisterandLoginList($clientInfo['query']));
 		Util::template('list.html', $templateArray);
 	// 注册
 	} else if ($clientInfo['query'] == 'register') {
