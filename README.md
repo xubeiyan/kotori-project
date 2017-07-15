@@ -91,7 +91,7 @@
 * random页面基本完成
 * list页面基本完成（list=[数字]这种可以跳转页面，已加上前后跳转页面按钮）    
 * register和login页面基本完成
-* userinfo页面姑且写好了框架   
+* userinfo页面可以查看，但是无法修改      
 
 ### 遇到问题
 
