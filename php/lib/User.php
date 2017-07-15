@@ -228,7 +228,7 @@ class User {
 		$returnArray = Array();
 		// 是否登录
 		if ($_SESSION['currentUser']['anonymous'] == '0') {
-			$returnArray['%userinfo%'] = '<li>' . $_SESSION['currentUser']['id'] . '</li>
+			$returnArray['%userinfo%'] = '<li><a href="?userinfo">' . $_SESSION['currentUser']['id'] . '</a></li>
 				<li><a href="?logout">注销</a></li>';
 			return $returnArray;
 		} else {
@@ -243,6 +243,15 @@ class User {
 		
 		$returnArray['%userinfo%'] = '<li><a href="?login">想传更大文件</a></li>
 					<li><a href="?register">想签定契约</a></li>';
+		return $returnArray;
+	}
+	
+	// 生成用户信息
+	public static function getUserInfo() {
+		$returnArray = Array();
+		
+		$returnArray['%id%'] = $_SESSION['currentUser']['id'];
+		$returnArray['%username%'] = $_SESSION['currentUser']['username'];
 		return $returnArray;
 	}
 }

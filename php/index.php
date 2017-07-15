@@ -71,7 +71,9 @@ if ($clientInfo['requestMethod'] == 'GET') {
 		Util::template('login.html', $templateArray);
 	// 用户信息	
 	} else if ($clientInfo['query'] == 'userinfo') {
-		Util::template('userinfo.html');
+		$templateArray = User::getUserInfo();
+		$templateArray = array_merge($templateArray, User::generateRegisterandLoginList($clientInfo['query']));
+		Util::template('userinfo.html', $templateArray);
 	// 清除session，跳转至首页
 	} else if ($clientInfo['query'] == 'logout') {
 		session_unset();
