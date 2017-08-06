@@ -16,13 +16,11 @@ class Image {
 			return 'empty';
 		}
 		
-		if (!self::imageFormatVerify($img)) {
-			return 'not image';
-		}
+		$ext = self::imageFormatVerify($img);
 		
 		$fp = fopen($file, 'a') or die('can not open file: ' . $file);
-		$extArray = explode('.', $img['name']);
-		$ext = array_pop($extArray);
+		// $extArray = explode('.', $img['name']);
+		// $ext = array_pop($extArray);
 		
 		$md5Value = md5(time());
 		
@@ -99,26 +97,26 @@ class Image {
 	
 	/** 
 	* 图片格式检查
-	* 目前只有扩展名检查诶嘿（喂节操呢
-	* TODO: 增加个内容检查？
+	* 发现只检查文件名根本不行，已完全修改为使用getimagesize获取文件类型
+	* 返回文件类型
 	*/
 	public static function imageFormatVerify($image) {
 		global $config;
 		$extArray = explode('.', $image['name']);
 		$ext = array_pop($extArray);
 		
-		// 全部转换为小写，不然大写扩展名无法上传
-		$ext = strtolower($ext);
+		// 使用getimagesize获取文件类型
+		$imageFormat = exif_imagetype($image['tmp_name']);
 		
 		$allowFileType = $config['file']['allowFileType'];
-		// print_r($allowFileType);
-		// print($ext);
-		if (!in_array($ext, $allowFileType)) {
-			
+		
+		if (!in_array($imageFormat, array_keys($allowFileType))) {
 			Util::err('notAllowFileType');
 		}
 		
-		return true;
+		$ext = $allowFileType[$imageFormat];
+		
+		return $ext;
 	}
 	
 	/**
@@ -262,7 +260,6 @@ class Image {
 			die('file ' . $imageFile . ' seems not to exsit...');
 		}
 		
-		// $imgInfo = getimagesize($uploadFolder . '/' . $imageFile);
 		
 		$filenameArray = explode('.', $imageFile);
 		$ext = array_pop($filenameArray);

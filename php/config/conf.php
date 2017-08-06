@@ -14,7 +14,8 @@ $config = Array (
 		'userDataFile' => 'data/userdata'	#用户信息所在位置
 	),
 	'file' => Array(
-		'allowFileType' => Array('jpg', 'png', 'webp', 'gif'),
+		'allowFileType' => Array(IMAGETYPE_GIF => 'gif', IMAGETYPE_JPEG => 'jpg', 
+		IMAGETYPE_PNG => 'png', IMAGETYPE_WBMP => 'wbep'),
 		'uploadFolder' => 'uploads',
 		'thumbFolder' => 'thumbs',
 		'imageDataFile' => 'data/imagedata',#图片信息所在位置
