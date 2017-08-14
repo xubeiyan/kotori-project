@@ -226,23 +226,25 @@ class User {
 	// 生成注册登录列表
 	public static function generateRegisterandLoginList($uri) {
 		$returnArray = Array();
+		$listRegister = '<li><a href="?register" title="register">想签定契约</a></li>';
+		$listLogin = '<li><a href="?login" title="login">想传更大文件</a></li>';
+		$listLogout = '<li><a href="?userinfo" title="userinfo">' . $_SESSION['currentUser']['id'] . '</a></li>
+				<li><a href="?logout" title="logout">注销</a></li>';
 		// 是否登录
 		if ($_SESSION['currentUser']['anonymous'] == '0') {
-			$returnArray['%userinfo%'] = '<li><a href="?userinfo">' . $_SESSION['currentUser']['id'] . '</a></li>
-				<li><a href="?logout">注销</a></li>';
+			$returnArray['%userinfo%'] = $listLogout;
 			return $returnArray;
 		} else {
 			if ($uri == 'login') {
-				$returnArray['%userinfo%'] = '<li><a href="?register">想签定契约</a></li>';
+				$returnArray['%userinfo%'] = $listRegister;
 				return $returnArray;
 			} else if ($uri == 'register') {
-				$returnArray['%userinfo%'] = '<li><a href="?login">想传更大文件</a></li>';
+				$returnArray['%userinfo%'] = $listLogin;
 				return $returnArray;
 			}
 		}
 		
-		$returnArray['%userinfo%'] = '<li><a href="?login">想传更大文件</a></li>
-					<li><a href="?register">想签定契约</a></li>';
+		$returnArray['%userinfo%'] = $listRegister . "\n" . $listLogin;
 		return $returnArray;
 	}
 	
