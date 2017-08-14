@@ -18,6 +18,7 @@ $config = Array (
 		IMAGETYPE_PNG => 'png', IMAGETYPE_WBMP => 'webp'),
 		'uploadFolder' => 'uploads',
 		'thumbFolder' => 'thumbs',
+		'r18Cover' => 'templates/default/r18cover.jpg',
 		'imageDataFile' => 'data/imagedata',#图片信息所在位置
 		'imagePerPage' => 10,
 		'thumbWidth' => 200,				#略缩图宽度 

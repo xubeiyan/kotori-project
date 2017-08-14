@@ -189,9 +189,14 @@ class Image {
 	*/
 	public static function generateListTemplate($array, $currentPage) {
 		$imagelist = '';
+		global $config;
 		
 		foreach ($array as $value) {
-			$imagelist .= '<a href="uploads/' . $value['filename'] . '"><img style="width:200px" src="'. Image::getThumb($value['filename']). '" /></a>';
+			if ($value['r18'] == 1) {
+				$imagelist .= '<a href="uploads/' . $value['filename'] . '"><img style="width:200px" title="好孩子不要点开！" src="'. $config['file']['r18Cover'] . '" /></a>';
+			} else {
+				$imagelist .= '<a href="uploads/' . $value['filename'] . '"><img style="width:200px" src="'. Image::getThumb($value['filename']). '" /></a>';
+			}
 		}
 		
 		if ($currentPage == 1) {
