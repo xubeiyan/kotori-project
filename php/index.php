@@ -124,7 +124,13 @@ if ($clientInfo['requestMethod'] == 'GET') {
 		echo json_encode($returnArray, JSON_UNESCAPED_UNICODE);
 		
 	} else if ($clientInfo['query'] == 'userinfopost') {
-		
+		$updateInfo = Array();
+		$updateInfo['id'] = $_POST['id'];
+		$updateInfo['username'] = $_POST['username'];
+		$updateInfo['oldpass'] = $_POST['oldpass'];
+		$updateInfo['newpass'] = $_POST['newpass'];
+		echo json_encode($_POST, JSON_UNESCAPED_UNICODE);
+		exit();
 	} else {
 		Util::err('notAllowedReqQuery');
 	}
