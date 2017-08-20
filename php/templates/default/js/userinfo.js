@@ -50,9 +50,9 @@ xhr.onreadystatechange = function () {
 		var resp = JSON.parse(xhr.responseText);
 		console.log(resp);
 		if (resp['api'] == 'modify success') {
-			// window.location.href = "?upload";
+			errmsg.innerText = 'user info modifies success';
 		} else {
-			errmsg.innerText = '...';
+			errmsg.innerText = 'old password seems to be wrong';
 		}
 	}
 }

@@ -256,6 +256,59 @@ class User {
 		$returnArray['%username%'] = $_SESSION['currentUser']['username'];
 		return $returnArray;
 	}
+	
+	// 检查外部输入
+	public static function dataInspection($inspectRule, $dataArray) {
+		$returnArray = Array();
+		
+		// userinfo检查
+		if($inspectRule == 'userinfo') {
+			if (isset($dataArray['userid']) && isset($dataArray['oldpass']) && isset($dataArray['newpass']) && isset($dataArray['username'])) {
+				$currentUser = $_SESSION['currentUser'];
+				
+				if ($currentUser['id'] != $dataArray['userid']) {
+					$returnArray['error'] = 'the id seems not match...';
+					return $returnArray;
+				} 
+				
+				if ($currentUser['username'] != $dataArray['username']) {
+					$returnArray['error'] = 'the username seems not match...';
+					return $returnArray;
+				}
+				
+				// print($currentUser['password'] . ' ' . sha1($dataArray['oldpass']));
+				if ($currentUser['password'] != sha1($dataArray['oldpass'])) {
+					// print('!');
+					$returnArray['error'] = 'the password seems not match...';
+					return $returnArray;
+				}
+				
+				if (!$currentUser['anonymous'] == 0) {
+					$returnArray['error'] = 'you can not modify the user information of anonymous...';
+					return $returnArray;
+				}
+				
+				$returnArray['id'] = $dataArray['userid'];
+				$returnArray['username'] = $dataArray['username'];
+				$returnArray['password'] = sha1($dataArray['newpass']);
+				$returnArray['ip'] = $currentUser['ip'];
+				$returnArray['anonymous'] = $currentUser['anonymous'];
+				
+				return $returnArray;
+			} else {
+				die('user information provided seems to wrong...');
+			}
+			
+		} else if ($inspectRule == 'register') {
+			
+		} else if ($inspectRule == 'login') {
+			
+		} else {
+			
+		}
+		
+		return $returnArray;
+	}
 }
 
 ?>

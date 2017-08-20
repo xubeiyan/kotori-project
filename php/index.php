@@ -113,6 +113,7 @@ if ($clientInfo['requestMethod'] == 'GET') {
 		
 		// print_r($_POST);
 		// print_r($_SESSION['currentUser']);
+	// 登录
 	} else if ($clientInfo['query'] == 'loginpost') {
 		$loginInfo = Array();
 		$loginInfo['username'] = $_POST['username'];
@@ -123,14 +124,27 @@ if ($clientInfo['requestMethod'] == 'GET') {
 		
 		echo json_encode($returnArray, JSON_UNESCAPED_UNICODE);
 		
+	// 更新用户信息
 	} else if ($clientInfo['query'] == 'userinfopost') {
-		$updateInfo = Array();
-		$updateInfo['id'] = $_POST['id'];
-		$updateInfo['username'] = $_POST['username'];
-		$updateInfo['oldpass'] = $_POST['oldpass'];
-		$updateInfo['newpass'] = $_POST['newpass'];
-		echo json_encode($_POST, JSON_UNESCAPED_UNICODE);
+		$userInfo = User::dataInspection('userinfo', $_POST);
+		
+		if (isset($userInfo['error'])) {
+			echo json_encode($userInfo);
+			exit();
+		}
+		
+		global $config;
+		// print_r($userInfo);
+		User::updateData($config['user']['userDataFile'], $userInfo);
+		$_SESSION['currentUser'] = $userInfo;
+		
+		$returnArray = Array(
+			'api' => 'modify success',
+		);
+		
+		echo json_encode($returnArray, JSON_UNESCAPED_UNICODE);
 		exit();
+	// 未知的请求
 	} else {
 		Util::err('notAllowedReqQuery');
 	}
