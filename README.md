@@ -81,9 +81,40 @@
 ###### POST方法
 
 * `/uploadpost`
+```javascript
+	{
+		"api": "upload",
+		"result": "upload success/fail"
+	}
+```
 * `/registerpost`
+```javascript
+	{
+		"api": "register",
+		"result": "register success/fail",
+	}
+```
 * `/loginpost`
+```javascript
+	{
+		"api": "login",
+		"result": "login success/fail",
+	}
+```
 * `/userinfopost`
+```javascript
+	{
+		"api": "userinfo",
+		"result": "modify success",
+	}
+```
+```javascript
+	{
+		"api": "userinfo",
+		"result": "modify fail",
+		"detail": "the id/username/password seems not match...",
+	}
+```
 
 ### 目前进展
 
