@@ -92,8 +92,9 @@ if ($clientInfo['requestMethod'] == 'GET') {
 		if (isset($_FILES['img'])) {
 			$imageDataFile = $config['file']['imageDataFile'];
 			$result = Image::uploadFile($_FILES['img'], $imageDataFile);
+			
 			header('Content-type:application/json');
-			print $result;
+			echo $result;
 			exit();
 		} else {
 			Util::err('uploadFileFailed');
@@ -109,6 +110,8 @@ if ($clientInfo['requestMethod'] == 'GET') {
 		$registerInfo['anonymous'] = '0';
 		$returnArray['api'] = User::addUserData($config['user']['userDataFile'], $registerInfo);
 		$returnArray['currentUser'] = $_SESSION['currentUser'];
+		
+		header('Content-type:application/json');
 		echo json_encode($returnArray, JSON_UNESCAPED_UNICODE);
 		
 		// print_r($_POST);
@@ -122,14 +125,22 @@ if ($clientInfo['requestMethod'] == 'GET') {
 		$returnArray = Array();
 		$returnArray['info'] = User::login($config['user']['userDataFile'], $loginInfo);
 		
+		header('Content-type:application/json');
 		echo json_encode($returnArray, JSON_UNESCAPED_UNICODE);
 		
 	// 更新用户信息
 	} else if ($clientInfo['query'] == 'userinfopost') {
 		$userInfo = User::dataInspection('userinfo', $_POST);
 		
+		header('Content-type:application/json');
+		
 		if (isset($userInfo['error'])) {
-			echo json_encode($userInfo);
+			$returnArray = Array(
+				'api' => 'modify fail',
+				'error' => $userInfo['error'],
+			);
+			
+			echo json_encode($returnArray, JSON_UNESCAPED_UNICODE);
 			exit();
 		}
 		
