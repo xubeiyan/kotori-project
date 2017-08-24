@@ -99,6 +99,7 @@
 	{
 		"api": "login",
 		"result": "login success/fail",
+		"error": "password wrong/no user",
 	}
 ```
 * `/userinfopost`
