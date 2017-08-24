@@ -207,17 +207,9 @@ class User {
 			return;
 		} 
 		
-		// var_dump($line);
-		// var_dump(self::detailStringtoArray($line));
 		// 跳过ip不符合的几行
 		
 		$ip = self::detailStringtoArray($line)['ip'];
-		//var_dump($ip);
-
-		// while($line != '' || $ip = self::detailStringtoArray($line)['ip'] != $currentIP) {
-			// $line = fgets($fp);
-			// print $line;
-		// }
 		
 		for (; $ip != $currentIP; ) {
 			// print('line:' . $line);
@@ -236,7 +228,8 @@ class User {
 			$content = self::detailStringtoArray($line);
 			fclose($fp);
 		}
-		$_SESSION['currentUser'] = $content;		
+		$_SESSION['currentUser'] = $content;
+		
 	}
 	
 	// 生成注册登录列表
