@@ -51,10 +51,10 @@ class Util {
 		
 		// 未找到处理该路由的方法
 		} else if ($errType == 'notAllowedReqQuery') {
-			print($errinfo['query']);
+			die('the query is ' .$errinfo['query'] . ' which is not allowed');
 		// 不允许的文件类型
 		} else if ($errType == 'notAllowFileType') {
-			die('file type is' . $errinfo['filetype']);
+			die('file type is ' . $errinfo['filetype'] . ' which is not allowed');
 		// 上传图片失败	
 		} else if ($errType == 'uploadFileFailed') {
 			die('IO::Error!');

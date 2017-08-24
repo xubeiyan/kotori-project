@@ -138,7 +138,10 @@ if ($clientInfo['requestMethod'] == 'GET') {
 		exit();
 	// 未知的请求
 	} else {
-		Util::err('notAllowedReqQuery');
+		$errInfo = Array(
+			'query' => $clientInfo['query'],
+		);
+		Util::err('notAllowedReqQuery', $errInfo);
 	}
 // 其他不是知道什么的部分
 } else {
