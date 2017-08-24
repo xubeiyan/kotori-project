@@ -54,8 +54,7 @@ class Util {
 			print($errinfo['query']);
 		// 不允许的文件类型
 		} else if ($errType == 'notAllowFileType') {
-			print('不支持的文件类型');
-			return;
+			die('file type is' . $errinfo['filetype']);
 		// 上传图片失败	
 		} else if ($errType == 'uploadFileFailed') {
 			die('IO::Error!');

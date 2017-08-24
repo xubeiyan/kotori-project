@@ -16,6 +16,17 @@ class Image {
 			return 'empty';
 		}
 		
+		// 先判断是否上传成功，不然imageFormatVerify那儿会出现一些问题
+		if ($img['error'] != 0) {
+			$returnArray = Array (
+				'api' => 'upload',
+				'result' => 'upload fail',
+				'error' => $img['error'],
+				'savePath' => '',
+			);
+			return json_encode($returnArray, JSON_UNESCAPED_UNICODE);
+		}
+		
 		$ext = self::imageFormatVerify($img);
 		
 		$fp = fopen($file, 'a') or die('can not open file: ' . $file);
@@ -52,13 +63,7 @@ class Image {
 		} else {
 			fclose($fp);
 			
-			$returnArray = Array (
-				'api' => 'upload',
-				'result' => 'upload fail',
-				'error' => $img['error'],
-				'savePath' => '',
-			);
-			return json_encode($returnArray, JSON_UNESCAPED_UNICODE);
+			die('move uploaded file failed...');
 		}
 	}
 
@@ -113,7 +118,7 @@ class Image {
 		$allowFileType = $config['file']['allowFileType'];
 		
 		if (!in_array($imageFormat, array_keys($allowFileType))) {
-			Util::err('notAllowFileType');
+			Util::err('notAllowFileType', Array('filetype' => $imageFormat));
 		}
 		
 		$ext = $allowFileType[$imageFormat];
