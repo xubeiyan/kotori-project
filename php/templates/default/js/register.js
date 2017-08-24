@@ -52,9 +52,14 @@ registerButton.addEventListener("click", function() {
 xhr.onreadystatechange = function () {
 	if (xhr.readyState == 4 && xhr.status == 200) {
 		var resp = JSON.parse(xhr.responseText);
-		console.log(resp);
-		if (resp['api'] != 'user exist') {
+		// console.log(resp);
+		if (resp['result'] == 'register success') {
 			window.location.href = "?upload";
+		} else if (resp['result'] == 'register fail') {
+			if (resp['error'] == 'user exits') {
+				console.log('该用户已存在');
+				errmsg.innerText = 'user has existed';
+			}
 		}
 	}
 }

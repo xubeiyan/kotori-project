@@ -117,6 +117,7 @@ upload.addEventListener("click", function () {
 	
 	xhr.open('POST', '?uploadpost', true);
 	xhr.setRequestHeader('X-FILENAME', 'XMLHttpRequest');
+	xhr.setRequestHeader('Kotori-Request', 'FileUpload');
 	
 	formData.append('img', imgObj);
 	

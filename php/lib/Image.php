@@ -43,7 +43,8 @@ class Image {
 			fclose($fp);
 			
 			$returnArray = Array (
-				'status' => 'success',
+				'api' => 'upload',
+				'result' => 'upload success',
 				'error' => '',
 				'savePath' => $filePath,
 			);
@@ -52,7 +53,8 @@ class Image {
 			fclose($fp);
 			
 			$returnArray = Array (
-				'status' => 'fail',
+				'api' => 'upload',
+				'result' => 'upload fail',
 				'error' => $img['error'],
 				'savePath' => '',
 			);

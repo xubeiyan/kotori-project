@@ -108,11 +108,11 @@ if ($clientInfo['requestMethod'] == 'GET') {
 		$registerInfo['password'] = $_POST['password'];
 		$registerInfo['ip'] = $clientInfo['remoteAddr'];
 		$registerInfo['anonymous'] = '0';
-		$returnArray['api'] = User::addUserData($config['user']['userDataFile'], $registerInfo);
-		$returnArray['currentUser'] = $_SESSION['currentUser'];
+		$result = User::addUserData($config['user']['userDataFile'], $registerInfo);
+		// $returnArray['currentUser'] = $_SESSION['currentUser'];
 		
 		header('Content-type:application/json');
-		echo json_encode($returnArray, JSON_UNESCAPED_UNICODE);
+		echo $result;
 		
 		// print_r($_POST);
 		// print_r($_SESSION['currentUser']);
@@ -122,38 +122,19 @@ if ($clientInfo['requestMethod'] == 'GET') {
 		$loginInfo['username'] = $_POST['username'];
 		$loginInfo['password'] = $_POST['password'];
 		
-		$returnArray = Array();
-		$returnArray['info'] = User::login($config['user']['userDataFile'], $loginInfo);
+		// $returnArray = Array();
+		$result = User::login($config['user']['userDataFile'], $loginInfo);
 		
 		header('Content-type:application/json');
-		echo json_encode($returnArray, JSON_UNESCAPED_UNICODE);
+		echo $result;
 		
 	// 更新用户信息
 	} else if ($clientInfo['query'] == 'userinfopost') {
-		$userInfo = User::dataInspection('userinfo', $_POST);
+		$userInfo = Util::dataInspection('userinfo', $_POST);
 		
-		header('Content-type:application/json');
+		$result = User::updateUserInfo($config['user']['userDataFile'], $userInfo);
 		
-		if (isset($userInfo['error'])) {
-			$returnArray = Array(
-				'api' => 'modify fail',
-				'error' => $userInfo['error'],
-			);
-			
-			echo json_encode($returnArray, JSON_UNESCAPED_UNICODE);
-			exit();
-		}
-		
-		global $config;
-		// print_r($userInfo);
-		User::updateData($config['user']['userDataFile'], $userInfo);
-		$_SESSION['currentUser'] = $userInfo;
-		
-		$returnArray = Array(
-			'api' => 'modify success',
-		);
-		
-		echo json_encode($returnArray, JSON_UNESCAPED_UNICODE);
+		echo $result;
 		exit();
 	// 未知的请求
 	} else {

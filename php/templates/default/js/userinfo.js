@@ -48,11 +48,11 @@ loginButton.addEventListener('click', function () {
 xhr.onreadystatechange = function () {
 	if (xhr.readyState == 4 && xhr.status == 200) {
 		var resp = JSON.parse(xhr.responseText);
-		console.log(resp);
-		if (resp['api'] == 'modify success') {
+		// console.log(resp);
+		if (resp['result'] == 'modify success') {
 			errmsg.innerText = 'user info modifies success';
-		} else {
-			errmsg.innerText = 'old password seems to be wrong';
+		} else if (resp['result'] == 'modify fail') {
+			errmsg.innerText = resp['error'];
 		}
 	}
 }

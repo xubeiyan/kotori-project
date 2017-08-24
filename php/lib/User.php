@@ -70,21 +70,30 @@ class User {
 		// 跳过前面的#行
 		for ($line = fgets($fp); $line[0] == '#'; $line = fgets($fp));
 		
+		$returnArray = Array(
+			'api' => 'login',
+		);
+		
 		for (; !feof($fp); $line = fgets($fp)) {
 			$userdataArray = self::detailStringtoArray($line);
 			if ($content['username'] == $userdataArray['username']) {
 				if (sha1($content['password']) == $userdataArray['password']) {
 					$_SESSION['currentUser'] = $userdataArray;
-					return 'right';
+					$returnArray['result'] = 'login success';
+					return json_encode($returnArray, JSON_UNESCAPED_UNICODE);
 				} else {
-					return 'password wrong';
+					$returnArray['result'] = 'login fail';
+					$returnArray['error'] = 'password wrong';
+					return json_encode($returnArray, JSON_UNESCAPED_UNICODE);
 				}
 			}
 			continue;
 			
 		}
 		
-		return 'no user';
+		$returnArray['result'] = 'login fail';
+		$returnArray['error'] = 'no user';
+		return json_encode($returnArray, JSON_UNESCAPED_UNICODE);
 	}
 	
 	// 增加新用户信息
@@ -113,7 +122,11 @@ class User {
 		return $content;
 	}
 	
-	// 增加注册用户
+	/** 
+	* 增加用户（仅实名，匿名添加在sessionCheck中）
+	* 返回JSON
+	* 
+	*/
 	public static function addUserData($file, $content) {
 		// 检查各项是否设置
 		if (!isset($content['username'])) {
@@ -133,27 +146,30 @@ class User {
 		// 跳过前面的#行
 		for ($line = fgets($fp); $line[0] == '#'; $line = fgets($fp));
 		
+		$returnArray = Array(
+			'api' => 'register',
+		);
+	
 		// 貌似登入之前必然可能写入一行匿名用户信息，所以认为必然不可能到达文件结尾
 		for (; !feof($fp); $line = fgets($fp)) {
-			if ($content['username'] != self::detailStringtoArray($line)['username']) {
-				continue;
-			} else {
-				break;
+			if ($content['username'] == self::detailStringtoArray($line)['username']) {
+				$returnArray['result'] = 'register fail';
+				$returnArray['error'] = 'user exits';
+				return json_encode($returnArray, JSON_UNESCAPED_UNICODE);
 			}
 		}
-	
+		
 		if (feof($fp)) {
 			$content['password'] = sha1($content['password']);
 			
 			if ($result = self::addData($file, $content)) {
 				$_SESSION['currentUser'] = $result;
+				$returnArray['result'] = 'register success';
 			} else {
 				die('write to userdata file failed');
 			}
-			return $result;
 		}
-		
-		return 'user exists';
+		return json_encode($returnArray, JSON_UNESCAPED_UNICODE);
 	}
 	
 	// 生成随机匿名帐号
@@ -257,57 +273,22 @@ class User {
 		return $returnArray;
 	}
 	
-	// 检查外部输入
-	public static function dataInspection($inspectRule, $dataArray) {
-		$returnArray = Array();
+	// 更新用户资料
+	public static function updateUserInfo($file, $content) {
+		$returnArray = Array(
+			'api' => 'userinfo',
+		);
 		
-		// userinfo检查
-		if($inspectRule == 'userinfo') {
-			if (isset($dataArray['userid']) && isset($dataArray['oldpass']) && isset($dataArray['newpass']) && isset($dataArray['username'])) {
-				$currentUser = $_SESSION['currentUser'];
-				
-				if ($currentUser['id'] != $dataArray['userid']) {
-					$returnArray['error'] = 'the id seems not match...';
-					return $returnArray;
-				} 
-				
-				if ($currentUser['username'] != $dataArray['username']) {
-					$returnArray['error'] = 'the username seems not match...';
-					return $returnArray;
-				}
-				
-				// print($currentUser['password'] . ' ' . sha1($dataArray['oldpass']));
-				if ($currentUser['password'] != sha1($dataArray['oldpass'])) {
-					// print('!');
-					$returnArray['error'] = 'the password seems not match...';
-					return $returnArray;
-				}
-				
-				if (!$currentUser['anonymous'] == 0) {
-					$returnArray['error'] = 'you can not modify the user information of anonymous...';
-					return $returnArray;
-				}
-				
-				$returnArray['id'] = $dataArray['userid'];
-				$returnArray['username'] = $dataArray['username'];
-				$returnArray['password'] = sha1($dataArray['newpass']);
-				$returnArray['ip'] = $currentUser['ip'];
-				$returnArray['anonymous'] = $currentUser['anonymous'];
-				
-				return $returnArray;
-			} else {
-				die('user information provided seems to wrong...');
-			}
-			
-		} else if ($inspectRule == 'register') {
-			
-		} else if ($inspectRule == 'login') {
-			
-		} else {
-			
+		if (isset($content['error'])) {
+			$returnArray['result'] = 'modify fail';
+			$returnArray['error'] = $content['error'];
+			return json_encode($returnArray, JSON_UNESCAPED_UNICODE);
 		}
 		
-		return $returnArray;
+		self::updateData($file, $content);
+		$_SESSION['currentUser'] = $content;
+		$returnArray['result'] = 'modify success';
+		return json_encode($returnArray, JSON_UNESCAPED_UNICODE);
 	}
 }
 

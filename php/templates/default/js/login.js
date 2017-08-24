@@ -36,14 +36,16 @@ xhr.onreadystatechange = function () {
 	if (xhr.readyState == 4 && xhr.status == 200) {
 		var resp = JSON.parse(xhr.responseText);
 		// console.log(resp);
-		if (resp['info'] == 'right') {
+		if (resp['result'] == 'login success') {
 			window.location.href = "?upload";
-		} else if (resp['info'] == 'no user'){
-			console.log('该用户不存在');
-			errmsg.innerText = 'not exist such user';
-		} else if (resp['info'] == 'password wrong') {
-			console.log('密码错误');
-			errmsg.innerText = 'invalid password';
+		} else if (resp['result'] == 'login fail'){
+			if (resp['error'] == 'no user') {
+				console.log('该用户不存在');
+				errmsg.innerText = 'not exist such user';
+			} else if (resp['error'] == 'password wrong') {
+				console.log('密码错误');
+				errmsg.innerText = 'invalid password';
+			}
 		}
 	}
 }
