@@ -1,2 +1,2 @@
-# ipv6地址需加括号（什么即使是v6也只有39位！），password使用sha1散列（php自带那个好复杂）
+# ipv6地址无需加括号（什么即使是v6也只有39位！），password使用sha1散列（php自带那个好复杂）
 # id(10)  |username(20)        |password(40)                            |ip(40)                       |anonymous(1)
