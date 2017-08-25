@@ -76,45 +76,46 @@
 * `/logout` 注销登录
 * `/userinfo` 用户信息
 * `/list` 列出图片
+* `/manage` 管理页面
 
 
 ###### POST方法
 
 * `/uploadpost`
 ```javascript
-	{
-		"api": "upload",
-		"result": "upload success/fail"
-	}
+{
+	"api": "upload",
+	"result": "upload success/fail"
+}
 ```
 * `/registerpost`
 ```javascript
-	{
-		"api": "register",
-		"result": "register success/fail",
-	}
+{
+	"api": "register",
+	"result": "register success/fail",
+}
 ```
 * `/loginpost`
 ```javascript
-	{
-		"api": "login",
-		"result": "login success/fail",
-		"error": "password wrong/no user",
-	}
+{
+	"api": "login",
+	"result": "login success/fail",
+	"error": "password wrong/no user",
+}
 ```
 * `/userinfopost`
 ```javascript
-	{
-		"api": "userinfo",
-		"result": "modify success",
-	}
+{
+	"api": "userinfo",
+	"result": "modify success",
+}
 ```
 ```javascript
-	{
-		"api": "userinfo",
-		"result": "modify fail",
-		"detail": "the id/username/password seems not match...",
-	}
+{
+	"api": "userinfo",
+	"result": "modify fail",
+	"detail": "the id/username/password seems not match...",
+}
 ```
 
 ### 目前进展
