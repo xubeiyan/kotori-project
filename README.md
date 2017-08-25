@@ -92,14 +92,27 @@
 ```javascript
 {
 	"api": "register",
-	"result": "register success/fail",
+	"result": "register success",
+}
+```
+```javascript
+{
+	"api": "register",
+	"result": "register fail",
+	"error": "user exits/it is admin user",
 }
 ```
 * `/loginpost`
 ```javascript
 {
 	"api": "login",
-	"result": "login success/fail",
+	"result": "login success",
+}
+```
+```javascript
+{
+	"api": "login",
+	"result": "login fail",
 	"error": "password wrong/no user",
 }
 ```
@@ -123,8 +136,9 @@
 * upload页面基本完成
 * random页面基本完成
 * list页面基本完成（list=[数字]这种可以跳转页面，已加上前后跳转页面按钮）    
-* register和login页面基本完成
+* register和login页面基本完成（验证码？不想做这个啊~）
 * userinfo页面基本完成（对，现在可以改了）
+* manage页面填坑中
 * 已修改检测上传文件的信息而不是文件名判断是否是图片文件（  
 * 已增加某智障的图片作为列表的cover图片        
 
