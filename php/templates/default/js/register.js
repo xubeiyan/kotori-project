@@ -59,6 +59,9 @@ xhr.onreadystatechange = function () {
 			if (resp['error'] == 'user exits') {
 				console.log('该用户已存在');
 				errmsg.innerText = 'user has existed';
+			} else if (resp['error'] == 'it is admin user') {
+				console.log('很遗憾这是管理员账号');
+				errmsg.innerText = '"' + username.value + '" is admin user';
 			}
 		}
 	}

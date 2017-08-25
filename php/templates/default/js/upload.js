@@ -105,7 +105,7 @@ upload.addEventListener("click", function () {
 				progress.className = "success";
 				progress.innerHTML = "上传成功";
 				
-				folder.innerHTML = '上传路径:' + responseArray['savePath'];
+				folder.innerHTML = '上传路径: <a class="upload" href="' + responseArray['savePath'] + '">' + responseArray['savePath'] + '</a>';
 			} else if (responseArray['result'] == 'upload fail'){
 				progress.className = "failed";
 				progress.innerHTML = "上传失败";

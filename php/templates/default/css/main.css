@@ -181,6 +181,12 @@ a.important {
 	text-shadow: #CCC 0.1em 0.1em 0.2em;
 	/* font-weight: bold; */
 }
+
 a:hover {
+	text-decoration: underline;
+}
+
+a.upload {
+	color: #000;
 	text-decoration: underline;
 }
