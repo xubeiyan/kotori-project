@@ -71,6 +71,11 @@ if ($clientInfo['requestMethod'] == 'GET') {
 		Util::template('login.html', $templateArray);
 	// 用户信息	
 	} else if ($clientInfo['query'] == 'userinfo') {
+		if ($_SESSION['currentUser']['id'] == 0) {
+			header('refresh:0;url=?manage');
+			exit();
+		}
+		
 		$templateArray = User::getUserInfo();
 		$templateArray = array_merge($templateArray, User::generateRegisterandLoginList($clientInfo['query']));
 		Util::template('userinfo.html', $templateArray);
@@ -78,6 +83,13 @@ if ($clientInfo['requestMethod'] == 'GET') {
 	} else if ($clientInfo['query'] == 'logout') {
 		session_unset();
 		header('refresh:0;url=.');
+	// 管理页面（于是现在如何认定管理员呢……暂时认为叫kotori的就是管理员吧）
+	} else if ($clientInfo['query'] == 'manage') {
+		if ($_SESSION['currentUser']['username'] != $config['user']['adminUserName']) {
+			Util::err('notAdminUser', Array('username' => $_SESSION['currentUser']['username']));
+			exit();
+		}
+
 	} else {
 		$errInfo = Array(
 			'query' => $clientInfo['query'],
