@@ -65,6 +65,31 @@ class User {
 			die('username or password is not set!');
 		}
 		
+		global $config;
+		
+		// admin登录
+		if ($content['username'] == $config['user']['adminUserName']) {
+			if ($content['password'] == $config['user']['adminPassword']) {
+				$returnArray = Array(
+					'api' => 'adminLogin',
+					'result' => 'login success',
+				);
+				$content['id'] = 0;
+				$content['anonymous'] = 0;
+				$_SESSION['currentUser'] = $content;
+				
+				return json_encode($returnArray, JSON_UNESCAPED_UNICODE);
+			} else {
+				$returnArray = Array(
+					'api' => 'adminLogin',
+					'result' => 'login fail',
+					'error' => 'password wrong',
+				);
+				
+				return json_encode($returnArray, JSON_UNESCAPED_UNICODE);
+			}
+		}
+		
 		$fp = fopen($file, 'r') or die('can not open file: ' . $file);
 	
 		// 跳过前面的#行
@@ -149,6 +174,14 @@ class User {
 		$returnArray = Array(
 			'api' => 'register',
 		);
+		
+		// 不允许注册管理员重名的账号
+		global $config;
+		if ($content['username'] == $config['user']['adminUserName']) {
+			$returnArray['result'] = 'register fail';
+			$returnArray['error'] = 'it is admin user';
+			return json_encode($returnArray, JSON_UNESCAPED_UNICODE);
+		}
 	
 		// 貌似登入之前必然可能写入一行匿名用户信息，所以认为必然不可能到达文件结尾
 		for (; !feof($fp); $line = fgets($fp)) {
@@ -235,9 +268,10 @@ class User {
 	// 生成注册登录列表
 	public static function generateRegisterandLoginList($uri) {
 		$returnArray = Array();
+		$userId = $_SESSION['currentUser']['id'] == 0 ? '<span style="color: #a87152">KOTORI</span>' : $_SESSION['currentUser']['id'];
 		$listRegister = '<li><a href="?register" title="register">想签定契约</a></li>';
 		$listLogin = '<li><a href="?login" title="login">想传更大文件</a></li>';
-		$listLogout = '<li><a href="?userinfo" title="userinfo">' . $_SESSION['currentUser']['id'] . '</a></li>
+		$listLogout = '<li><a href="?userinfo" title="userinfo">' . $userId . '</a></li>
 				<li><a href="?logout" title="logout">注销</a></li>';
 		// 是否登录
 		if ($_SESSION['currentUser']['anonymous'] == '0') {

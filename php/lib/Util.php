@@ -58,9 +58,12 @@ class Util {
 		// 上传图片失败	
 		} else if ($errType == 'uploadFileFailed') {
 			die('IO::Error!');
+		// 非管理员进入manage页面
+		} else if ($errType == 'notAdminUser') {
+			die('Current user "' . $errinfo['username'] . '" is not administrator');
 		// 未找到的错误
 		} else {
-			
+			die('Uncatched error: ' . $errType);
 		}
 		exit();
 	}
