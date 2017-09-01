@@ -190,3 +190,16 @@ a.upload {
 	color: #000;
 	text-decoration: underline;
 }
+
+div.file-detail span.uploader {
+	width: 120px;
+	display: inline-block;
+}
+div.file-detail span.filesize {
+	width: 200px;
+	display: inline-block;
+}
+div.file-detail span.special {
+	width: 120px;
+	display: inline-block;
+}
