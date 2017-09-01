@@ -130,6 +130,14 @@
 	"detail": "the id/username/password seems not match...",
 }
 ```
+* `/managepost`
+```javascript
+{
+	"api": "manageinfo",
+	"result": "success/fail",
+	"detail": ""
+}
+```
 
 ### 目前进展
 
