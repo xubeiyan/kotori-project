@@ -234,7 +234,7 @@ class Image {
 			$uploader = $value['uploader'];
 			$filesize = sprintf('%.3f', $value['size'] / 1024) . 'KB';
 			$r18 = $value['r18'] == 1 ? 'Jes' : 'Ne';
-			$imagelist .= '<div class="file-detail"><a href="uploads/' . $value['filename'] . '"><img style="width:200px" src="' . Image::getThumb($value['filename']) . '"/></a><span class="uploader">Alŝutanto:' . $uploader . '</span> <span class="filesize">Grandeco: ' . $filesize . '</span> <span class="special">Speciala: ' . $r18 .'</span></div>';
+			$imagelist .= '<div class="file-detail"><a href="uploads/' . $value['filename'] . '"><img style="width:200px" src="' . Image::getThumb($value['filename']) . '"/></a><span class="uploader" title="Uploader">Alŝutanto: ' . $uploader . '</span> <span class="filesize" title="FileSize">Grandeco: ' . $filesize . '</span> <span class="special" title="R18">Speciala: ' . $r18 .'</span></div>';
 		}
 		
 		if ($currentPage == 1) {
