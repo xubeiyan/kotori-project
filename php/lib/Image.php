@@ -223,6 +223,38 @@ class Image {
 	}
 	
 	/**
+	* 生成管理用的列表
+	*/
+	public static function generateManageListTemplate($array, $currentPage) {
+		$imagelist = '';
+		
+		global $config;
+		
+		foreach ($array as $value) {
+			$uploader = $value['uploader'];
+			$filesize = sprintf('%.3f', $value['size'] / 1024) . 'KB';
+			$r18 = $value['r18'] == 1 ? 'Jes' : 'Ne';
+			$imagelist .= '<div class="file-detail"><a href="uploads/' . $value['filename'] . '"><img style="width:200px" src="' . Image::getThumb($value['filename']) . '"/></a><span class="uploader">Alŝutanto:' . $uploader . '</span> <span class="filesize">Grandeco: ' . $filesize . '</span> <span class="special">Speciala: ' . $r18 .'</span></div>';
+		}
+		
+		if ($currentPage == 1) {
+			$prev = 1;
+			$next = 2;
+		} else {
+			$prev = $currentPage - 1;
+			$next = $currentPage + 1;
+		}
+		
+		$imageListTemplate = Array(
+			'%imagelist%' => $imagelist,
+			'%prev%' => $prev,
+			'%next%' => $next,
+		);
+		
+		return $imageListTemplate;
+	}
+	
+	/**
 	* 根据页数和每页图片数提供图片链接
 	*/
 	public static function generateImageList($page, $imgPerPage) {
