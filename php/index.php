@@ -99,7 +99,7 @@ if ($clientInfo['requestMethod'] == 'GET') {
 		$imageListArray = Image::generateImageList($managePage, 20);
 		$templateArray = Image::generateManageListTemplate($imageListArray, 1);
 		$templateArray = array_merge($templateArray, User::generateRegisterandLoginList($clientInfo['query']));
-		Util::template('list.html', $templateArray);
+		Util::template('manage.html', $templateArray);
 		
 
 	} else {
@@ -162,6 +162,7 @@ if ($clientInfo['requestMethod'] == 'GET') {
 		exit();
 	// 更新管理信息
 	} else if ($clientInfo['query'] == 'managepost') {
+		print_r($_POST);
 		
 	// 未知的请求
 	} else {

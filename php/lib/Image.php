@@ -231,11 +231,28 @@ class Image {
 		global $config;
 		
 		foreach ($array as $value) {
+			$id = $value['id'];
 			$uploader = $value['uploader'];
 			$filesize = sprintf('%.3f', $value['size'] / 1024) . 'KB';
-			$r18 = $value['r18'] == 1 ? 'Jes' : 'Ne';
-			$imagelist .= '<div class="file-detail"><a href="uploads/' . $value['filename'] . '"><img style="width:200px" src="' . Image::getThumb($value['filename']) . '"/></a><span class="uploader" title="Uploader">Alŝutanto: ' . $uploader . '</span> <span class="filesize" title="FileSize">Grandeco: ' . $filesize . '</span> <span class="special" title="R18">Speciala: ' . $r18 .'</span></div>';
+			
+			if ($value['r18'] == 1) {
+				$yes = 'selected="selected"';
+				$no = '';
+			} else {
+				$yes = '';
+				$no = 'selected="selected"';
+			}
+			
+			$selectMenu = '<select class="r18select" id="' . $value['id'] . '"><option value="yes" ' . $yes . '>Jes</option>
+				<option value="no" ' . $no . '>Ne</option></select>';
+				
+			$imagelist .= '<div class="file-detail"><a href="uploads/' . $value['filename'] . '"><img style="width:200px" src="' . Image::getThumb($value['filename']) . '"/></a>
+				<div style="width: 800px">
+					<span class="id" title="Image ID">Identeco: ' . $id . '</span><span class="uploader" title="Uploader">Alŝutanto: ' . $uploader . '</span><span class="filesize" title="FileSize">Grandeco: ' . $filesize . '</span><span class="special" title="R18">Speciala: ' . $selectMenu .'</span>
+				</div></div>';
 		}
+		
+		$imagelist .= '<button id="confirm">Konfirmu</button>';
 		
 		if ($currentPage == 1) {
 			$prev = 1;

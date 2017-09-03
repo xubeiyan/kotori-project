@@ -191,15 +191,32 @@ a.upload {
 	text-decoration: underline;
 }
 
+div.file-detail {
+	display: flex;
+	align-items: flex-end;
+}
+
+div.file-detail span.id {
+	width: 400px;
+	display: inline-block;
+	background-color: azure;
+}
 div.file-detail span.uploader {
 	width: 120px;
 	display: inline-block;
+	background-color: aliceblue;
 }
 div.file-detail span.filesize {
 	width: 200px;
 	display: inline-block;
+	background-color: whitesmoke;
 }
 div.file-detail span.special {
 	width: 120px;
 	display: inline-block;
+	background-color: lightyellow;
+}
+
+button#confirm {
+	
 }
