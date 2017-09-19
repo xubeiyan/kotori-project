@@ -13,8 +13,8 @@
 >如果前面的数字是以00开头的则使用62进制转换为10进制http://wx1.sinaimg.cn/mw690/006r2HqOgy1fj7dxg3zuxj30p02a1wry.jpg
   
 >好图床应该具有以下几个特点：    
->* 上传图简单，github上传很麻烦，新浪还好，但是需要一个小号才能发出，忘了说最重要的一点，就是后者不能发R18，而且会打上莫名奇妙的水印，这是一个好图床不具备的，至于那些在墙外的google等等，就更谈不上竞争力了    
->* 有权限控制，最开始觉得这些都是很麻烦的，借鉴一下匿名版的思想，传图是无需注册或者说是匿名的，但是可以增加黑名单和，让某些IP无法传图（喂），也可以增加需要登录的部分，登录之后能传不让大家看的图（喂），至于图是什么内容可以发挥你的想象力    
+>* 上传图简单，github上传很麻烦，新浪还好，但是需要一个小号才能发出(现在新浪需要实名认证，完蛋)，忘了说最重要的一点，就是后者不能发R18，而且会打上莫名奇妙的水印，这是一个好图床不具备的，至于那些在墙外的google等等，就更谈不上竞争力了    
+>* 有权限控制，最开始觉得这些都是很麻烦的，借鉴一下匿名版的思想，传图是无需注册或者说是匿名的，但是可以增加黑名单和白名单，让某些IP无法传图（喂），也可以增加需要登录的部分，登录之后能传不让大家看的图（喂），至于图是什么内容可以发挥你的想象力    
 >* 稳定，稳定才是王道，不能像某些免费图床一样，今天能用，明天就跪了；前面也说到g+的相册，但是保不好哪天就被墙了（或者已经被墙了233），另外能支持cdn当然最好，但是我不会配置cdn啊~   
  
 >kotori当然是小鸟的意思啦~图床写好之后我马上粘个图片到这儿(done)    
@@ -33,21 +33,21 @@
 >说着要加上读取文件的锁，结果也没加……    
 
 * `index.php` 入口文件
-* `lib\Image.php` 图片类Image
-* `lib\User.php` 用户类User
-* `lib\Util.php` 杂项类Util
-* `config\conf.php` 配置文件
-* `uploads\` 图文件目录
-* `thumbs\` 缓存图目录
-* `templates\default\uploadFile.html` 上传文件
-* `templates\default\random.html` 随机访问
-* `templates\default\login.html` 登录
-* `templates\default\register.html` 注册
-* `templates\default\userinfo.html` 用户信息
-* `templates\default\list.html` 图片列表 
-* `templates\default\error.html` 错误页面
-* `data\userdata` 用户数据
-* `data\imagedata` 图片数据
+* `lib/Image.php` 图片类Image
+* `lib/User.php` 用户类User
+* `lib/Util.php` 杂项类Util
+* `config/conf.php` 配置文件
+* `uploads/` 图文件目录
+* `thumbs/` 缓存图目录
+* `templates/default/uploadFile.html` 上传文件
+* `templates/default/random.html` 随机访问
+* `templates/default/login.html` 登录
+* `templates/default/register.html` 注册
+* `templates/default/userinfo.html` 用户信息
+* `templates/default/list.html` 图片列表 
+* `templates/default/error.html` 错误页面
+* `data/userdata` 用户数据
+* `data/imagedata` 图片数据
 
 #### 用户数据字段划分
 
