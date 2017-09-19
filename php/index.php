@@ -86,10 +86,12 @@ if ($clientInfo['requestMethod'] == 'GET') {
 	// 管理页面（于是现在如何认定管理员呢……暂时认为叫kotori的就是管理员吧）
 	} else if (substr($clientInfo['query'], 0, 6) == 'manage') {
 		
+		
 		$manageArray = explode('=', $clientInfo['query']);
 		$managePage = isset($manageArray[1]) 
 			&& is_numeric($manageArray[1]) 
 			&& $manageArray[1] > 0 ? $manageArray[1] : 1;
+
 
 		if ($_SESSION['currentUser']['username'] != $config['user']['adminUserName']) {
 			Util::err('notAdminUser', Array('username' => $_SESSION['currentUser']['username']));
@@ -99,7 +101,7 @@ if ($clientInfo['requestMethod'] == 'GET') {
 		$managePerPage = $config['site']['manageImagePerPage'];
 		
 		$imageListArray = Image::generateImageList($managePage, $managePerPage);
-		$templateArray = Image::generateManageListTemplate($imageListArray, 1);
+		$templateArray = Image::generateManageListTemplate($imageListArray, $managePage);
 		$templateArray = array_merge($templateArray, User::generateRegisterandLoginList($clientInfo['query']));
 		Util::template('manage.html', $templateArray);
 		
