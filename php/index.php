@@ -115,6 +115,7 @@ if ($clientInfo['requestMethod'] == 'GET') {
 		//print '<img src=' . $_POST['img'] . '>';
 		if (isset($_FILES['img'])) {
 			$imageDataFile = $config['file']['imageDataFile'];
+			
 			$result = Image::uploadFile($_FILES['img'], $imageDataFile);
 			
 			header('Content-type:application/json');
@@ -162,7 +163,21 @@ if ($clientInfo['requestMethod'] == 'GET') {
 		exit();
 	// 更新管理信息
 	} else if ($clientInfo['query'] == 'managepost') {
-		print_r($_POST);
+		// print_r($_SESSION['currentUser']);
+		
+		if ($_SESSION['currentUser']['username'] != $config['user']['adminUserName'] || $_SESSION['currentUser']['password'] != $config['user']['adminPassword']) {
+			Util::err('notAdminUser', Array('username' => $_SESSION['currentUser']['username']));
+			exit();
+		}
+		
+		$imageDataFile = $config['file']['imageDataFile'];
+		
+		$modifyInfo = $_POST;
+		
+		$result = Image::modifyStatus($imageDataFile, $modifyInfo);
+		
+		header('Content-type:application/json');
+		echo $result;
 		
 	// 未知的请求
 	} else {

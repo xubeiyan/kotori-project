@@ -41,7 +41,7 @@ class Image {
 			'filename' => $md5Value . '.' . $ext,
 			'uploader' => $_SESSION['currentUser']['id'],
 			'uploadtime' => date("Ymd H:i:s"),
-			'r18' => '0'
+			'r18' => 0
 		);
 		// print '!';
 		$string = self::imagedataArray2String($imageArray);
@@ -74,7 +74,8 @@ class Image {
 	public static function imagedataArray2String($imageArray) {
 		// 判断数组长度是否为6
 		if (count($imageArray) != 6) {
-			die('the length of user detail string is invaild(in array2string)...');
+			print_r($imageArray);
+			die('the length of image detail string is invaild(in array2string)...');
 		}
 		$format = '%-32s|%-8s|%-37s|%-10s|%-17s|%s';
 		$detailString = sprintf($format, $imageArray['id'], $imageArray['size'], 
@@ -88,7 +89,8 @@ class Image {
 	public static function imagedataString2Array($imageString) {
 		$instant = explode('|', $imageString);
 		if (count($instant) != 6) {
-			die('the length of user detail string is invaild(in string2array)...');
+			print_r($instant);
+			die('the length of image detail string is invaild(in string2array)...');
 		}
 		
 		$detailArray = Array(
@@ -246,6 +248,8 @@ class Image {
 			
 			if (explode('.', $filename)[1] == 'gif')
 			
+			$yes = $no = '';
+		
 			if ($value['r18'] == 1) {
 				$yes = 'selected="selected"';
 				$no = '';
@@ -313,6 +317,50 @@ class Image {
 		} else {
 			return 'notAllowType';
 		}
+	}
+	
+	/**
+	* 修改图片的r18属性
+	* $file imagedata文件
+	* $id 图片ID
+	* $r18 r18值
+	*/
+	public static function modifyStatus($file, $modifyStatus) {
+		$returnArray = Array(
+			'api' => 'manageinfo',
+			'result' => 'fail',
+			'details' => Array(),
+		);
+		
+		foreach ($modifyStatus as $id => $r18) {
+			$fp = fopen($file, 'r+') or die('can not open file: ' . $file);
+			
+			// 跳过#开头的注释行
+			for ($line = fgets($fp); $line[0] == '#'; $line = fgets($fp));
+			// 跳过id不符合的行
+			for ($lineID = self::imagedataString2Array($line)['id']; 
+				$line !='' && $lineID != $id;
+				$line = fgets($fp), $lineID = self::imagedataString2Array($line)['id']);
+				
+			$lineArray = self::imagedataString2Array($line);
+			if ($r18 == 'yes') {
+				$lineArray['r18'] = 1;
+			} else if ($r18 == 'no') {
+				$lineArray['r18'] = 0;
+			}
+			
+			$newLine = self::imagedataArray2String($lineArray);
+			
+			fseek($fp, 0 - strlen($line), SEEK_CUR);
+			
+			fwrite($fp, $newLine) or die('failed to write into imagedata');
+			fclose($fp);
+			
+			$returnArray['result'] = 'success';
+			array_push($returnArray['details'], $id . ' change to ' . $r18);
+		}
+		
+		return json_encode($returnArray);
 	}
 	
 	/**

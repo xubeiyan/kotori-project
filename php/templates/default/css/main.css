@@ -232,6 +232,10 @@ div.file-detail span.special {
 	background-color: lightyellow;
 }
 
+div.autoLR div#errmsg {
+	color: red;
+}
+
 span.important {
 	color: #666;
 }
