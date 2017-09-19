@@ -96,7 +96,9 @@ if ($clientInfo['requestMethod'] == 'GET') {
 			exit();
 		}
 		
-		$imageListArray = Image::generateImageList($managePage, 20);
+		$managePerPage = $config['site']['manageImagePerPage'];
+		
+		$imageListArray = Image::generateImageList($managePage, $managePerPage);
 		$templateArray = Image::generateManageListTemplate($imageListArray, 1);
 		$templateArray = array_merge($templateArray, User::generateRegisterandLoginList($clientInfo['query']));
 		Util::template('manage.html', $templateArray);

@@ -28,6 +28,7 @@ $config = Array (
 		'thumbWidth' => 200,				#略缩图宽度 
 	),
 	'site' => Array(
+		'manageImagePerPage' => 20,			#管理页面每页显示图片
 		'rewriteURI' => false,				#是否启用Rewrite URI
 		'template' => 'default',			#使用模板名称
 	)
