@@ -224,6 +224,12 @@ class Image {
 	
 	/**
 	* 生成管理用的列表
+	* $array = Array(
+	* 	'id' 		=> 图片ID（和文件名相同）
+	* 	'uploader' 	=> 上传者ID
+	* 	'filename' 	=> 文件名
+	*	'size' 		=> 文件大小
+	* )
 	*/
 	public static function generateManageListTemplate($array, $currentPage) {
 		$imagelist = '';
@@ -233,7 +239,12 @@ class Image {
 		foreach ($array as $value) {
 			$id = $value['id'];
 			$uploader = $value['uploader'];
+			$filename = $value['filename'];
 			$filesize = sprintf('%.3f', $value['size'] / 1024) . 'KB';
+			
+			$filetype = self::getImageType($filename);
+			
+			if (explode('.', $filename)[1] == 'gif')
 			
 			if ($value['r18'] == 1) {
 				$yes = 'selected="selected"';
@@ -248,7 +259,7 @@ class Image {
 				
 			$imagelist .= '<div class="file-detail"><a href="uploads/' . $value['filename'] . '"><img style="width:200px" src="' . Image::getThumb($value['filename']) . '"/></a>
 				<div style="width: 800px">
-					<span class="id" title="Image ID">Identeco: ' . $id . '</span><span class="uploader" title="Uploader">Alŝutanto: ' . $uploader . '</span><span class="filesize" title="FileSize">Grandeco: ' . $filesize . '</span><span class="special" title="R18">Speciala: ' . $selectMenu .'</span>
+					<span class="id" title="Image ID">Identeco: <span class="important">' . $id . '</span></span><span class="uploader" title="Uploader">Alŝutanto: <span class="important">' . $uploader . '</span></span><span class="filesize" title="FileSize">Grandeco: <span class="important">' . $filesize . '</span></span><span class="filename" title="FileName">Nomo: <span class="important">' . $filename . '</span></span><span class="filetype" title="FileType">Tipo: <span class="important">' . $filetype . '</span></span><span class="special" title="R18">Speciala: ' . $selectMenu .'</span>
 				</div></div>';
 		}
 		
@@ -269,6 +280,39 @@ class Image {
 		);
 		
 		return $imageListTemplate;
+	}
+	
+	/**
+	* 根据图像文件名判断文件类型
+	* 返回值：（正常返回）
+	* 	image/gif
+	* 	image/jpeg
+	* 	image/png
+	* 	image/wbep
+	* （异常返回）
+	*	notImage
+	* 	notAllowType
+	*/
+	public static function getImageType($filename) {
+		$filenameArray = explode('.', $filename);
+		
+		if (!isset($filenameArray[1])) {
+			return 'notImage';
+		}
+		
+		$ext = strtolower($filenameArray[1]);
+		
+		if ($ext == 'gif') {
+			return 'image/gif';
+		} else if ($ext == 'jpg') {
+			return 'image/jpeg';
+		} else if ($ext == 'png') {
+			return 'image/png';
+		} else if ($ext == 'webp') {
+			return 'image/webp';
+		} else {
+			return 'notAllowType';
+		}
 	}
 	
 	/**

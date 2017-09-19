@@ -206,17 +206,37 @@ div.file-detail span.uploader {
 	display: inline-block;
 	background-color: aliceblue;
 }
+
 div.file-detail span.filesize {
 	width: 200px;
 	display: inline-block;
 	background-color: whitesmoke;
 }
+
+div.file-detail span.filename {
+	width: 400px;
+	display: inline-block;
+	background-color: beige;
+}
+
+
+div.file-detail span.filetype {
+	width: 200px;
+	display: inline-block;
+	background-color: honeydew;
+}
+
 div.file-detail span.special {
 	width: 120px;
 	display: inline-block;
 	background-color: lightyellow;
 }
 
+span.important {
+	color: #666;
+}
+
 button#confirm {
-	
+	width: 1000px;
+	height: 30px;
 }
