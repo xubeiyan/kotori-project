@@ -8,9 +8,11 @@
 </head>
 <body>
 <div id="list-container" class="autoLR">
+	<a href="?manage=1"><div class="page-switch">&lt;&lt;</div></a>
 	<a href="?manage=%prev%"><div class="page-switch">&lt;</div></a>
 	<div id="list">%imagelist%</div>
 	<a href="?manage=%next%"><div class="page-switch">&gt;</div></a>
+	<a href="?manage=last"><div class="page-switch">&gt;&gt;</div></a>
 </div>
 <div id="list" class="autoLR">
 	<div id="errmsg"></div>
@@ -22,6 +24,7 @@
 		<li title="某个图床">Kotori Project</li>
 		<li title="upload file"><a class="important" href="?upload">上传文件</a></li>
 		<li title="random visit"><a href="?random">随便看看</a></li>
+		<li title="image list"><a href="?list">文件列表</a></li>
 	</ul>
 	<ul class="footer-right">
 		%userinfo%
