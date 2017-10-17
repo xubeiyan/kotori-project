@@ -378,7 +378,7 @@ class Image {
 
 		// 跳过#开头的注释行
 		for ($line = fgets($fp); $line[0] == '#'; $line = fgets($fp));
-		
+
 		// 跳过前面的$skipImage行
 		for (; $skipImage > 0; $line = fgets($fp), $skipImage -= 1);
 		
@@ -395,6 +395,32 @@ class Image {
 		fclose($fp);
 		return $imageInfoArray;
 	}
+	
+	/** 
+	* 获得最后一页
+	* 参数：每页的条数
+	* 返回: 最后一页的页数
+	*/
+	public static function getLastPage($imgPerPage) {
+		global $config;
+		$fp = fopen($config['file']['imageDataFile'], 'r') or die ('can not open file: ' . $config['file']['imageDataFile']);
+		
+		// 跳过#开头的注释行
+		for ($line = fgets($fp); $line[0] == '#'; $line = fgets($fp));
+		
+		// 获取一共有多少行
+		$lineNum = 0;
+		for (; !feof($fp); $line = fgets($fp), $lineNum += 1);
+		
+		// 没有则返回零
+		if ($lineNum == 0) {
+			return 0;
+		}
+		
+		// ceil为向上取整
+		return ceil($lineNum / $imgPerPage);
+	}
+	
 	
 	/**
 	* 生成略缩图thumbs
