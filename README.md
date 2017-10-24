@@ -98,12 +98,15 @@
 }
 ```
 * `/registerpost`
+
+注册成功    
 ```javascript
 {
 	"api": "register",
 	"result": "register success",
 }
 ```
+注册失败（用户存在/此用户为管理员账户）    
 ```javascript
 {
 	"api": "register",
@@ -111,7 +114,8 @@
 	"error": "user exits/it is admin user",
 }
 ```
-* `/loginpost`    
+* `/loginpost`
+    
 登录成功    
 ```javascript
 {
@@ -128,6 +132,7 @@
 }
 ```
 * `/userinfopost`    
+
 用户信息修改成功    
 ```javascript
 {
@@ -135,7 +140,7 @@
 	"result": "modify success",
 }
 ```
-用户信息修改失败    
+用户信息修改失败（id不匹配/用户名不匹配/旧密码不匹配）    
 ```javascript
 {
 	"api": "userinfo",
