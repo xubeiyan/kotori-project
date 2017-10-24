@@ -4,7 +4,8 @@
 
 >我决定又开坑了（喂），这次是一个图床（啪）……    
 >写这个的原因是没有一个好用的图床啊……不要跟我提新浪的，详情请见下一段……github那种方法还是饶了我把……  
-
+>目前实际在用的是[这个](http://imghost.chenhai.net/)，其实是自用……    
+ 
 #### 关于新浪图床的问题
 
 >有个重要的问题就是不匿名！    
@@ -110,13 +111,15 @@
 	"error": "user exits/it is admin user",
 }
 ```
-* `/loginpost`
+* `/loginpost`    
+登录成功    
 ```javascript
 {
 	"api": "login",
 	"result": "login success",
 }
 ```
+登录失败（密码错误/无此用户）    
 ```javascript
 {
 	"api": "login",
@@ -124,13 +127,15 @@
 	"error": "password wrong/no user",
 }
 ```
-* `/userinfopost`
+* `/userinfopost`    
+用户信息修改成功    
 ```javascript
 {
 	"api": "userinfo",
 	"result": "modify success",
 }
 ```
+用户信息修改失败    
 ```javascript
 {
 	"api": "userinfo",
@@ -154,9 +159,9 @@
 * list页面基本完成（list=[数字]这种可以跳转页面，last可跳转至最后一页，已加上前后跳转页面跳到第一页和最后一页的按钮）    
 * register和login页面基本完成（验证码？不想做这个啊~）
 * userinfo页面基本完成（对，现在可以改了）
-* manage页面基本完成了（manage=[数字]可以跳转页面，现在能够修改文件的可见性了）
-* 已修改检测上传文件的信息而不是文件名判断是否是图片文件（  
-* 已增加某智障的图片作为列表的cover图片    
+* manage页面基本完成了（manage=[数字]可以跳转页面，last可跳转至最后一页，现在能够修改文件的可见性了）
+* 已修改检测上传文件的信息而不是文件名判断是否是图片文件（原来的太制杖了  
+* 已增加某智障的图片作为列表的cover图片（现在在配置文件中只有cover的文件名了    
 * list=last以及manage=last跳转到最后一页（拖延症晚期居然完成了）    
 
 ### 遇到问题
@@ -166,4 +171,5 @@
 ### 接下来想做的
 
 * register需要验证码？但是要区分是否恶意注册那个又需要维护一个列表（不想弄啊
+* 多语言支持？闲着没事干吗？    
 
