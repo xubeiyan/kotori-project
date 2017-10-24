@@ -202,7 +202,7 @@ class Image {
 		
 		foreach ($array as $value) {
 			if ($value['r18'] == 1) {
-				$imagelist .= '<a href="uploads/' . $value['filename'] . '"><img style="width:200px" title="好孩子不要点开！" src="'. $config['file']['r18Cover'] . '" /></a>';
+				$imagelist .= '<a href="uploads/' . $value['filename'] . '"><img style="width:200px" title="好孩子不要点开！" src="templates/' . $config['site']['template'] . '/' . $config['file']['r18Cover'] . '" /></a>';
 			} else {
 				$imagelist .= '<a href="uploads/' . $value['filename'] . '"><img style="width:200px" src="'. Image::getThumb($value['filename']). '" /></a>';
 			}
@@ -345,8 +345,10 @@ class Image {
 			$lineArray = self::imagedataString2Array($line);
 			if ($r18 == 'yes') {
 				$lineArray['r18'] = 1;
+				$displayText = "'show'";
 			} else if ($r18 == 'no') {
 				$lineArray['r18'] = 0;
+				$displayText = "'hide'";
 			}
 			
 			$newLine = self::imagedataArray2String($lineArray);
@@ -357,7 +359,7 @@ class Image {
 			fclose($fp);
 			
 			$returnArray['result'] = 'success';
-			array_push($returnArray['details'], $id . ' change to ' . $r18);
+			array_push($returnArray['details'], 'display status of ' . $id . ' has changed to ' . $displayText);
 		}
 		
 		return json_encode($returnArray);

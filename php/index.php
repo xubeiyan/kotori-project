@@ -7,7 +7,7 @@ require 'lib/Util.php';
 // 检查配置文件状态
 if(!file_exists('config/conf.php')) {
 	//die('miss configuation file -> config/conf.php');
-	Util::err('missConfigurationFile');
+	Util::err('missConfigurationFile', Array('configfile' => 'config/conf.php'));
 }
 
 // 导入配置文件，配置变量$config
@@ -26,9 +26,14 @@ User::sessionCheck($config['user']['userDataFile'], $clientInfo['remoteAddr']);
 // 调用Image类
 require 'lib/Image.php';
 
+// 是否调用URI Rewrite
 if ($config['site']['rewriteURI'] == true) {
-	
+	// 暂时只支持Apache的rewrite
+	if (!file_exists('./.htaccess')) {
+		Util::err('noRewriteFile', Array('rewritefile' => '.htaccess', 'rewritefilefolder' => '.'));
+	}
 }
+
 // 路由GET部分
 if ($clientInfo['requestMethod'] == 'GET') {
 	// 直接访问根目录
@@ -196,6 +201,6 @@ if ($clientInfo['requestMethod'] == 'GET') {
 	}
 // 其他不是知道什么的部分
 } else {
-	Util::err('notAllowedReqMethod');
+	Util::err('notAllowedReqMethod', Array('requestmethod' => $clientInfo['requestMethod']));
 }
 ?>

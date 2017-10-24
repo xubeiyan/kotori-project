@@ -39,7 +39,7 @@ class Util {
 		// TODO：须调用对应的错误信息模板模板
 		// 未找到配置文件
 		if ($errType == 'missConfigurationFile') {
-			
+			die('can not find configuration file at ' . $errinfo['configfile']);
 		// 未找到图像
 		} else if ($errType == 'noImageforRandom' ) {
 			die('there is not any image for random');
@@ -48,7 +48,7 @@ class Util {
 			die('there is not any image for list');
 		// 不允许的请求方法
 		} else if ($errType == 'notAllowedReqMethod' ) {
-		
+			die('this method ' . $errinfo['requestmethod'] . ' is not allowed');
 		// 未找到处理该路由的方法
 		} else if ($errType == 'notAllowedReqQuery') {
 			die('the query is ' .$errinfo['query'] . ' which is not allowed');
@@ -57,10 +57,13 @@ class Util {
 			die('file type is ' . $errinfo['filetype'] . ' which is not allowed');
 		// 上传图片失败	
 		} else if ($errType == 'uploadFileFailed') {
-			die('IO::Error!');
+			die('upload file failed');
 		// 非管理员进入manage页面
 		} else if ($errType == 'notAdminUser') {
-			die('Current user "' . $errinfo['username'] . '" is not administrator');
+			die('current user "' . $errinfo['username'] . '" is not administrator');
+		// 开启rewrite模式而未找到对应文件
+		} else if ($errType == 'noRewriteFile') {
+			die('can not find ' . $errinfo['rewritefile'] . ' file at ' . $errinfo['rewritefilefolder']);
 		// 未找到的错误
 		} else {
 			die('Uncatched error: ' . $errType);

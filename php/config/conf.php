@@ -22,7 +22,7 @@ $config = Array (
 		),
 		'uploadFolder' => 'uploads',		#上传文件夹
 		'thumbFolder' => 'thumbs',			#略缩图文件夹
-		'r18Cover' => 'templates/default/r18cover.jpg',
+		'r18Cover' => 'r18cover.jpg',		#r18封面名称
 		'imageDataFile' => 'data/imagedata',#图片信息所在位置
 		'imagePerPage' => 10,
 		'thumbWidth' => 200,				#略缩图宽度 
