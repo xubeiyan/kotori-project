@@ -1,0 +1,246 @@
+div#area {
+	width: 600px;
+	height: 200px;
+	line-height:200px;
+	text-align:center;
+	background-color: #EEE;
+	cursor: pointer;
+}
+div#area:hover {
+	background-color: #DDD;
+}
+
+div#preview {
+	width: 600px;
+}
+
+div#preview p#progress{
+	display: block;
+	width: 600px;
+	padding: 0;
+	margin: 2px 0;
+	border: 1px inset #466;
+	border-radius: 2px;
+}
+
+p#progress.success {
+	background: #0c0 none 0 0 no-repeat;
+}
+
+p#progress.failed {
+	background: #c00 none 0 0 no-repeat;
+}
+
+div#list-container {
+	width: 1200px;
+	display: flex;
+	align-items: center;
+}
+
+div#list-container a:hover {
+	text-decoration: none;
+}
+
+div#list {
+	width:1000px;
+}
+
+div.page-switch {
+	width: 50px;
+	height: 100px;
+	text-align: center;
+	background-color: #EEE;
+	cursor: pointer;
+	line-height: 100px;
+}
+
+div.page-switch:hover {
+	background-color: #DDD;
+}
+
+div#login-panel {
+	width: 200px;
+	border: 1px solid #DDD;
+	border-radius: 5px;
+	background-color: #EEE;
+	padding:20px 200px 20px 200px;
+}
+
+div#login-panel label {
+	display:block;
+}
+
+div#login-panel input#register-button {
+	width: 100%;
+	height: 30px;
+	border: 0px;
+	background-color: #CCC;
+	border-radius :2px;
+	cursor: pointer;
+}
+
+div#login-panel input#register-button:hover {
+	background-color: #999;
+}
+
+div#login-panel input#login-button {
+	width: 100%;
+	height: 30px;
+	border: 0px;
+	background-color: #DDD;
+	border-radius :2px;
+	cursor: pointer;
+}
+
+div#login-panel input#login-button:hover {
+	background-color: #CCC;
+}
+
+div#login-panel input.input-box {
+	width: 188px;
+	height: 25px;
+	font-size: 16px;
+	border-radius:2px;
+	border: 1px solid #333;
+	margin-top: 2px;
+	margin-bottom: 5px;
+	padding-left: 5px;
+	padding-right: 5px;
+}
+div#login-panel div#error-msg {
+	color: red;
+}
+
+div#footer {
+	margin-top:5px;
+	width: 600px;
+}
+
+div#footer-wide {
+	margin-top:5px;
+	margin-bottom:5px;
+	width:1000px;
+}
+
+img#uploadImg {
+	width: 600px;
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+input#file {
+	display:none;
+}
+
+input#uploadButton {
+	display:none;
+	width:600px;
+	height:30px;
+	margin-left:auto;
+	margin-right:auto;
+}
+
+
+
+div.autoLR {
+	margin-left: auto;
+	margin-right: auto;
+}
+
+ul.footer-left {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	float: left;
+}
+
+ul.footer-left li{
+	display: inline-block;
+}
+
+ul.footer-right {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	float:right;
+}
+
+ul.footer-right li{
+	display: inline-block;
+}
+
+
+a {
+	color: #999;
+	text-decoration: none;
+}
+
+a.important {
+	color: #333;
+	text-shadow: #CCC 0.1em 0.1em 0.2em;
+	/* font-weight: bold; */
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a.upload {
+	color: #000;
+	text-decoration: underline;
+}
+
+div.file-detail {
+	display: flex;
+	align-items: flex-end;
+}
+
+div.file-detail span.id {
+	width: 400px;
+	display: inline-block;
+	background-color: azure;
+}
+div.file-detail span.uploader {
+	width: 120px;
+	display: inline-block;
+	background-color: aliceblue;
+}
+
+div.file-detail span.filesize {
+	width: 200px;
+	display: inline-block;
+	background-color: whitesmoke;
+}
+
+div.file-detail span.filename {
+	width: 400px;
+	display: inline-block;
+	background-color: beige;
+}
+
+
+div.file-detail span.filetype {
+	width: 200px;
+	display: inline-block;
+	background-color: honeydew;
+}
+
+div.file-detail span.special {
+	width: 120px;
+	display: inline-block;
+	background-color: lightyellow;
+}
+
+div.autoLR div#errmsg {
+	color: red;
+}
+
+span.important {
+	color: #666;
+}
+
+button#confirm {
+	width: 1000px;
+	height: 30px;
+}

@@ -1,0 +1,31 @@
+{% extends "layout.html" %}
+{% block title %}{{ temp.title }} - {{ temp.projectName }}{% endblock %}
+{% block head %}{{ super() }}{% endblock %}
+{% block content %}
+	<input type="file" id="file"/>
+	<div id="area" class="autoLR" title="{{ temp.uploadFileSize }}">{{ temp.uploadInfo }}</div>
+	<input type="button" id="uploadButton" value="上传"/>
+	<div id="preview" class="autoLR"></div>
+{% endblock %}
+{% block footer %}
+	<div id="footer" class="autoLR">
+		<ul class="footer-left">
+			<li>&copy;2017</li>
+			<li>-</li>
+			<li title="某个图床">{{ temp.projectName }}</li>
+			<li title="random visit"><a href="?random">随便看看</a></li>
+			<li title="image list"><a href="?list">文件列表</a></li>
+		</ul>
+		<ul class="footer-right">
+			{% if not session.login %}
+				<li title="register"><a href="?register">想签定契约</a></li>
+				<li title="login"><a href="?login">想传更大文件</a></li>
+			{% else %}
+				<li title="userinfo"><a href="?userinfo">{{ temp.userId }}</a></li>
+				<li title="logout"><a href="?logout">注销</a></li>
+			{% endif %}
+			<li>|</li>
+			<li><a href="{{ temp.github }}">Github</a></li>
+		</ul> 
+	</div>
+{% endblock %}

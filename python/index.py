@@ -1,13 +1,24 @@
 # coding: utf-8
+import os
+import sqlite3
 
 # flask
-from flask import Flask, redirect, url_for, request
-app = Flask(__name__)
+from flask import Flask, redirect, url_for, request, session, g, render_template
+app = Flask(__name__, static_folder='templates/default/static', template_folder='templates/default')
+
+# 配置文件
+default_settings_file = 'config/settings.py'
+if not os.path.exists(default_settings_file):
+	print('the settings file: ' + default_settings_file + ' not exist!')
+	exit()
+	
+app.config.from_pyfile(default_settings_file)
+
 
 # 一些自定义库
-import lib.image as Image
-import lib.user as User
-import lib.util as Util
+import lib.image
+import lib.user
+import lib.util
 
 # GET方法
 # 根目录
@@ -18,7 +29,16 @@ def index():
 # 上传文件 GET为显示上传页面，POST为上传文件
 @app.route('/upload', methods = ['GET', 'POST'])
 def file_upload():
-	return 'upload...'
+	if request.method == 'GET':
+		temp = {
+			'title': u'上传文件', 
+			'uploadInfo': u'点击上传或将图片拖到此处',
+			'uploadFileSize': u'目前支持5M以下的jpg, png, gif, webp',
+			'projectName': app.config['PROJECT_NAME'], 
+			'userId': '1',
+			'github': app.config['GITHUB']
+		}
+		return render_template('uploadFile.html', temp = temp).encode('utf-8');
 	
 # 随机访问
 @app.route('/random', methods = ['GET'])
@@ -73,5 +93,4 @@ def manage():
 		return 'manage post'
 	
 if __name__ == '__main__':
-	app.debug = True
 	app.run()
