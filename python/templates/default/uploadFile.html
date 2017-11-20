@@ -2,10 +2,12 @@
 {% block title %}{{ temp.title }} - {{ temp.projectName }}{% endblock %}
 {% block head %}{{ super() }}{% endblock %}
 {% block content %}
-	<input type="file" id="file"/>
-	<div id="area" class="autoLR" title="{{ temp.uploadFileSize }}">{{ temp.uploadInfo }}</div>
-	<input type="button" id="uploadButton" value="上传"/>
-	<div id="preview" class="autoLR"></div>
+	<div id="mainpage">
+		<input type="file" id="file"/>
+		<div id="area" class="autoLR" title="{{ temp.uploadFileSize }}">{{ temp.uploadInfo }}</div>
+		<input type="button" id="uploadButton" value="上传"/>
+		<div id="preview" class="autoLR"></div>
+	</div>
 {% endblock %}
 {% block footer %}
 	<div id="footer" class="autoLR">
@@ -28,4 +30,7 @@
 			<li><a href="{{ temp.github }}">Github</a></li>
 		</ul> 
 	</div>
+{% endblock %}
+{% block script %}
+	<script src="{{ url_for('static', filename='js/upload.js') }}" type="text/javascript"></script>
 {% endblock %}
