@@ -1,3 +1,5 @@
+'use strict'
+
 var area = document.getElementById('area'),
 	preview = document.getElementById('preview'),
 	file = document.getElementById('file'),
@@ -115,8 +117,7 @@ upload.addEventListener("click", function () {
 		}
 	}
 	
-	xhr.open('POST', '?uploadpost', true);
-	xhr.setRequestHeader('X-FILENAME', 'XMLHttpRequest');
+	xhr.open('POST', 'upload', true);
 	xhr.setRequestHeader('Kotori-Request', 'FileUpload');
 	
 	formData.append('img', imgObj);

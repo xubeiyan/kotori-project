@@ -1,6 +1,8 @@
 # coding: utf-8
 import os
 import sqlite3
+# werkzeug
+from werkzeug import secure_filename
 
 # flask
 from flask import Flask, redirect, url_for, request, session, g, render_template
@@ -16,9 +18,8 @@ app.config.from_pyfile(default_settings_file)
 
 
 # 一些自定义库
-import lib.image
-import lib.user
-import lib.util
+from lib.image import *
+from lib.util import *
 
 # GET方法
 # 根目录
@@ -34,12 +35,30 @@ def file_upload():
 			'title': u'上传文件', 
 			'uploadInfo': u'点击上传或将图片拖到此处',
 			'uploadFileSize': u'目前支持5M以下的jpg, png, gif, webp',
-			'projectName': app.config['PROJECT_NAME'], 
-			'userId': '1',
-			'github': app.config['GITHUB']
 		}
+		# if session.has_key['login']:
+			# temp['userinfo'] = '1'
+			
 		return render_template('uploadFile.html', temp = temp).encode('utf-8');
-	
+	elif request.method == 'POST':
+		if not request.files['img']:
+			return 'there not an image'
+		# print request.headers.get('Kotori-Request')
+		# 某个检测header里有没有指定字段的
+		if not app.config.has_key('UPLOAD_STRING_CHECK') or \
+			not app.config['UPLOAD_STRING_CHECK'] == request.headers.get('Kotori-Request'):
+			return 'not pass the check'
+			
+		file = request.files['img']
+		print file.filename
+		if util.allowed_file_ext(file.filename, app.config['UPLOAD_ALLOW_EXTENSION']): # TODO：修改成类型判断
+			filename = secure_filename(file.filename)
+			random_filename = util.random_filename() + '.' + filename.rsplit('.', 1)[1]
+			file.save(os.path.join(app.config['UPLOAD_FOLDER'], random_filename))
+			return 'done!'
+		print file.filename, app.config['UPLOAD_ALLOW_EXTENSION']
+			
+		return 'not work'
 # 随机访问
 @app.route('/random', methods = ['GET'])
 def random_visit():

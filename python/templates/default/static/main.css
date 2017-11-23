@@ -17,12 +17,12 @@ div#area:hover {
 }
 
 div#preview {
-	width: 600px;
+	width: 1000px;
 }
 
 div#preview p#progress{
 	display: block;
-	width: 600px;
+	width: 1000px;
 	padding: 0;
 	margin: 2px 0;
 	border: 1px inset #466;
@@ -38,7 +38,7 @@ p#progress.failed {
 }
 
 div#list-container {
-	width: 1200px;
+	width: 1000px;
 	display: flex;
 	align-items: center;
 }
@@ -48,7 +48,7 @@ div#list-container a:hover {
 }
 
 div#list {
-	width:1000px;
+	width:800px;
 }
 
 div.page-switch {
@@ -119,7 +119,7 @@ div#login-panel div#error-msg {
 
 div#footer {
 	margin-top:5px;
-	width: 600px;
+	width: 1000px;
 }
 
 div#footer-wide {
@@ -129,7 +129,7 @@ div#footer-wide {
 }
 
 img#uploadImg {
-	width: 600px;
+	width: 1000px;
 	display: block;
 	margin-left: auto;
 	margin-right: auto;
@@ -141,7 +141,7 @@ input#file {
 
 input#uploadButton {
 	display:none;
-	width:600px;
+	width:1000px;
 	height:30px;
 	margin-left:auto;
 	margin-right:auto;

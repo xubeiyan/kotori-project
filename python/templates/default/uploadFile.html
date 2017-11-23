@@ -1,5 +1,5 @@
 {% extends "layout.html" %}
-{% block title %}{{ temp.title }} - {{ temp.projectName }}{% endblock %}
+{% block title %}{{ temp.title }} - {{ config.PROJECT_NAME }}{% endblock %}
 {% block head %}{{ super() }}{% endblock %}
 {% block content %}
 	<div id="mainpage">
@@ -14,20 +14,20 @@
 		<ul class="footer-left">
 			<li>&copy;2017</li>
 			<li>-</li>
-			<li title="某个图床">{{ temp.projectName }}</li>
-			<li title="random visit"><a href="?random">随便看看</a></li>
-			<li title="image list"><a href="?list">文件列表</a></li>
+			<li title="某个图床">{{ config.PROJECT_NAME }}</li>
 		</ul>
 		<ul class="footer-right">
+			<li title="random visit"><a href="{{ config.RANDOM }}">{{ config.RANDOM_TEXT }}</a></li>
+			<li title="image list"><a href="{{ config.LIST }}">{{ config.LIST_TEXT }}</a></li>
 			{% if not session.login %}
-				<li title="register"><a href="?register">想签定契约</a></li>
-				<li title="login"><a href="?login">想传更大文件</a></li>
+				<li title="register"><a href="{{ config.REGISTER }}">{{ config.REGISTER_TEXT }}</a></li>
+				<li title="login"><a href="{{ config.LOGIN }}">{{ config.LOGIN_TEXT }}</a></li>
 			{% else %}
-				<li title="userinfo"><a href="?userinfo">{{ temp.userId }}</a></li>
-				<li title="logout"><a href="?logout">注销</a></li>
+				<li title="userinfo"><a href="{{ config.USERINFO }}">{{ temp.userId }}</a></li>
+				<li title="logout"><a href="{{ config.LOGOUT }}">{{ config.LOGOUT_TEXT }}</a></li>
 			{% endif %}
 			<li>|</li>
-			<li><a href="{{ temp.github }}">Github</a></li>
+			<li><a href="{{ config.GITHUB }}" title="神秘交易地点">Github</a></li>
 		</ul> 
 	</div>
 {% endblock %}
