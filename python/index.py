@@ -18,8 +18,9 @@ app.config.from_pyfile(default_settings_file)
 
 
 # 一些自定义库
-from lib.image import *
-from lib.util import *
+from lib.image import image
+from lib.user import user
+from lib.util import util
 
 # GET方法
 # 根目录
@@ -31,16 +32,13 @@ def index():
 @app.route('/upload', methods = ['GET', 'POST'])
 def file_upload():
 	if request.method == 'GET':
-		temp = {
-			'title': u'上传文件', 
-			'uploadInfo': u'点击上传或将图片拖到此处',
-			'uploadFileSize': u'目前支持5M以下的jpg, png, gif, webp',
-		}
 		# if session.has_key['login']:
 			# temp['userinfo'] = '1'
 			
-		return render_template('uploadFile.html', temp = temp).encode('utf-8');
+		return render_template('uploadFile.html').encode('utf-8')
 	elif request.method == 'POST':
+		img_folder = app.config['UPLOAD_FOLDER']
+		thumb_folder = app.config['THUMB_FOLDER']
 		if not request.files['img']:
 			return 'there not an image'
 		# print request.headers.get('Kotori-Request')
@@ -50,15 +48,8 @@ def file_upload():
 			return 'not pass the check'
 			
 		file = request.files['img']
-		print file.filename
-		if util.allowed_file_ext(file.filename, app.config['UPLOAD_ALLOW_EXTENSION']): # TODO：修改成类型判断
-			filename = secure_filename(file.filename)
-			random_filename = util.random_filename() + '.' + filename.rsplit('.', 1)[1]
-			file.save(os.path.join(app.config['UPLOAD_FOLDER'], random_filename))
-			return 'done!'
-		print file.filename, app.config['UPLOAD_ALLOW_EXTENSION']
-			
-		return 'not work'
+		image.upload_file(file, app.config['UPLOAD_FOLDER'])
+		
 # 随机访问
 @app.route('/random', methods = ['GET'])
 def random_visit():
@@ -72,12 +63,18 @@ def register():
 # 登录 GET为显示登录页面，POST为登录
 @app.route('/login', methods = ['GET', 'POST'])
 def login():
-	return 'login...'
-	
-# 登出
-@app.route('/logout', methods = ['GET'])
-def logout():
-	return 'logout...'
+	if request.method == 'GET':
+		return render_template('login.html').encode('utf-8')
+	elif request.method == 'POST':
+		import json
+		try:
+			json_data = json.loads(request.data)
+		except (ValueError, TypeError):
+			print '1'
+			return
+			
+		# user.login(request.data)
+		return request.data
 	
 # 用户信息
 @app.route('/userinfo', methods = ['GET'])
