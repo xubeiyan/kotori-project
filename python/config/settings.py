@@ -10,7 +10,6 @@ LIST 		= 'list'
 RANDOM 		= 'random'
 REGISTER 	= 'register'
 LOGIN 		= 'login'
-LOGOUT 		= 'logout'
 USERINFO	= 'userinfo'
 MANAGE 		= 'manage'
 
@@ -26,4 +25,6 @@ MANAGE_TEXT		= u'管理'
 # 上传文件配置
 UPLOAD_STRING_CHECK		= 'FileUpload'
 UPLOAD_FOLDER 			= 'uploads'
-UPLOAD_ALLOW_EXTENSION	= set(['jpg', 'jpeg', 'png', 'gif', 'webp'])
+THUMB_FOLDER			= 'thumbs'
+TEMP_FOLDER				= 'temps'
+UPLOAD_ALLOW_EXTENSION	= ['jpg', 'png', 'gif', 'webp']
