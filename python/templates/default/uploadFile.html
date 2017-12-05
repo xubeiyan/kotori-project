@@ -1,10 +1,10 @@
 {% extends "layout.html" %}
-{% block title %}{{ temp.title }} - {{ config.PROJECT_NAME }}{% endblock %}
+{% block title %} 上传文件 - {{ config.PROJECT_NAME }}{% endblock %}
 {% block head %}{{ super() }}{% endblock %}
 {% block content %}
 	<div id="mainpage">
 		<input type="file" id="file"/>
-		<div id="area" class="autoLR" title="{{ temp.uploadFileSize }}">{{ temp.uploadInfo }}</div>
+		<div id="area" class="autoLR" title="目前支持5M以下的jpg, png, gif">点击上传或将图片拖到此处</div>
 		<input type="button" id="uploadButton" value="上传"/>
 		<div id="preview" class="autoLR"></div>
 	</div>
