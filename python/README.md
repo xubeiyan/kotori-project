@@ -36,12 +36,21 @@
 	"api": "upload",
 	"result": "size error",
 	"add_info": {
-		"error_msg": "logged user for 5M, anonymous for 2M"
+		"error_msg": "5MiB limit for logged user, 2MiB limit for anonymous"
 	}
 }
 ```
 
 #### 用户登录
+请求：    
+```javascript
+{
+	"api": "login",
+	"username": "abc",
+	"password": "def"
+}
+```
+
 返回值(登录成功)：    
 ```javascript
 {
@@ -95,7 +104,44 @@
 }
 ```
 
+#### 用户登出
+
+请求：    
+```javascript
+{
+	"api": "logout",
+	"session": "1234567890"
+}
+```
+返回值(登出成功)；    
+```javascript
+{
+	"api": "logout",
+	"result": "success"
+}
+```
+
+返回值(未登录)；    
+```javascript
+{
+	"api": "logout",
+	"result": "not login",
+	"add_info": {
+		"error_msg": "session for user not login"
+	}
+}
+```
+
 #### 用户注册
+请求:    
+```javascript
+{
+	"api": "register",
+	"username": "abc",
+	"password": "def"
+}
+```
+
 返回值(注册成功)：    
 ```javascript
 {
@@ -115,6 +161,17 @@
 }
 ```
 
+返回值(用户名中有不符合规定的字符)
+```javascript
+{
+	"api": "register",
+	"result": "username error",
+	"add_info": {
+		"error_msg": "it can only use a-z, A-Z and 0-9"
+	}
+}
+```
+
 返回值(用户名为管理员账号):    
 ```javascript
 {
@@ -125,3 +182,18 @@
 	}
 }
 ```
+
+### 数据库设计
+#### user表
+* id int
+* username varchar(64)
+* password varchar(64)
+* lastuploadid int
+* lastuploadtime datetime
+* authority int
+
+#### image表
+* id int
+* filename varchar(128)
+* uploader int
+* limit int
