@@ -7,20 +7,20 @@
 
 class image:
 	@staticmethod
-	def upload_file(file, destination):
+	def upload_file(file, destination, temp_folder):
 		# 将其保存到临时文件夹
 		from util import util
 		import os
 		tmp_filename = util.random_filename() + '.tmp'
-		full_tmp_filename = os.path.join(app.config['TEMP_FOLDER'], tmp_filename)
+		full_tmp_filename = os.path.join(temp_folder, tmp_filename)
 		file.save(full_tmp_filename)
-		file_real_type = file_type(full_tmp_filename)
+		file_real_type = image.file_type(full_tmp_filename)
 		if file_real_type != 'NOT SUPPORT':
 			import shutil
-			new_full_filename = util.random_filename() + file_real_type.lower()
-			new_dst = os.path.join(app.config['UPLOAD_FOLDER'], new_full_filename)
+			new_full_filename = util.random_filename() + '.' + file_real_type.lower()
+			new_dst = destination + '/' + new_full_filename
 			shutil.move(full_tmp_filename, new_dst)
-			return util.success('upload')
+			return util.success('upload', new_dst)
 		else:
 			os.remove(full_tmp_filename)
 			return util.error('post_format_error')
