@@ -23,7 +23,7 @@ class image:
 			return util.success('upload', new_dst)
 		else:
 			os.remove(full_tmp_filename)
-			return util.error('post_format_error')
+			return util.error('upload_format_error')
 			
 		
 	# 文件类型检测

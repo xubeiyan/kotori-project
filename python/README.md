@@ -88,7 +88,7 @@
 	"result": "admin login error",
 	"add_info": {
 		"error_msg": "username or password invalid",
-		"attemps": "there are %d time(s) to attempt"
+		"attempts": "there are %d time(s) to attempt"
 	}
 }
 ```
