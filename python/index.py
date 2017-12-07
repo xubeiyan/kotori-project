@@ -43,12 +43,12 @@ def file_upload():
 			return 'there not an image'
 		# print request.headers.get('Kotori-Request')
 		# 某个检测header里有没有指定字段的
-		if not app.config.has_key('UPLOAD_STRING_CHECK') or \
-			not app.config['UPLOAD_STRING_CHECK'] == request.headers.get('Kotori-Request'):
-			return 'not pass the check'
+		if app.config.has_key('UPLOAD_STRING_CHECK'):
+			if not app.config['UPLOAD_STRING_CHECK'] == request.headers.get('Kotori-Request'):
+				return 'not pass the check'
 			
 		file = request.files['img']
-		image.upload_file(file, app.config['UPLOAD_FOLDER'])
+		return util.make_json_resp(image.upload_file(file, app.config['UPLOAD_FOLDER'], app.config['TEMP_FOLDER']))
 		
 # 随机访问
 @app.route('/random', methods = ['GET'])
@@ -58,7 +58,10 @@ def random_visit():
 # 注册 GET为显示注册页面，POST为注册
 @app.route('/register', methods = ['GET', 'POST'])
 def register():
-	return 'register...'
+	if request.method == 'GET':
+		return render_template('login.html').encode('utf-8')
+	elif request.method == 'POST':
+		return user.login(request.form['username'], request.form['password'])
 	
 # 登录 GET为显示登录页面，POST为登录
 @app.route('/login', methods = ['GET', 'POST'])
