@@ -28,10 +28,10 @@ class util:
 	def error(name, extra_info = {}, type='json'):
 		import json
 		# 上传文件格式错误
-		if name == 'upload_format_error':
+		if name == 'upload_image_format_error':
 			return_dict = {
 				"api": "upload",
-				"result": "format error",
+				"result": "image format error",
 				"add_info": {
 					"error_msg": "only support jpg, png, gif and webp file"
 				}
@@ -43,6 +43,15 @@ class util:
 				"result": "size error",
 				"add_info": {
 					"error_msg": "logged user for 5M, anonymous for 2M"
+				}
+			}
+		# 上传API调用错误
+		elif name == 'upload_post_format_error':
+			return_dict = {
+				"api": "upload",
+				"result": "post format error",
+				"add_info": {
+					"error_msg": "seems not contain an image or not contain the auth string"
 				}
 			}
 		# 用户不存在

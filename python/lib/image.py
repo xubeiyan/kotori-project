@@ -6,8 +6,11 @@
 
 
 class image:
+	# 上传文件
 	@staticmethod
-	def upload_file(file, destination, temp_folder):
+	def upload_file(file, folder, user, database):
+		temp_folder = folder['temp_folder']
+		dst_folder = folder['dst_folder']
 		# 将其保存到临时文件夹
 		from util import util
 		import os
@@ -18,12 +21,18 @@ class image:
 		if file_real_type != 'NOT SUPPORT':
 			import shutil
 			new_full_filename = util.random_filename() + '.' + file_real_type.lower()
-			new_dst = destination + '/' + new_full_filename
+			new_dst = dst_folder + '/' + new_full_filename
 			shutil.move(full_tmp_filename, new_dst)
+			# 插入数据库记录
+			file_info = {
+				'filename': new_full_filename,
+				'filetype': file_real_type				
+			}
+			image.add_db_record(file_info, user, database)
 			return util.success('upload', new_dst)
 		else:
 			os.remove(full_tmp_filename)
-			return util.error('upload_format_error')
+			return util.error('upload_image_format_error')
 			
 		
 	# 文件类型检测
@@ -60,5 +69,18 @@ class image:
 			
 	# 写入记录到数据库中
 	@staticmethod
-	def add_db_record(filename):
-		sql = 'INSERT INTO'
+	def add_db_record(file, user, database):
+		import sqlite3, time
+		uid = user['id']
+		filename = file['filename']
+		filetype = file['filetype']
+		timestamp = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
+		sql = 'INSERT INTO image (filename, filetype, uploader, uploadtime, limit) VALUES ' + \
+			'("%s", "%s", "%d", "%s", "%d")' % (filename, filetype, uid, timestamp, 0)
+			
+		conn = sqlite3.connect(database)
+		c = conn.cursor()
+		c.execute(sql)
+		conn.commit()
+		conn.close()
+		return 'success'
