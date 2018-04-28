@@ -18,7 +18,7 @@ $config = Array (
 			IMAGETYPE_GIF => 'gif', 
 			IMAGETYPE_JPEG => 'jpg', 
 			IMAGETYPE_PNG => 'png', 
-			IMAGETYPE_WBMP => 'webp'
+			IMAGETYPE_WEBP => 'webp'		#PHP需要7.1才支持此文件类型判断
 		),
 		'uploadFolder' => 'uploads',		#上传文件夹
 		'thumbFolder' => 'thumbs',			#略缩图文件夹

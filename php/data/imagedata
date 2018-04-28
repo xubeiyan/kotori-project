@@ -1,2 +1,6 @@
 # 图片信息，id是上传时间的md5散列值，size单位为B(最大值为10485760B=10MB)，filename为md5值+扩展名，uploader为上传者id，上传时间是yyyyMMdd hh:mm:ss
 # id(32)                        |size(8) |filename(37)                         |uplder(10)|uploadtime(17)   |r18(1)
+e42c28c1b184a1c69a9cc8b7a8eda2b0|17191   |e42c28c1b184a1c69a9cc8b7a8eda2b0.png |1         |20180428 01:35:00|0
+5bb0abd94306d5214e5cf03deb124dd0|295464  |5bb0abd94306d5214e5cf03deb124dd0.webp|1         |20180428 02:06:16|0
+641f8aba1f64da3e12eb1a7a7383ae6e|1973    |641f8aba1f64da3e12eb1a7a7383ae6e.gif |1         |20180428 02:07:05|0
+5ae17e90a03571024532f511d05a545b|4921    |5ae17e90a03571024532f511d05a545b.png |1         |20180428 02:22:17|0
