@@ -54,7 +54,21 @@ class Util {
 			die('the query is ' .$errinfo['query'] . ' which is not allowed');
 		// 不允许的文件类型
 		} else if ($errType == 'notAllowFileType') {
-			die('file type is ' . $errinfo['filetype'] . ' which is not allowed');
+			// 不是图片文件
+			if ($errinfo['filetype'] == '') {
+				$info = 'not picture format';
+			} else {
+				$info = $errinfo['filetype'];
+			}
+			
+			$returnArray = Array ( 
+				'api' => 'upload',
+				'result' => 'upload fail',
+				'error' => 'file type is ' . $info . ', which is not allowed',
+			);
+			header('Content-type: application/json');
+			echo json_encode($returnArray, JSON_UNESCAPED_UNICODE);
+			exit();
 		// 上传图片失败	
 		} else if ($errType == 'uploadFileFailed') {
 			die('upload file failed');
