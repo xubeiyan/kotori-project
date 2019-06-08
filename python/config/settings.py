@@ -6,6 +6,7 @@ DATABASE 		= 'kotori.db'
 GITHUB 			= 'https://github.com/xubeiyan/kotori-project'
 
 # 指向名称
+UPLOAD		= 'upload'
 LIST 		= 'list'
 RANDOM 		= 'random'
 REGISTER 	= 'register'
@@ -14,6 +15,7 @@ USERINFO	= 'userinfo'
 MANAGE 		= 'manage'
 
 # 指向名称文本
+UPLOAD_TEXT		= u'增添色彩'
 LIST_TEXT		= u'世间百态'
 RANDOM_TEXT 	= u'随便看看'
 REGISTER_TEXT 	= u'签订契约'
@@ -28,3 +30,6 @@ UPLOAD_FOLDER 			= 'uploads'
 THUMB_FOLDER			= 'thumbs'
 TEMP_FOLDER				= 'temps'
 UPLOAD_ALLOW_EXTENSION	= ['jpg', 'png', 'gif', 'webp']
+
+# 查看文件配置
+IMAGE_PER_PAGE 			= 20

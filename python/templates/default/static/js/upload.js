@@ -103,11 +103,12 @@ upload.addEventListener("click", function () {
 			var responseArray = JSON.parse(xhr.responseText),
 				folder = preview.appendChild(document.createElement("p"));
 				
-			if (responseArray['result'] == 'upload success') {
+			if (responseArray['result'] == 'success') {
+				console.log(responseArray);
 				progress.className = "success";
 				progress.innerHTML = "上传成功";
 				
-				folder.innerHTML = '上传路径: <a class="upload" href="' + responseArray['savePath'] + '">' + responseArray['savePath'] + '</a>';
+				folder.innerHTML = '上传路径: <a class="upload" href="' + responseArray['add_info']['saved_path'] + '">' + responseArray['add_info']['saved_path'] + '</a>';
 			} else if (responseArray['result'] == 'upload fail'){
 				progress.className = "failed";
 				progress.innerHTML = "上传失败";
@@ -121,7 +122,7 @@ upload.addEventListener("click", function () {
 	xhr.setRequestHeader('Kotori-Request', 'FileUpload');
 	
 	formData.append('img', imgObj);
-	
+	console.log('start send');
 	xhr.send(formData);
 	
 });

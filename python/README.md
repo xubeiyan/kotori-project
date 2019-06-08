@@ -185,15 +185,17 @@
 
 ### 数据库设计
 #### user表
-* id int
-* username varchar(64)
-* password varchar(64)
-* lastuploadid int
+* id integer primary key
+* username char
+* password char
+* lastuploadid integer
 * lastuploadtime datetime
-* authority int
+* authority integer
 
 #### image表
-* id int
-* filename varchar(128)
-* uploader int
-* limit int
+* id integer primary key
+* filename char
+* filetype char
+* uploader integer
+* uploadtime datetime
+* limit integer

@@ -5,7 +5,7 @@ import sqlite3
 from werkzeug import secure_filename
 
 # flask
-from flask import Flask, redirect, url_for, request, session, g, render_template
+from flask import Flask, redirect, url_for, request, session, g, render_template, send_file
 app = Flask(__name__, static_folder='templates/default/static', template_folder='templates/default')
 
 # 配置文件
@@ -48,7 +48,7 @@ def file_upload():
 			return 'not pass the check'
 			
 		file = request.files['img']
-		json_resp = image.upload_file(file, app.config['UPLOAD_FOLDER'], app.config['TEMP_FOLDER'])
+		json_resp = image.upload_file(file, app.config['TEMP_FOLDER'], app.config['UPLOAD_FOLDER'], app.config['DATABASE'])
 		return util.make_json_resp(json_resp)
 		
 # 随机访问
@@ -71,7 +71,7 @@ def login():
 		try:
 			json_data = json.loads(request.data)
 		except (ValueError, TypeError):
-			print '1'
+			print('1')
 			return
 			
 		# user.login(request.data)
@@ -86,12 +86,10 @@ def userinfo():
 @app.route('/list', methods = ['GET'])
 def list():
 	page = request.args.get('page', '') 
-	if page == 'last':
-		return 'visit last page'
-	elif page.isdigit():
-		return 'visit page ' + page
-	else:
-		return 'invalid page value "' + page + '"'
+	page = page if page.isdigit() and page >= 1 else 1;
+	file_list = image.get_image_list(int(page), app.config['IMAGE_PER_PAGE'], app.config['DATABASE'])
+	filename_list = [e[0] for e in file_list]
+	return render_template('list.html', fl=filename_list).encode('utf-8');
 	
 # 管理
 @app.route('/manage', methods = ['GET', 'POST'])
@@ -100,14 +98,30 @@ def manage():
 		page = request.args.get('page', '')
 		
 		
-		if page == 'last':
-			return 'manage last page'
-		elif page.isdigit():
-			return 'visit page ' + page
-		else:
-			return 'invalid page value "' + page + '"'
 	elif request.method == 'POST':
 		return 'manage post'
+		
+# 图
+@app.route('/uploads', methods = ['GET'])
+def uploads():
+	name = request.args.get('name')
+	if name == None:
+		name = 'not exist'
+	if image.image_exist(name):
+		return send_file('./uploads/' + name)
+	else:
+		return 'not found file with name:' + name	
+		
+# 略缩图
+@app.route('/thumbs', methods = ['GET'])
+def thumbs():
+	name = request.args.get('name')
+	if name == None:
+		name = 'not exist'
+	if image.image_exist(name):
+		return send_file('./thumbs/' + name)
+	else:
+		return 'not found file with name:' + name
 	
 if __name__ == '__main__':
 	app.run()

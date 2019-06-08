@@ -38,7 +38,7 @@ p#progress.failed {
 }
 
 div#list-container {
-	width: 1000px;
+	width: 1200px;
 	display: flex;
 	align-items: center;
 }
@@ -48,9 +48,12 @@ div#list-container a:hover {
 }
 
 div#list {
-	width:800px;
+	width:1000px;
 }
 
+img.thumbs {
+	width: 200px;
+}
 div.page-switch {
 	width: 50px;
 	height: 100px;

@@ -8,9 +8,7 @@
 class image:
 	# 上传文件
 	@staticmethod
-	def upload_file(file, folder, user, database):
-		temp_folder = folder['temp_folder']
-		dst_folder = folder['dst_folder']
+	def upload_file(file, temp_folder, upload_folder, database):
 		# 将其保存到临时文件夹
 		from util import util
 		import os
@@ -21,15 +19,20 @@ class image:
 		if file_real_type != 'NOT SUPPORT':
 			import shutil
 			new_full_filename = util.random_filename() + '.' + file_real_type.lower()
-			new_dst = dst_folder + '/' + new_full_filename
+			new_dst = upload_folder + '/' + new_full_filename
 			shutil.move(full_tmp_filename, new_dst)
+	
 			# 插入数据库记录
 			file_info = {
 				'filename': new_full_filename,
 				'filetype': file_real_type				
 			}
+			user = {'id': 1}
 			image.add_db_record(file_info, user, database)
-			return util.success('upload', new_dst)
+			add_info = {
+				'saved_path': '/uploads?name=' + new_full_filename
+			}
+			return util.success('upload', add_info)
 		else:
 			os.remove(full_tmp_filename)
 			return util.error('upload_image_format_error')
@@ -75,12 +78,40 @@ class image:
 		filename = file['filename']
 		filetype = file['filetype']
 		timestamp = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
-		sql = 'INSERT INTO image (filename, filetype, uploader, uploadtime, limit) VALUES ' + \
+		sql = 'INSERT INTO image (filename, filetype, uploader, uploadtime, limits) VALUES ' + \
 			'("%s", "%s", "%d", "%s", "%d")' % (filename, filetype, uid, timestamp, 0)
 			
-		conn = sqlite3.connect(database)
+		conn = sqlite3.connect('db/' + database)
 		c = conn.cursor()
 		c.execute(sql)
 		conn.commit()
 		conn.close()
 		return 'success'
+	
+	# 获取图片列表
+	@staticmethod
+	def get_image_list(page_num, per_page, database):
+		import sqlite3
+		page_num = page_num if page_num > 0 else 1;
+		per_page = per_page if per_page > 0 and per_page < 50 else 20;
+		
+		conn = sqlite3.connect('db/' + database)
+		c = conn.cursor()
+		c.execute('SELECT filename, limits FROM image LIMIT ? OFFSET ?', [per_page, (page_num - 1) * per_page])
+		list = c.fetchall();
+		conn.commit()
+		conn.close()
+		return list
+		
+	@staticmethod
+	def image_exist(filename):
+		import os, shutil
+		thumb_file = './thumbs/' + filename
+		upload_file = './uploads/' + filename
+		if os.path.exists(thumb_file):
+			return True
+		elif os.path.exists(upload_file):
+			shutil.copyfile(upload_file, thumb_file)
+			return True
+		else:
+			return False
