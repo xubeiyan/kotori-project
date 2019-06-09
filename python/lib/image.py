@@ -10,7 +10,7 @@ class image:
 	@staticmethod
 	def upload_file(file, temp_folder, upload_folder, database):
 		# 将其保存到临时文件夹
-		from util import util
+		from lib.util import util
 		import os
 		tmp_filename = util.random_filename() + '.tmp'
 		full_tmp_filename = os.path.join(temp_folder, tmp_filename)
@@ -35,7 +35,7 @@ class image:
 			return util.success('upload', add_info)
 		else:
 			os.remove(full_tmp_filename)
-			return util.error('upload_image_format_error')
+			return error('upload_image_format_error')
 			
 		
 	# 文件类型检测
@@ -44,7 +44,7 @@ class image:
 		type_str = ''
 		with open(file, 'rb') as f:
 			# 读取前两字节
-			type_str = [hex(ord(x)) for x in f.read(2)]
+			type_str = [hex(x) for x in f.read(2)]
 			
 		if 'app' in vars():
 			allow_extensions = app.config['UPLOAD_ALLOW_EXTENSION']

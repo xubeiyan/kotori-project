@@ -13,7 +13,7 @@ class util:
 	@staticmethod
 	def random_filename():
 		import hashlib, time
-		return hashlib.md5(str(time.time())).hexdigest()
+		return hashlib.md5(str(time.time()).encode('utf-8')).hexdigest()
 		
 	# 生成json返回
 	@staticmethod
@@ -163,3 +163,13 @@ class util:
 			
 		return json.dumps(return_dict)
 				
+	# 随机获取一条小鸟说过的话
+	@staticmethod
+	def gal_motto():
+		import os
+		file = './templates/default/motto.txt'
+		if not os.path.exists(file):
+			return 'not found'
+		
+		with open(file, 'r', encoding="utf-8") as f:
+			return [line for line in f]

@@ -73,6 +73,7 @@ file.addEventListener("change", function (e) {
 	var str = '<img id="uploadImg" src="' + img + '"><p>图片名称：' + filename + '</p>' +
 			'<p>大小:' + filesize + 'KB</p>';
 	preview.innerHTML = str;
+	area.className = "little";
 	upload.style.display = "block";
 	imgObj = fileList[0];
 });

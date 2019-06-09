@@ -18,9 +18,11 @@ app.config.from_pyfile(default_settings_file)
 
 
 # 一些自定义库
-from lib.image import image
-from lib.user import user
-from lib.util import util
+from lib.image import *
+from lib.user import *
+from lib.util import *
+
+motto_list = util.gal_motto()
 
 # GET方法
 # 根目录
@@ -32,18 +34,21 @@ def index():
 @app.route('/upload', methods = ['GET', 'POST'])
 def file_upload():
 	if request.method == 'GET':
-		# if session.has_key['login']:
-			# temp['userinfo'] = '1'
-			
-		return render_template('uploadFile.html').encode('utf-8')
+		from random import choice
+		motto = {
+			'text': choice(motto_list).split('|')[0],
+			'from': choice(motto_list).split('|')[1]
+		}
+		# print(motto.decode('utf-8').encode('gbk'))
+		return render_template('uploadFile.html', motto=motto).encode('utf-8')
 	elif request.method == 'POST':
 		img_folder = app.config['UPLOAD_FOLDER']
 		thumb_folder = app.config['THUMB_FOLDER']
 		if not request.files['img']:
 			return 'there not an image'
-		# print request.headers.get('Kotori-Request')
+
 		# 某个检测header里有没有指定字段的
-		if not app.config.has_key('UPLOAD_STRING_CHECK') or \
+		if not app.config.__contains__('UPLOAD_STRING_CHECK') or \
 			not app.config['UPLOAD_STRING_CHECK'] == request.headers.get('Kotori-Request'):
 			return 'not pass the check'
 			
