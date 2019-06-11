@@ -20,6 +20,7 @@
 {% endblock %}
 {% block content %}
 <div class="container">
+	<div class="blank"></div>
 	<input type="file" id="file"/>
 	<div id="area" class="normal" title="目前支持5M以下的jpg, png, gif">{{ config.UPLOAD_AREA_TEXT }}</div>
 	<input type="button" id="uploadButton" value="上传"/>
@@ -29,8 +30,8 @@
 {% block footer %}
 <div class="container">
 	<ul class="footer-left">
-		<li>&copy;2017</li>
-		<li>-</li>
+		<li>&copy;2017-{{ current_year }}</li>
+		<li>|</li>
 		<li title="当然是小鸟啦">{{ config.PROJECT_NAME }}</li>
 		<li>|</li>
 		<li><a href="{{ config.GITHUB }}" title="神秘交易地点">Github</a></li>

@@ -21,7 +21,7 @@
 {% block content %}
 <div class="container">
 {% if not fl %}
-	<p>there is no image</p>
+	<span>there is no image</span>
 {% endif %}
 {% for filename in fl %}
 	<a href="uploads?name={{ filename }}"><img class="thumbs" src="thumbs?name={{ filename }}" /></a>
@@ -31,14 +31,14 @@
 {% block footer %}
 <div class="container">
 	<ul class="footer-left">
-		<li>&copy;2017</li>
-		<li>-</li>
+		<li>&copy;2017-{{ current_year }}</li>
+		<li>|</li>
 		<li title="当然是小鸟啦">{{ config.PROJECT_NAME }}</li>
 		<li>|</li>
 		<li><a href="{{ config.GITHUB }}" title="神秘交易地点">Github</a></li>
 	</ul>
 	<ul class="footer-right">
-		<li><span>某自用图床</span></li>
+		<li><span title="{{ motto.from }}">{{ motto.text }}</span></li>
 	</ul> 
 </div>
 {% endblock %}

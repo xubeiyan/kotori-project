@@ -163,7 +163,7 @@ class util:
 			
 		return json.dumps(return_dict)
 				
-	# 随机获取一条小鸟说过的话
+	# 读取motto.txt里的名言
 	@staticmethod
 	def gal_motto():
 		import os
@@ -173,3 +173,14 @@ class util:
 		
 		with open(file, 'r', encoding="utf-8") as f:
 			return [line for line in f]
+			
+	# 获取随机一条名言
+	@staticmethod
+	def select_motto(motto_list):
+		from random import choice
+		select_motto = choice(motto_list)
+		motto = {
+			'text': select_motto.split('|')[0],
+			'from': 'from ' + select_motto.split('|')[1]
+		}
+		return motto

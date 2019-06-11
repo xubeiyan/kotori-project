@@ -1,6 +1,7 @@
 # coding: utf-8
 import os
 import sqlite3
+import time
 # werkzeug
 from werkzeug import secure_filename
 
@@ -34,13 +35,10 @@ def index():
 @app.route('/upload', methods = ['GET', 'POST'])
 def file_upload():
 	if request.method == 'GET':
-		from random import choice
-		motto = {
-			'text': choice(motto_list).split('|')[0],
-			'from': choice(motto_list).split('|')[1]
-		}
+		motto = util.select_motto(motto_list)
+		year = time.strftime("%Y", time.localtime())
 		# print(motto.decode('utf-8').encode('gbk'))
-		return render_template('uploadFile.html', motto=motto).encode('utf-8')
+		return render_template('uploadFile.html', motto=motto, current_year=year).encode('utf-8')
 	elif request.method == 'POST':
 		img_folder = app.config['UPLOAD_FOLDER']
 		thumb_folder = app.config['THUMB_FOLDER']
@@ -92,9 +90,11 @@ def userinfo():
 def list():
 	page = request.args.get('page', '') 
 	page = page if page.isdigit() and page >= 1 else 1;
+	motto = util.select_motto(motto_list)
+	year = time.strftime("%Y", time.localtime())
 	file_list = image.get_image_list(int(page), app.config['IMAGE_PER_PAGE'], app.config['DATABASE'])
 	filename_list = [e[0] for e in file_list]
-	return render_template('list.html', fl=filename_list).encode('utf-8');
+	return render_template('list.html', motto=motto, current_year=year, fl=filename_list).encode('utf-8');
 	
 # 管理
 @app.route('/manage', methods = ['GET', 'POST'])
