@@ -23,6 +23,18 @@ class util:
 		resp.headers['Content-Type'] = 'application/json'
 		return resp
 		
+	# 验证查看的图片文件名是否正确	
+	@staticmethod
+	def is_name_valid(name):
+		list = name.split('.')
+		if len(list) != 2:
+			return False
+		filename, ext = list[0], list[1]
+		if len(filename) == 32 and ext in ['jpg', 'png', 'gif', 'webp']:
+			return True
+		else:
+			return False
+	
 	# 生成错误信息
 	@staticmethod
 	def error(name, extra_info = {}, type='json'):

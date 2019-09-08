@@ -86,6 +86,10 @@ main div#preview {
 	width: 1000px;
 }
 
+main div.image-container {
+	padding-top: 1em;
+}
+
 div#preview p#progress{
 	display: block;
 	width: 1000px;

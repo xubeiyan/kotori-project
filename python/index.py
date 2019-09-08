@@ -94,7 +94,7 @@ def list():
 	year = time.strftime("%Y", time.localtime())
 	file_list = image.get_image_list(int(page), app.config['IMAGE_PER_PAGE'], app.config['DATABASE'])
 	filename_list = [e[0] for e in file_list]
-	return render_template('list.html', motto=motto, current_year=year, fl=filename_list).encode('utf-8');
+	return render_template('list.html', motto=motto, current_year=year, fl=filename_list).encode('utf-8')
 	
 # 管理
 @app.route('/manage', methods = ['GET', 'POST'])
@@ -110,12 +110,15 @@ def manage():
 @app.route('/uploads', methods = ['GET'])
 def uploads():
 	name = request.args.get('name')
+	motto = util.select_motto(motto_list)
+	year = time.strftime("%Y", time.localtime())
 	if name == None:
 		name = 'not exist'
-	if image.image_exist(name):
-		return send_file('./uploads/' + name)
+	if not util.is_name_valid(name) or not image.image_exist(name):
+		return render_template('404.html', motto=motto, current_year=year, name=name).encode('utf-8')
 	else:
-		return 'not found file with name:' + name	
+		return send_file('./uploads/' + name)
+		
 		
 # 略缩图
 @app.route('/thumbs', methods = ['GET'])

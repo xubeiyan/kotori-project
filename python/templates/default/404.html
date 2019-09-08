@@ -1,5 +1,5 @@
 {% extends "layout.html" %}
-{% block title %} 文件列表 - {{ config.PROJECT_NAME }}{% endblock %}
+{% block title %} 未找到 - {{ config.PROJECT_NAME }}{% endblock %}
 {% block head %}{{ super() }}{% endblock %}
 {% block header %}
 <div class="container">
@@ -20,14 +20,7 @@
 {% endblock %}
 {% block content %}
 <div class="container">
-{% if not fl %}
-	<span>there is no image</span>
-{% endif %}
-	<div class="image-container">
-	{% for filename in fl %}
-		<a href="uploads?name={{ filename }}"><img class="thumbs" src="thumbs?name={{ filename }}" /></a>
-	{% endfor%}
-	</div>
+	<span>there is no image with name: {{name}}</span>
 </div>
 {% endblock %}
 {% block footer %}
