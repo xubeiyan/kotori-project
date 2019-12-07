@@ -24,7 +24,7 @@ if (isset($config['file']['imageDataFile'])) {
 }
 
 // 处理no的情况
-if (isset($_GET['no'])) {
+if (isset($_GET['no']) && $config['environment'] == DEV) {
 	$template = Array(
 		'title' => '即将跳转',
 		'header' => '跳转',
@@ -42,7 +42,7 @@ if (isset($_GET['no'])) {
 }
 
 // 处理yes的情况
-if (isset($_GET['yes'])) {
+if (isset($_GET['yes']) && $config['environment'] == DEV) {
 	require '../lib/Util.php';
 	Util::clearAllData();
 	
@@ -60,10 +60,21 @@ if ($config['environment'] == DEV) {
 	$template = Array(
 		'title' => '提示信息...',
 		'header' => '注意',
-		'info' => '当前配置文件为生产环境，确定要清空所有图像和用户数据？',
+		'info' => '确定要清空所有图像和用户数据？',
 	);
 	
 	echo Template::render('question', $template);
+	exit();
+}
+
+if ($config['environment'] == PROD) {
+	$template = Array(
+		'title' => '提示信息...',
+		'header' => '注意',
+		'info' => '生产环境暂时无法直接清除所有数据',
+	);
+	
+	echo Template::render('info', $template);
 	exit();
 }
 ?>
