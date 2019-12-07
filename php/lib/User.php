@@ -317,6 +317,20 @@ class User {
 		$returnArray['result'] = 'modify success';
 		return json_encode($returnArray, JSON_UNESCAPED_UNICODE);
 	}
+	
+	// 清除所有用户信息（跑路用
+	public static function clearAllUserData($file) {
+		$fp = fopen($file, 'r+');
+		# 读取前面的#行
+		$temp = '';
+		for ($line = fgets($fp); $line[0] == '#'; $line = fgets($fp)) {
+			$temp .= $line;
+		}
+		fclose($fp);
+		unlink($file);
+		file_put_contents($file, $temp);
+		// echo 'all user data cleared!<br>';
+	}
 }
 
 ?>

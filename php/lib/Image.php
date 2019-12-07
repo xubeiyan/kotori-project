@@ -491,5 +491,19 @@ class Image {
 		
 		return $thumbFolder . '/' . $imageFile;
 	}
+	
+	// 清除所有图片信息（跑路用
+	public static function clearAllImageData($file) {
+		$fp = fopen($file, 'r+');
+		# 读取前面的#行
+		$temp = '';
+		for ($line = fgets($fp); $line[0] == '#'; $line = fgets($fp)) {
+			$temp .= $line;
+		}
+		fclose($fp);
+		unlink($file);
+		file_put_contents($file, $temp);
+		// echo 'all image data cleared!<br>';
+	}
 }
 ?>

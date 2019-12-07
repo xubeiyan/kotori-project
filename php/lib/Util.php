@@ -141,5 +141,42 @@ class Util {
 		return $returnArray;
 	}
 	
+	/**
+	* 清空所有图片和用户数据（跑路用
+	* 危险！请谨慎调用此方法
+	*/
+	public static function clearAllData() {
+		global $config;
+		
+		// 清空所有图片文件
+		$path = $config['file']['uploadFolder'];
+		
+		foreach ($config['file']['allowFileType'] as $val) {
+			$upper = '../' . $path . '/*.' . strtoupper($val);
+			$lower = '../' . $path . '/*.' . strtolower($val);
+			array_map('unlink', glob($upper));
+			array_map('unlink', glob($lower));
+		}
+		
+		$path = $config['file']['thumbFolder'];
+		foreach ($config['file']['allowFileType'] as $val) {
+			$upper = '../' . $path . '/*.' . strtoupper($val);
+			$lower = '../' . $path . '/*.' . strtolower($val);
+			array_map('unlink', glob($upper));
+			array_map('unlink', glob($lower));
+		}
+		
+		
+		// 清空data/userdata
+		require 'User.php';
+		$file = $config['user']['userDataFile'];
+		User::clearAllUserData('../' . $file);
+		
+		// 清空data/imagedata
+		require 'Image.php';
+		$file = $config['file']['imageDataFile'];
+		Image::clearAllImageData('../' . $file);
+		
+	}
 }
 ?>
