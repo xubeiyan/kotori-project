@@ -265,29 +265,31 @@ class User {
 		
 	}
 	
-	// 生成注册登录列表
+	/** 
+	* 生成注册登录列表
+	*/
 	public static function generateRegisterandLoginList($uri) {
 		$returnArray = Array();
-		$userId = $_SESSION['currentUser']['id'] == 0 ? '<span style="color: #a87152">KOTORI</span>' : $_SESSION['currentUser']['id'];
-		$listRegister = '<li><a href="?register" title="register">想签定契约</a></li>';
-		$listLogin = '<li><a href="?login" title="login">想传更大文件</a></li>';
-		$listLogout = '<li><a href="?userinfo" title="userinfo">' . $userId . '</a></li>
-				<li><a href="?logout" title="logout">注销</a></li>';
+		$userId = $_SESSION['currentUser']['id'] == 0 ? '<span class="admin">KOTORI</span>' : $_SESSION['currentUser']['id'];
+		$listRegister = '<li class="right"><a href="?register" title="register">想签定契约</a></li>';
+		$listLogin = '<li class="right"><a href="?login" title="login">想传更大文件</a></li>';
+		$listLogout = '<li class="right"><a href="?userinfo" title="userinfo">' . $userId . '</a></li>
+				<li class="right"><a href="?logout" title="logout">注销</a></li>';
 		// 是否登录
 		if ($_SESSION['currentUser']['anonymous'] == '0') {
-			$returnArray['%userinfo%'] = $listLogout;
+			$returnArray = $listLogout;
 			return $returnArray;
 		} else {
 			if ($uri == 'login') {
-				$returnArray['%userinfo%'] = $listRegister;
+				$returnArray = $listRegister;
 				return $returnArray;
 			} else if ($uri == 'register') {
-				$returnArray['%userinfo%'] = $listLogin;
+				$returnArray = $listLogin;
 				return $returnArray;
 			}
 		}
 		
-		$returnArray['%userinfo%'] = $listRegister . "\n" . $listLogin;
+		$returnArray = $listRegister . "\n" . $listLogin;
 		return $returnArray;
 	}
 	

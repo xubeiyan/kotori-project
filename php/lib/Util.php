@@ -16,22 +16,75 @@ class Util {
 		return $info;
 	}
 	
-	// 输出对应的结果
-	public static function template($templateFile, $templateInfo = Array()) {
+	/* 
+	* 获取对应的模板并渲染
+	* 参数：要渲染的页面名称，已经模板字符串数组
+	*/
+	public static function template($pageName, $templateStringArray = Array()) {
 		global $config;
-		$templateFolder = 'templates/' . $config['site']['template'];
-		//print $file;
-		$fileContent = file_get_contents($templateFolder .'/' . $templateFile);
-		$fileContent = str_replace('%template%', $templateFolder, $fileContent);
-		
-		// $templateInfo非空则替换
-		if ($templateInfo != Array()) {
-			foreach ($templateInfo as $key => $value) {
-				$fileContent = str_replace($key, $value, $fileContent);
-			}
+		// 是否有对应字段来确定模板名称
+		if (!isset($config['site']['template'])) {
+			$templateFolder = 'templates/' . $config['site']['templateName'];
+		} else {
+			$templateFolder = 'templates/default';
 		}
-		echo $fileContent;
+		
+		$templateStringArray['template_name'] = $templateFolder;
+		$templateStringArray['current_year'] = date('Y');
+		
+		// 脚手架文件
+		$scaffold = file_get_contents($templateFolder . '/template.html');
+		$templatePage = file_get_contents($templateFolder . '/' . $pageName);
+		$headerPage = file_get_contents($templateFolder . '/header.html');
+		$footerPage = file_get_contents($templateFolder . '/footer.html');
+		$scriptPage = self::jstemplate($templateStringArray, $templateFolder);
+		
+		// 最终模板文件
+		$finalTemplate = Array(
+			'include' => Array(
+				'header' => $headerPage,
+				'main' => $templatePage,
+				'footer' => $footerPage,
+				'script' => $scriptPage,
+			),
+			'string' => $templateStringArray,
+		);
+		$content = $scaffold;
+		
+		// 替换页面部分
+		foreach ($finalTemplate['include'] as $key => $value) {
+			$from = sprintf('<%% %s %%>', $key);
+			$to = $value;
+			$content = str_replace($from, $to, $content);
+		}
+		
+		// 替换字符串部分
+		foreach ($finalTemplate['string'] as $key => $value) {
+			$from = sprintf('{%% %s %%}', $key);
+			$to = $value;
+			$content = str_replace($from, $to, $content);
+		}
+
+		echo $content;
 		exit();
+	}
+	
+	/*
+	* 输出需要的js文件
+	*/
+	private static function jstemplate($fileArrayString, $folder) {
+		if (!isset($fileArrayString['script'])) {
+			return '';
+		}
+		
+		$returnString = '';
+		$fileArray = explode(',', $fileArrayString['script']);
+		foreach ($fileArray as $value) {
+			$completeSrc = sprintf('%s/js/%s', $folder, $value); 
+			$returnString .= sprintf('<script src="%s">', $completeSrc);
+		}
+		
+		return $returnString;
 	}
 	
 	// 输出错误信息
@@ -39,7 +92,7 @@ class Util {
 		// TODO：须调用对应的错误信息模板模板
 		// 未找到配置文件
 		if ($errType == 'missConfigurationFile') {
-			die('can not find configuration file at ' . $errinfo['configfile']);
+			die(sprintf('can not find configuration file at %s, may not install?', $errinfo['configfile']));
 		// 未找到图像
 		} else if ($errType == 'noImageforRandom' ) {
 			die('there is not any image for random');

@@ -31,7 +31,7 @@ $config = Array (
 	'site' => Array(
 		'manageImagePerPage' 	=> 20,				#管理页面每页显示图片
 		'rewriteURI' 			=> false,			#是否启用Rewrite URI
-		'template' 				=> 'default',		#使用模板名称
+		'templateName' 			=> 'default',		#使用的模板名称，默认为default
 	)
 );
 ?>

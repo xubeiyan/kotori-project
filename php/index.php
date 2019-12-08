@@ -43,7 +43,12 @@ if ($clientInfo['requestMethod'] == 'GET') {
 	// 上传文件	
 	} else if ($clientInfo['query'] == 'upload') {
 		// var_dump($_SESSION['currentUser']);
-		$templateArray = User::generateRegisterandLoginList($clientInfo['query']);
+		
+		$templateArray = Array(
+			'title' => '上传文件',
+			'userinfo' => User::generateRegisterandLoginList($clientInfo['query']),
+			'script' => 'upload.js',
+		);
 		Util::template('uploadFile.html', $templateArray);
 	// 随机访问图片
 	} else if ($clientInfo['query'] == 'random') {
