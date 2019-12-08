@@ -1,8 +1,63 @@
-var area = document.getElementById('area'),
-	preview = document.getElementById('preview'),
-	file = document.getElementById('file'),
-	upload = document.getElementById('uploadButton'),
-	imgObj = {};
+var area = document.getElementById('area'),				// 点击或拖放区域
+	preview = document.getElementById('preview'),		// 预览区域
+	file = document.getElementById('file'),				// 上传input
+	upload = document.getElementById('uploadButton'),	// 上传按钮
+	notice = document.getElementById('notice'),			// 提示信息
+	UPLOAD_FILE_SIZE = 1024 * 10,						// 上传文件大小限制
+	imgObj = {},
+	imgInfo = {											// 待上传文件信息
+		img: undefined,
+		filename: undefined,
+		filesize: undefined,
+	},
+	// 显示提示信息
+	showNotice = function (text) {
+		notice.innerHTML = '<span>' + text + '</text>';
+	},
+	// 清除提示信息
+	clearNotice = function () {
+		notice.innerHTML = '';
+	},
+	// 检查图片
+	imgValidate = function (fileList) {
+		clearNotice();
+		
+		if (fileList.length == 0) {
+			return false;
+		}
+		
+		if (fileList[0].type.indexOf('image') == -1) {
+			showNotice('注意：选择上传的文件不是图片');
+			return false;
+		}
+		
+		imgInfo.img = window.URL.createObjectURL(fileList[0]);
+		imgInfo.filename = fileList[0].name;
+		imgInfo.filesize = Math.floor((fileList[0].size) / 1024);
+			
+		if (imgInfo.filesize > UPLOAD_FILE_SIZE) {
+			showNotice('注意：文件大小不能超过10M');
+			return false;
+		}
+		return true;
+	},
+	clearPreview = function () {
+		preview.innerHTML = '';
+		imgInfo = {											
+			img: undefined,
+			filename: undefined,
+			filesize: undefined,
+		}
+	}
+	// 显示图片预览信息
+	showUploadFileDetails = function (fileList) {
+		
+		var str = '<img id="uploadImg" src="' + imgInfo.img + '"><p class="details"><span>图片名称：' + imgInfo.filename + '</span></p>' +
+				'<p class="details"><span>大小:' + imgInfo.filesize + 'KB</span></p>';
+		preview.innerHTML = str;
+		upload.style.display = "block";
+		imgObj = fileList[0];
+	};
 	
 area.addEventListener("dragleave", function(e) {
 	e.preventDefault();
@@ -17,30 +72,11 @@ area.addEventListener("dragover", function(e) {
 area.addEventListener("drop", function (e) {
 	e.preventDefault();
 	var fileList = e.dataTransfer.files;
-	
-	if (fileList.length == 0) {
-		return false;
+	if (!imgValidate(fileList)) {
+		clearPreview();
+		return;
 	}
-	
-	if (fileList[0].type.indexOf('image') == -1) {
-		console.log('拖放的不是图片...');
-		return false;
-	}
-	
-	var img = window.URL.createObjectURL(fileList[0]),
-		filename = fileList[0].name,
-		filesize = Math.floor((fileList[0].size) / 1024);
-		
-	if (filesize > 10240) {
-		console.log('文件大小不能超过10M！');
-		return false;
-	}
-	
-	var str = '<img id="uploadImg" src="' + img + '"><p>图片名称：' + filename + '</p>' +
-			'<p>大小:' + filesize + 'KB</p>';
-	preview.innerHTML = str;
-	upload.style.display = "block";
-	imgObj = fileList[0];
+	showUploadFileDetails(fileList);
 });
 
 area.addEventListener("click", function () {
@@ -49,30 +85,11 @@ area.addEventListener("click", function () {
 
 file.addEventListener("change", function (e) {
 	var fileList = e.target.files;
-	
-	if (fileList.length == 0) {
-		return false;
+	if (!imgValidate(fileList)) {
+		clearPreview();
+		return;
 	}
-	
-	if (fileList[0].type.indexOf('image') == -1) {
-		console.log('选择的不是图片...');
-		return false;
-	}
-	
-	var img = window.URL.createObjectURL(fileList[0]),
-		filename = fileList[0].name,
-		filesize = Math.floor((fileList[0].size) / 1024);
-		
-	if (filesize > 10240) {
-		console.log('文件大小不能超过10M！');
-		return false;
-	}
-	
-	var str = '<img id="uploadImg" src="' + img + '"><p>图片名称：' + filename + '</p>' +
-			'<p>大小:' + filesize + 'KB</p>';
-	preview.innerHTML = str;
-	upload.style.display = "block";
-	imgObj = fileList[0];
+	showUploadFileDetails(fileList);
 });
 
 upload.addEventListener("click", function () {
@@ -88,9 +105,9 @@ upload.addEventListener("click", function () {
 	progress.id = "progress";	
 		
 	xhr.upload.addEventListener("progress", function(e) {
-		var pc = parseInt(100 - (e.loaded / e.total * 100));
+		var pc = parseInt(e.loaded / e.total * 100);
 		if (e.lengthComputable) {
-			progress.style.backgroundPosition = pc + "% 0";
+			progress.style.backgroundSize = pc + "% 100%";
 			progress.innerText = progress.innerText.split(' ')[0] + ' ' + e.loaded + '/' + e.total;
 			console.log(e.loaded + '/' + e.total);
 		}
@@ -99,7 +116,9 @@ upload.addEventListener("click", function () {
 	xhr.onreadystatechange = function() {
 		if (xhr.readyState == 4 && xhr.status == 200) {
 			var responseArray = JSON.parse(xhr.responseText),
-				folder = preview.appendChild(document.createElement("p"));
+				p_result = document.createElement("p");
+				p_result.className = 'result';
+			var	folder = preview.appendChild(p_result);
 				
 			if (responseArray['result'] == 'upload success') {
 				progress.className = "success";

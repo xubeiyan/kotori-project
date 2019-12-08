@@ -1,0 +1,175 @@
+body {
+	margin: 0;
+	color: #2B2B28;
+}
+
+/* #F8F8F8 #F1D6AB #E3B04B #2B2B28 */
+
+/* Header部分 */
+header {
+	width: 100%;
+	background-color: #F1D6AB;
+	box-shadow: 0 5px 5px #DDD;
+}
+
+header>ul.header-menu {
+	margin: 0;
+	padding-top: 1em;
+	padding-bottom: 1em;
+	padding-left: 0;
+	width: 300px;
+	margin-left: auto;
+	margin-right: auto;
+	list-style: none;
+}
+
+header>ul.header-menu>li {
+	padding-left: 1em;
+	padding-right: 0.1em;
+	margin-bottom: 0.1em;
+	height: 1.5em;
+	line-height: 1.5em;
+	border: 0.05em solid #E1C69B;
+	border-radius: 0.5em;
+}
+
+
+header>ul.header-menu>li.right {
+	background-color: #E1C69B;
+}
+
+header>ul.header-menu>li:hover {
+	background-color: #E3B04B;
+}
+
+header>ul.header-menu>li>a {
+	color: #2B2B28;
+	text-decoration: none;
+}
+
+main {
+	margin-top: 0.5em;
+}
+
+main>input#file {
+	display:none;
+}
+
+main>div#area {
+	width: 100%;
+	height: 5em;
+	line-height: 5em;
+	text-align: center;
+	background-color: #EEE;
+	cursor: pointer;
+	margin-bottom: 0.5em;
+}
+
+
+main>input#uploadButton {
+	display: none;
+	width: 300px;
+	height: 2em;
+	margin-left: auto;
+	margin-right: auto;
+	margin-bottom: 0.5em;
+	
+	border: 1px solid #E3B04B;
+	background-color: #E3B04B;
+}
+
+
+main>div#preview {
+	width: 100%;
+}
+
+main>div#preview>img#uploadImg {
+	width: 100%;
+	display: block;
+}
+
+main>div#preview>p.details {
+	width: 100%;
+	display: inline-block;
+	margin-top: 0;
+	margin-bottom: 0;	
+	padding-top: 0.5em;
+	padding-bottom: 0.5em;
+	background-color: #EEE;
+}
+
+main>div#preview>p.details>span {
+	width: 300px;
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+main>div#preview>p#progress {
+	display: block;
+	width: 300px;
+	padding: 0;
+	margin-left: auto;
+	margin-right: auto;
+	border: 1px inset #466;
+	border-radius: 2px;
+	background: linear-gradient(#cc0, #cc0);
+	background-size: 0% 100%;
+	background-repeat: no-repeat;
+}
+
+main>div#preview>p#progress.success {
+	background: linear-gradient(#0c0, #0c0);
+}
+
+main>div#preview>p#progress.failed {
+	background: linear-gradient(#c00, #c00);
+}
+
+main>div#preview>p.result {
+	width: 300px;
+    word-break: break-all;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+main>div#notice {
+	margin-top: 0.5em;
+	background-color: #FEE;
+}
+
+main>div#notice>span {
+	display: block;
+	width: 300px;
+	margin-left: auto;
+	margin-right: auto;
+	padding-top: 0.5em;
+	padding-bottom: 0.5em;
+}
+
+footer {
+	width: 100%;
+	position: absolute;
+	bottom: 0;
+	height: 2em;
+}
+
+footer>ul.footer-menu {
+	margin: 0;
+	padding-left: 0;
+	width: 300px;
+	margin-left: auto;
+	margin-right: auto;
+	list-style: none;
+}
+
+footer>ul.footer-menu>li {
+	display: inline-block;
+	padding: 0;
+	height: 2em;
+	line-height: 2em;
+}
+
+footer>ul.footer-menu>li.right {
+	float: right;
+}

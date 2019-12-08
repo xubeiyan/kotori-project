@@ -47,6 +47,101 @@ header>ul.header-menu>li>a {
 
 main {
 	margin-top: 1em;
+	width: 600px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+main>input#file {
+	display:none;
+}
+
+main>div#area {
+	width: 600px;
+	height: 200px;
+	line-height:200px;
+	text-align:center;
+	background-color: #EEE;
+	cursor: pointer;
+}
+
+main>div#area:hover {
+	background-color: #DDD;
+}
+
+main>div#preview {
+	width: 600px;
+}
+
+main>div#preview>img#uploadImg {
+	width: 100%;
+	display: block;
+}
+
+/* 图像信息 */
+main>div#preview>p.details {
+	width: 100%;
+	display: inline-block;
+	margin-top: 0;
+	margin-bottom: 0;	
+	padding-top: 0.5em;
+	padding-bottom: 0.5em;
+	background-color: #EEE;
+}
+
+main>div#preview>p.details>span {
+	width: 90%;
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+/* 上传进度条 */
+main>div#preview>p#progress {
+	display: block;
+	width: 600px;
+	padding: 0;
+	margin: 2px 0;
+	border: 1px inset #466;
+	border-radius: 2px;
+	background: linear-gradient(#cc0, #cc0);
+	background-size: 0% 100%;
+	background-repeat: no-repeat;
+}
+
+main>div#preview>p#progress.success {
+	background: linear-gradient(#0c0, #0c0);
+}
+
+main>div#preview>p#progress.failed {
+	background: linear-gradient(#c00, #c00);
+}
+
+main>div#preview>p.result {
+	width: 600px;
+    word-break: break-all;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+main>input#uploadButton {
+	display: none;
+	width: 600px;
+	height: 30px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+main>div#notice {
+	margin-top: 0.5em;
+	background-color: #FEE;
+}
+
+main>div#notice>span {
+	display: inline-block;
+	padding-left: 2em;
+	padding-top: 0.5em;
+	padding-bottom: 0.5em;
 }
 
 footer {
@@ -72,37 +167,8 @@ footer>ul.footer-menu>li {
 	line-height: 2em;
 }
 
-div#area {
-	width: 600px;
-	height: 200px;
-	line-height:200px;
-	text-align:center;
-	background-color: #EEE;
-	cursor: pointer;
-}
-div#area:hover {
-	background-color: #DDD;
-}
-
-div#preview {
-	width: 600px;
-}
-
-div#preview p#progress{
-	display: block;
-	width: 600px;
-	padding: 0;
-	margin: 2px 0;
-	border: 1px inset #466;
-	border-radius: 2px;
-}
-
-p#progress.success {
-	background: #0c0 none 0 0 no-repeat;
-}
-
-p#progress.failed {
-	background: #c00 none 0 0 no-repeat;
+footer>ul.footer-menu>li.right {
+	float: right;
 }
 
 div#list-container {
@@ -196,53 +262,6 @@ div#footer-wide {
 	width:1000px;
 }
 
-img#uploadImg {
-	width: 600px;
-	display: block;
-	margin-left: auto;
-	margin-right: auto;
-}
-
-input#file {
-	display:none;
-}
-
-input#uploadButton {
-	display:none;
-	width:600px;
-	height:30px;
-	margin-left:auto;
-	margin-right:auto;
-}
-
-
-
-div.autoLR {
-	margin-left: auto;
-	margin-right: auto;
-}
-
-ul.footer-left {
-	margin: 0;
-	padding: 0;
-	list-style: none;
-	float: left;
-}
-
-ul.footer-left li{
-	display: inline-block;
-}
-
-ul.footer-right {
-	margin: 0;
-	padding: 0;
-	list-style: none;
-	float:right;
-}
-
-ul.footer-right li{
-	display: inline-block;
-}
 
 
 a.important {
