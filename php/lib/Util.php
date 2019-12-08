@@ -194,6 +194,20 @@ class Util {
 		return $returnArray;
 	}
 	
+	/*
+	* 计算合适显示的文件大小，保留1位小数
+	*/
+	public static function suitableSize($byteSize) {
+		$byteSize = 1 * $byteSize;
+		if ($byteSize >= 1024 * 1024) {
+			return sprintf('%.1f', $byteSize / 1024 / 1024) . 'MB';
+		} else if ($byteSize >= 1024) {
+			return sprintf('%.1f', $byteSize / 1024) . 'KB';
+		} else {
+			return sprintf('%.1f', $byteSize) . 'B';
+		}
+	}
+	
 	/**
 	* 清空所有图片和用户数据（跑路用
 	* 危险！请谨慎调用此方法

@@ -237,6 +237,7 @@ class User {
 			fclose($fp);
 			$content = self::addAnonymous($file, Array('ip' => $currentIP));
 			$_SESSION['currentUser'] = $content;
+			
 			return;
 		} 
 		

@@ -53,9 +53,16 @@ if ($clientInfo['requestMethod'] == 'GET') {
 	// 随机访问图片
 	} else if ($clientInfo['query'] == 'random') {
 		$imageArray = Image::randomImage($config['file']['imageDataFile']);
-		
-		$templateArray = Image::generateRandomTemplate($imageArray);
-		$templateArray = array_merge($templateArray, User::generateRegisterandLoginList($clientInfo['query']));
+		$templateArray = Array(
+			'title' => '随便看看',
+			'userinfo' => User::generateRegisterandLoginList($clientInfo['query']),
+			'filename' => $imageArray['filename'],
+			'imgPath' => $config['file']['uploadFolder'] . '/' . $imageArray['filename'],
+			'uploader' => $imageArray['uploader'],
+			'size'	=> Util::suitableSize($imageArray['size']),
+			'uploadtime' => $imageArray['uploadtime'],
+			'script' => 'visit.js',
+		);
 		// Image::generateHeader($imageArray['filename']);
 		Util::template('random.html', $templateArray);
 	// 列出图片
