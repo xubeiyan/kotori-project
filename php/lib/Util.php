@@ -81,7 +81,7 @@ class Util {
 		$fileArray = explode(',', $fileArrayString['script']);
 		foreach ($fileArray as $value) {
 			$completeSrc = sprintf('%s/js/%s', $folder, $value); 
-			$returnString .= sprintf('<script src="%s">', $completeSrc);
+			$returnString .= sprintf('<script type="text/javascript" src="%s"></script>', $completeSrc);
 		}
 		
 		return $returnString;
