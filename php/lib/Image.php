@@ -148,7 +148,7 @@ class Image {
 		for (; $selectLine > 0; $selectLine -= 1, $line = fgets($fp));
 		
 		if ($line == '') {
-			Util::err('noImageforRandom');
+			return 'NoImageForRandom';
 		}
 		
 		$imageArray = self::imagedataString2Array($line);
@@ -216,12 +216,12 @@ class Image {
 			$next = $currentPage + 1;
 		}
 		
-		$imageListTemplate = Array(
-			'%imagelist%' => $imagelist,
-			'%prev%' => $prev,
-			'%next%' => $next,
-		);
-		return $imageListTemplate;
+		// $imageListTemplate = Array(
+			// '%imagelist%' => $imagelist,
+			// '%prev%' => $prev,
+			// '%next%' => $next,
+		// );
+		return $imagelist;
 	}
 	
 	/**
@@ -374,7 +374,7 @@ class Image {
 		
 		// 将传入的的页面值减1
 		$skipImage = ($page - 1) * $imgPerPage; 
-		$imageInfoArray = Array();
+		$imageSrcArray = Array();
 		
 		// print('image per page: ' . $imgPerPage);
 
@@ -385,17 +385,17 @@ class Image {
 		for (; $skipImage > 0; $line = fgets($fp), $skipImage -= 1);
 		
 		if ($line == '') {
-			Util::err('noImageforList');
+			return 'NoImageForList';
 		}
 		
 		for (; $imgPerPage > 0 && $line != ''; $imgPerPage -= 1, $line = fgets($fp)) {
 			// print_r($line);
 			$imageArray = self::imagedataString2Array($line);
-			array_push($imageInfoArray, $imageArray);
+			array_push($imageSrcArray, $imageArray);
 		}
 		
 		fclose($fp);
-		return $imageInfoArray;
+		return $imageSrcArray;
 	}
 	
 	/** 

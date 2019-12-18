@@ -16,6 +16,23 @@ class Util {
 		return $info;
 	}
 	
+	/*
+	* 处理页面参数返回一个数组
+	* 例如list=1&uid=2
+	* 返回['list' => '1', 'uid' => 2]
+	* 没有值为空字符串''
+	*/
+	public static function parameterParser($param) {
+		$paramPair = explode('&', $param);
+		$returnArray = Array();
+		
+		foreach ($paramPair as $value) {
+			$pair = explode('=', $value, 2);
+			$returnArray[$pair[0]] = isset($pair[1]) ? $pair[1] : '';
+		}
+		return $returnArray;
+	}
+	
 	/* 
 	* 获取对应的模板并渲染
 	* 参数：要渲染的页面名称，已经模板字符串数组
