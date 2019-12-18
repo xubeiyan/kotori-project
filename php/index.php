@@ -53,6 +53,19 @@ if ($clientInfo['requestMethod'] == 'GET') {
 	// 随机访问图片
 	} else if ($clientInfo['query'] == 'random') {
 		$imageArray = Image::randomImage($config['file']['imageDataFile']);
+		
+		// 如果返回没有图片可随机
+		if ($imageArray == 'NoImageForRandom') {
+			$templateArray = Array(
+				'title' => '出错了',
+				'userinfo' => User::generateRegisterandLoginList($clientInfo['query']),
+				'error' => '没有可显示的图片',
+			);
+		
+			Util::template('error.html', $templateArray);
+			exit();
+		}
+		
 		$templateArray = Array(
 			'title' => '随便看看',
 			'userinfo' => User::generateRegisterandLoginList($clientInfo['query']),
@@ -61,26 +74,50 @@ if ($clientInfo['requestMethod'] == 'GET') {
 			'uploader' => $imageArray['uploader'],
 			'size'	=> Util::suitableSize($imageArray['size']),
 			'uploadtime' => $imageArray['uploadtime'],
-			'script' => 'visit.js',
 		);
 		// Image::generateHeader($imageArray['filename']);
 		Util::template('random.html', $templateArray);
 	// 列出图片
 	} else if (substr($clientInfo['query'], 0, 4) == 'list') {
-		$listArray = explode('=', $clientInfo['query']);
+		// 处理页面参数
+		$pageInfo = Util::parameterParser($clientInfo['query']);
+		
 		// 检测是否提供了页面值，否则赋值为1
 		// 2017.10.17 修改为last跳到最后一页
-		if (isset($listArray[1]) && $listArray[1] == 'last') {
-			$listArray[1] = Image::getLastPage($config['file']['imagePerPage']);
-		} else if (!isset($listArray[1]) || !is_numeric($listArray[1]) || $listArray[1] <= 0) {
-			$listArray[1] = 1;
+		if ($pageInfo['list'] == 'last') {
+			$page = Image::getLastPage($config['file']['imagePerPage']);
+		} else if ($pageInfo['list'] == '' || !is_numeric($pageInfo['list'])) {
+			$page = 1;
 		} else {
-			$listArray[1] = intval($listArray[1]);
+			$page = intval($pageInfo['list']);
 		}
-		$imageListArray = Image::generateImageList($listArray[1], $config['file']['imagePerPage']);
+		
+		$imageSrcArray = Image::generateImageList($page, $config['file']['imagePerPage']);
+		
+		if ($imageSrcArray == 'NoImageForList') {
+			$templateArray = Array(
+				'title' => '出错了',
+				'userinfo' => User::generateRegisterandLoginList($clientInfo['query']),
+				'error' => '没有可显示的图片',
+			);
+		
+			Util::template('error.html', $templateArray);
+			exit();
+		}
+		
+		// 计算上一页和下一页的值
+		$prev = $page == 1 ? 1 : $page - 1;
+		$next = $page + 1;
+		
 		// var_dump($listArray[1]);
-		$templateArray = Image::generateListTemplate($imageListArray, $listArray[1]); 
-		$templateArray = array_merge($templateArray, User::generateRegisterandLoginList($clientInfo['query']));
+		$templateArray = Array(
+			'title' => '文件列表',
+			'userinfo' => User::generateRegisterandLoginList($clientInfo['query']),
+			'imagelist' => Image::generateListTemplate($imageSrcArray, $page),
+			'prev' => $prev,
+			'next' => $next,
+		);
+		
 		Util::template('list.html', $templateArray);
 	// 注册
 	} else if ($clientInfo['query'] == 'register') {
