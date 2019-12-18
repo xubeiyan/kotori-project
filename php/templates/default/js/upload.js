@@ -1,5 +1,6 @@
 var area = document.getElementById('area'),				// 点击或拖放区域
-	preview = document.getElementById('preview'),		// 预览区域
+	image = document.getElementById('image-area'),		// 图片预览区域
+	details = document.getElementById('details-area'),	// 图片详细区域
 	file = document.getElementById('file'),				// 上传input
 	upload = document.getElementById('uploadButton'),	// 上传按钮
 	notice = document.getElementById('notice'),			// 提示信息
@@ -52,9 +53,11 @@ var area = document.getElementById('area'),				// 点击或拖放区域
 	// 显示图片预览信息
 	showUploadFileDetails = function (fileList) {
 		
-		var str = '<img id="uploadImg" src="' + imgInfo.img + '"><p class="details"><span>图片名称：' + imgInfo.filename + '</span></p>' +
+		var imgStr = '<img id="uploadImg" src="' + imgInfo.img + '">',
+			detailStr = '<p class="details"><span>图片名称：' + imgInfo.filename + '</span></p>' +
 				'<p class="details"><span>大小:' + imgInfo.filesize + 'KB</span></p>';
-		preview.innerHTML = str;
+		image.innerHTML = imgStr;
+		details.innerHTML = detailStr;
 		upload.style.display = "block";
 		imgObj = fileList[0];
 	};

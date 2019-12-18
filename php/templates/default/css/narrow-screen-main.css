@@ -1,3 +1,7 @@
+html {
+	
+}
+
 body {
 	margin: 0;
 	color: #2B2B28;
@@ -23,7 +27,13 @@ header>ul.header-menu {
 	list-style: none;
 }
 
-header>ul.header-menu>li {
+
+header>ul.header-menu>a {
+	color: #2B2B28;
+	text-decoration: none;
+}
+
+header>ul.header-menu>a>li {
 	padding-left: 1em;
 	padding-right: 0.1em;
 	margin-bottom: 0.1em;
@@ -34,21 +44,19 @@ header>ul.header-menu>li {
 }
 
 
-header>ul.header-menu>li.right {
+header>ul.header-menu>a>li.right {
 	background-color: #E1C69B;
 }
 
-header>ul.header-menu>li:hover {
+header>ul.header-menu>a>li:hover {
 	background-color: #E3B04B;
 }
 
-header>ul.header-menu>li>a {
-	color: #2B2B28;
-	text-decoration: none;
-}
 
+/* 页面部分 */
 main {
 	margin-top: 0.5em;
+	position: relative;
 }
 
 main>input#file {
@@ -75,20 +83,28 @@ main>input#uploadButton {
 	margin-bottom: 0.5em;
 	
 	border: 1px solid #E3B04B;
+	border-radius: 0.5em;
 	background-color: #E3B04B;
 }
 
-
+/* 随机页面 */
 main>div#preview {
 	width: 100%;
 }
 
-main>div#preview>img#uploadImg {
-	width: 100%;
+main>div#preview img#uploadImg {
+	width: 300px;
 	display: block;
+	margin-left: auto;
+	margin-right: auto;
 }
 
-main>div#preview>p.details {
+main>div#preview>div#details-area {
+	margin-top: 10px;
+	box-shadow: 0 -5px 5px #DDD;
+}
+
+main>div#preview>div#details-area>p.details {
 	width: 100%;
 	display: inline-block;
 	margin-top: 0;
@@ -98,7 +114,7 @@ main>div#preview>p.details {
 	background-color: #EEE;
 }
 
-main>div#preview>p.details>span {
+main>div#preview>div#details-area>p.details>span {
 	width: 300px;
 	display: block;
 	margin-left: auto;
@@ -147,10 +163,57 @@ main>div#notice>span {
 	padding-bottom: 0.5em;
 }
 
+/* 列表 */
+main>div#list {
+	width: 200px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+main>div#list img {
+	width: 200px;
+}
+
+main>div.page-select-container {
+	position: fixed;
+	top: 12em;
+	left: calc(50% - 150px);
+	width: 300px;
+}
+
+main>div.page-select-container button {
+	display: inline-block;
+	height: 4em;
+	line-height: 4em;
+	border: none;
+	width: 25px;
+	text-align: center;
+}
+
+main>div.page-select-container>a {
+	color: #000;
+}
+
+main>div.page-select-container button.gray-a {
+	background-color: #AAA;
+}
+
+main>div.page-select-container button.gray-b {
+	background-color: #CCC;
+}
+
+main>div.page-select-container button.left {
+	float: left;
+}
+
+main>div.page-select-container button.right {
+	float: right;
+}
+
+/* 页脚 */
+
 footer {
 	width: 100%;
-	position: absolute;
-	bottom: 0;
 	height: 2em;
 }
 
@@ -172,4 +235,18 @@ footer>ul.footer-menu>li {
 
 footer>ul.footer-menu>li.right {
 	float: right;
+}
+
+footer>ul.footer-menu>li.right img{
+	vertical-align: middle;
+	height: 1em;
+}
+
+footer>ul.footer-menu>li.right span.notify{
+	display: none;
+}
+
+footer>ul.footer-menu>li.right a {
+	text-decoration: none;
+	color: #000;
 }

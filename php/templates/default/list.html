@@ -1,9 +1,9 @@
 <main>
 	<div id="list">{% imagelist %}</div>
-	<div >
-		<a href="?list=1"><span class="page-select grey-a">&lt;&lt;</span></a>
-		<a href="?list={% prev %}"><span class="page-select grey-b">&lt;</span></a>
-		<a href="?list={% next %}"><span class="page-select grey-b">&gt;</span></a>
-		<a href="?list=last"><span class="page-select grey-a">&gt;&gt;</span></a>
+	<div class="page-select-container">
+		<a href="?list=1"><button class="page-select gray-a left {% first-d %}" {% first-d %}>&lt;&lt;</button></a>
+		<a href="?list={% prev %}"><button class="page-select gray-b left {% prev-d %}" {% prev-d %}>&lt;</button></a>
+		<a href="?list=last"><button class="page-select gray-a right {% next-d %}" {% next-d %}>&gt;&gt;</button></a>
+		<a href="?list={% next %}"><button class="page-select gray-b right {% last-d %}" {% last-d %}>&gt;</button></a>
 	</div>
 </main>

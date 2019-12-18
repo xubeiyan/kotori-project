@@ -272,10 +272,10 @@ class User {
 	public static function generateRegisterandLoginList($uri) {
 		$returnArray = Array();
 		$userId = $_SESSION['currentUser']['id'] == 0 ? '<span class="admin">KOTORI</span>' : $_SESSION['currentUser']['id'];
-		$listRegister = '<li class="right"><a href="?register" title="register">想签定契约</a></li>';
-		$listLogin = '<li class="right"><a href="?login" title="login">想传更大文件</a></li>';
-		$listLogout = '<li class="right"><a href="?userinfo" title="userinfo">' . $userId . '</a></li>
-				<li class="right"><a href="?logout" title="logout">注销</a></li>';
+		$listRegister = '<a href="?register" title="register"><li class="right">想签定契约</li></a>';
+		$listLogin = '<a href="?login" title="login"><li class="right">想传更大文件</li></a>';
+		$listLogout = '<a href="?userinfo" title="userinfo"><li class="right">' . $userId . '</li></a>
+				<a href="?logout" title="logout"><li class="right">注销</li></a>';
 		// 是否登录
 		if ($_SESSION['currentUser']['anonymous'] == '0') {
 			$returnArray = $listLogout;

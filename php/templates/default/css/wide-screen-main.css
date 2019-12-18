@@ -28,7 +28,7 @@ header>ul.header-menu {
 
 }
 
-header>ul.header-menu>li {
+header>ul.header-menu>a>li {
 	display: inline-block;
 	padding-left: 0.5em;
 	padding-right: 0.5em;
@@ -37,17 +37,18 @@ header>ul.header-menu>li {
 }
 
 
-header>ul.header-menu>li.right {
+header>ul.header-menu>a>li.right {
 	background-color: #E1C69B;
 	float: right;
 	margin-left: 0.1em;
+	border-radius: 0.2em;
 }
 
-header>ul.header-menu>li:hover {
+header>ul.header-menu>a>li:hover {
 	background-color: #E3B04B;
 }
 
-header>ul.header-menu>li>a {
+header>ul.header-menu>a {
 	color: #2B2B28;
 	text-decoration: none;
 }
@@ -80,7 +81,7 @@ main>div#preview {
 	width: 1000px;
 }
 
-main>div#preview>img#uploadImg {
+main>div#preview>div#image-area>img#uploadImg {
 	width: 100%;
 	display: block;
 }
@@ -151,6 +152,54 @@ main>div#notice>span {
 	padding-bottom: 0.5em;
 }
 
+main>div.page-select-container {
+	
+}
+
+main>div.page-select-container button {
+	display: inline-block;
+	height: 4em;
+	border: none;
+	border-radius: 1em;
+	line-height: 4em;
+	width: 20%;
+	text-align: center;
+	cursor: pointer;
+}
+
+main>div.page-select-container>a {
+	color: #000;
+}
+
+main>div.page-select-container button.gray-a {
+	background-color: #AAA;
+}
+
+main>div.page-select-container button.gray-a:hover {
+	background-color: #999;
+}
+
+main>div.page-select-container button.gray-b {
+	background-color: #CCC;
+}
+
+main>div.page-select-container button.gray-b:hover {
+	background-color: #BBB;
+}
+
+main>div.page-select-container button.disabled {
+	background-color: #EEE;
+	cursor: not-allowed;
+}
+
+main>div.page-select-container button.left {
+	float: left;
+}
+
+main>div.page-select-container button.right {
+	float: right;
+}
+
 /* 页脚 */
 footer {
 	width: 100%;
@@ -179,164 +228,16 @@ footer>ul.footer-menu>li.right {
 	float: right;
 }
 
-div#list-container {
-	width: 1200px;
-	display: flex;
-	align-items: center;
+footer>ul.footer-menu>li.right img {
+	vertical-align: middle;
+	height: 1em;
 }
 
-div#list-container a:hover {
+footer>ul.footer-menu>li.right a {
 	text-decoration: none;
-}
-
-div#list {
-	width:1000px;
-}
-
-div.page-switch {
-	width: 50px;
-	height: 100px;
-	text-align: center;
-	background-color: #EEE;
-	cursor: pointer;
-	line-height: 100px;
-}
-
-div.page-switch:hover {
-	background-color: #DDD;
-}
-
-div#login-panel {
-	width: 200px;
-	border: 1px solid #DDD;
-	border-radius: 5px;
-	background-color: #EEE;
-	padding:20px 200px 20px 200px;
-}
-
-div#login-panel label {
-	display:block;
-}
-
-div#login-panel input#register-button {
-	width: 100%;
-	height: 30px;
-	border: 0px;
-	background-color: #CCC;
-	border-radius :2px;
-	cursor: pointer;
-}
-
-div#login-panel input#register-button:hover {
-	background-color: #999;
-}
-
-div#login-panel input#login-button {
-	width: 100%;
-	height: 30px;
-	border: 0px;
-	background-color: #DDD;
-	border-radius :2px;
-	cursor: pointer;
-}
-
-div#login-panel input#login-button:hover {
-	background-color: #CCC;
-}
-
-div#login-panel input.input-box {
-	width: 188px;
-	height: 25px;
-	font-size: 16px;
-	border-radius:2px;
-	border: 1px solid #333;
-	margin-top: 2px;
-	margin-bottom: 5px;
-	padding-left: 5px;
-	padding-right: 5px;
-}
-div#login-panel div#error-msg {
-	color: red;
-}
-
-div#footer {
-	margin-top:5px;
-	width: 600px;
-}
-
-div#footer-wide {
-	margin-top:5px;
-	margin-bottom:5px;
-	width:1000px;
-}
-
-
-
-a.important {
-	color: #333;
-	text-shadow: #CCC 0.1em 0.1em 0.2em;
-	/* font-weight: bold; */
-}
-
-a:hover {
-	text-decoration: underline;
-}
-
-a.upload {
 	color: #000;
+}
+
+footer>ul.footer-menu>li.right a:hover {
 	text-decoration: underline;
-}
-
-div.file-detail {
-	display: flex;
-	align-items: flex-end;
-}
-
-div.file-detail span.id {
-	width: 400px;
-	display: inline-block;
-	background-color: azure;
-}
-div.file-detail span.uploader {
-	width: 120px;
-	display: inline-block;
-	background-color: aliceblue;
-}
-
-div.file-detail span.filesize {
-	width: 200px;
-	display: inline-block;
-	background-color: whitesmoke;
-}
-
-div.file-detail span.filename {
-	width: 400px;
-	display: inline-block;
-	background-color: beige;
-}
-
-
-div.file-detail span.filetype {
-	width: 200px;
-	display: inline-block;
-	background-color: honeydew;
-}
-
-div.file-detail span.special {
-	width: 120px;
-	display: inline-block;
-	background-color: lightyellow;
-}
-
-div.autoLR div#errmsg {
-	color: red;
-}
-
-span.important {
-	color: #666;
-}
-
-button#confirm {
-	width: 1000px;
-	height: 30px;
 }

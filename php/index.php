@@ -116,6 +116,10 @@ if ($clientInfo['requestMethod'] == 'GET') {
 			'imagelist' => Image::generateListTemplate($imageSrcArray, $page),
 			'prev' => $prev,
 			'next' => $next,
+			'first-d' => $page == 1 ? 'disabled' : '',
+			'prev-d' => $page == 1 ? 'disabled' : '',
+			'next-d' => $pageInfo['list'] == 'last' ? 'disabled' : '',
+			'last-d' => $pageInfo['list'] == 'last' ? 'disabled' : '',
 		);
 		
 		Util::template('list.html', $templateArray);
