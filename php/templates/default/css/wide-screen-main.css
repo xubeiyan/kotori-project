@@ -271,6 +271,15 @@ main>div#login-panel>p>input#register-button:hover {
 	background-color: #E3B04B;
 }
 
+main>div#login-panel>p>input#register-button-s {
+	border: 1px solid #DDD;
+	width: 300px;
+}
+
+main>div#login-panel>p>input#register-button-s:hover {
+	background-color: #DDD;
+}
+
 main>div#error-msg {
 	margin-left: auto;
 	margin-right: auto;

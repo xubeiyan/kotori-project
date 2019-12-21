@@ -125,7 +125,12 @@ if ($clientInfo['requestMethod'] == 'GET') {
 		Util::template('list.html', $templateArray);
 	// 注册
 	} else if ($clientInfo['query'] == 'register') {
-		Util::template('register.html');
+		$templateArray = Array(
+			'title' => '注册',
+			'userinfo' => User::generateRegisterandLoginList($clientInfo['query']),
+			'script' => 'register.js'
+		);
+		Util::template('register.html', $templateArray);
 	// 登录	
 	} else if ($clientInfo['query'] == 'login') {
 		$templateArray = Array(

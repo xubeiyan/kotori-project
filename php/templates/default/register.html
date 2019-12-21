@@ -1,38 +1,11 @@
-<!DOCTYPE html>
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="viewport" content="width=600, initial-scale=1">
-<link rel="stylesheet" type="text/css" href="%template%/css/main.css" />
-<title>注册</title>
-</head>
-<body>
-<div id="login-panel" class="autoLR">
-	<label>用户名</label>
-	<input id="username" type="text" class="input-box" placeholder="username"/>
-	<label>密码</label>
-	<input id="password" type="password" class="input-box" placeholder="password"/>
-	<label>确认密码</label>
-	<input id="password-confirm" type="password" class="input-box" placeholder="confirmation"/>
-	<input id="register-button" type="button" value="注册">
+<main>
+	<div id="login-panel">
+		<p><input id="username" type="text" class="text" placeholder="username"/></p>
+		<p><input id="password" type="password" class="text" placeholder="password"/></p>
+		<p><input id="password-confirm" type="password" class="text" placeholder="confirmation"/></p>
+		<p class="button-area">
+			<input id="register-button-s" type="button" class="button" value="注册">
+		</p>
+	</div>
 	<div id="error-msg"></div>
-</div>
-<div id="footer" class="autoLR">
-	<ul class="footer-left">
-		<li>&copy;2017</li>
-		<li>-</li>
-		<li title="某个图床">Kotori Project</li>
-		<li title="upload file"><a class="important" href="?upload">上传文件</a></li>
-		<li title="random visit"><a href="?random">随便看看</a></li>
-		<li title="image list"><a href="?list">文件列表</a></li>
-	</ul>
-	<ul class="footer-right">
-		<li><a href="?login">想传更大文件</a></li>
-		<li>|</li>
-		<li><a href="https://github.com/xubeiyan/kotori-project">Github</a></li>
-	</ul>
-	
-</div>
-</body>
-<script type="text/javascript" src="%template%/js/register.js"></script>
-</html>
+</main>
