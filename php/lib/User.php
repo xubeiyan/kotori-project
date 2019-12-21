@@ -271,10 +271,10 @@ class User {
 	*/
 	public static function generateRegisterandLoginList($uri) {
 		$returnArray = Array();
-		$userId = $_SESSION['currentUser']['id'] == 0 ? '<span class="admin">KOTORI</span>' : $_SESSION['currentUser']['id'];
+		$username = $_SESSION['currentUser']['id'] == 0 ? '<span class="admin">KOTORI</span>' : $_SESSION['currentUser']['username'];
 		$listRegister = '<a href="?register" title="register"><li class="right">想签定契约</li></a>';
 		$listLogin = '<a href="?login" title="login"><li class="right">想传更大文件</li></a>';
-		$listLogout = '<a href="?userinfo" title="userinfo"><li class="right">' . $userId . '</li></a>
+		$listLogout = '<a href="?userinfo" title="userinfo"><li class="right username">' . $username . '</li></a>
 				<a href="?logout" title="logout"><li class="right quit">注销</li></a>';
 		// 是否登录，等了后只渲染登出按钮
 		if ($_SESSION['currentUser']['anonymous'] == '0') {
@@ -289,8 +289,8 @@ class User {
 	public static function getUserInfo() {
 		$returnArray = Array();
 		
-		$returnArray['%id%'] = $_SESSION['currentUser']['id'];
-		$returnArray['%username%'] = $_SESSION['currentUser']['username'];
+		$returnArray['id'] = $_SESSION['currentUser']['id'];
+		$returnArray['username'] = $_SESSION['currentUser']['username'];
 		return $returnArray;
 	}
 	

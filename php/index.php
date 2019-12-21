@@ -141,13 +141,22 @@ if ($clientInfo['requestMethod'] == 'GET') {
 		Util::template('login.html', $templateArray);
 	// 用户信息	
 	} else if ($clientInfo['query'] == 'userinfo') {
+		// 如果是管理员就跳转到管理页面
 		if ($_SESSION['currentUser']['id'] == 0) {
 			header('refresh:0;url=?manage');
 			exit();
 		}
 		
-		$templateArray = User::getUserInfo();
-		$templateArray = array_merge($templateArray, User::generateRegisterandLoginList($clientInfo['query']));
+		$userinfo = User::getUserInfo();
+		
+		$templateArray = Array(
+			'title' => '用户信息',
+			'userinfo' => User::generateRegisterandLoginList($clientInfo['query']),
+			'script' => 'userinfo.js',
+			'id' => 'user id: ' . $userinfo['id'],
+			'username' => 'username: ' . $userinfo['username'],
+		);
+		
 		Util::template('userinfo.html', $templateArray);
 	// 退出登录
 	} else if ($clientInfo['query'] == 'logout') {

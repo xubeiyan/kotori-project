@@ -267,6 +267,10 @@ main>div#login-panel>p>input.button {
 	cursor: pointer;
 }
 
+main>div#login-panel>p>input.disabled {
+	border: 1px solid #EEE;
+}
+
 main>div#login-panel>p>input#login-button {
 	border: 1px solid #DDD;
 }
@@ -281,6 +285,11 @@ main>div#login-panel>p>input#register-button {
 
 main>div#login-panel>p>input#register-button:hover {
 	background-color: #E3B04B;
+}
+
+main>div#login-panel>p>input#register-button-s {
+	border: 1px solid #DDD;
+	width: 300px;
 }
 
 main>div#error-msg {

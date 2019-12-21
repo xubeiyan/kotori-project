@@ -44,6 +44,10 @@ header>ul.header-menu>a>li.right {
 	border-radius: 0.2em;
 }
 
+header>ul.header-menu>a>li.username {
+	background-color: #E3B04B;
+}
+
 header>ul.header-menu>a>li:hover {
 	background-color: #E3B04B;
 }
@@ -52,6 +56,8 @@ header>ul.header-menu>a {
 	color: #2B2B28;
 	text-decoration: none;
 }
+
+/* 主体部分 */
 
 main {
 	margin-top: 1em;
@@ -253,6 +259,10 @@ main>div#login-panel>p>input.button {
 	width: 145px;
 	display: inline-block;
 	cursor: pointer;
+}
+
+main>div#login-panel>p>input.disabled {
+	border: 1px solid #EEE;
 }
 
 main>div#login-panel>p>input#login-button {

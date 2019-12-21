@@ -3,40 +3,49 @@ var id = document.getElementById('id'),
 	oldpass = document.getElementById('oldpass'),
 	newpass = document.getElementById('newpass'),
 	confirm = document.getElementById('confirm'),
-	loginButton = document.getElementById('login-button'),
+	loginButton = document.getElementById('register-button-s'),
 	errmsg = document.getElementById('error-msg'),
 	xhr = new XMLHttpRequest(),
-	form = new FormData();
+	form = new FormData(),
+	showErrMsg = function (msg) {
+		errmsg.style.display = 'block';
+		errmsg.innerText = msg;
+	},
+	showOKMsg = function (msg) {
+		errmsg.style.display = 'block';
+		errmsg.style.border = '1px solid #0C0';
+		errmsg.innerText = msg;
+	};
 	
 loginButton.addEventListener('click', function () {
 	if (oldpass.value == '') {
 		console.log('请填写旧密码');
-		errmsg.innerText = 'Old password is required!';
+		showErrMsg('Old password is required!');
 		return;
 	}
 	
 	if (newpass.value == '') {
 		console.log('请填写新密码');
-		errmsg.innerText = 'New password is required!';
+		showErrMsg('New password is required!');
 		return;
 	}
 	
 	if (confirm.value == '') {
 		console.log('请填写新密码确认');
-		errmsg.innerText = 'Confirmation is required!';
+		showErrMsg('Confirmation is required!');
 		return;
 	}
 	
 	if (confirm.value != newpass.value) {
 		console.log('新密码和确认新密码不一致');
-		errmsg.innerText = 'New password and confirmation are not the same!';
+		showErrMsg('New password and confirmation are not the same!');
 		return;
 	}
 	
 	errmsg.innerText = '';
-	
-	form.append('userid', id.value);
-	form.append('username', username.value);
+
+	form.append('userid', id.value.split(' ')[2]);
+	form.append('username', username.value.split(' ')[1]);
 	form.append('oldpass', oldpass.value);
 	form.append('newpass', newpass.value);
 	
@@ -50,9 +59,9 @@ xhr.onreadystatechange = function () {
 		var resp = JSON.parse(xhr.responseText);
 		// console.log(resp);
 		if (resp['result'] == 'modify success') {
-			errmsg.innerText = 'user info modifies success';
+			showOKMsg('user info modifies success');
 		} else if (resp['result'] == 'modify fail') {
-			errmsg.innerText = resp['error'];
+			showErrMsg(resp['error']);
 		}
 	}
 }

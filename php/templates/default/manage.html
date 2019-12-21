@@ -1,38 +1,12 @@
-<!DOCTYPE html>
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="viewport" content="width=600, initial-scale=1">
-<link rel="stylesheet" type="text/css" href="%template%/css/main.css" />
-<title>文件列表</title>
-</head>
-<body>
-<div id="list-container" class="autoLR">
-	<a href="?manage=1"><div class="page-switch">&lt;&lt;</div></a>
-	<a href="?manage=%prev%"><div class="page-switch">&lt;</div></a>
-	<div id="list">%imagelist%</div>
-	<a href="?manage=%next%"><div class="page-switch">&gt;</div></a>
-	<a href="?manage=last"><div class="page-switch">&gt;&gt;</div></a>
-</div>
-<div id="list" class="autoLR">
-	<div id="errmsg"></div>
-</div>
-<div id="footer-wide" class="autoLR">
-	<ul class="footer-left">
-		<li>&copy;2017</li>
-		<li>-</li>
-		<li title="某个图床">Kotori Project</li>
-		<li title="upload file"><a class="important" href="?upload">上传文件</a></li>
-		<li title="random visit"><a href="?random">随便看看</a></li>
-		<li title="image list"><a href="?list">文件列表</a></li>
-	</ul>
-	<ul class="footer-right">
-		%userinfo%
-		<li>|</li>
-		<li><a href="https://github.com/xubeiyan/kotori-project">Github</a></li>
-	</ul>
-	
-</div>
-</body>
-<script type="text/javascript" src="%template%/js/manage.js"></script>
-</html>
+<main>
+	<div id="list-container" class="autoLR">
+		<a href="?manage=1"><div class="page-switch">&lt;&lt;</div></a>
+		<a href="?manage=%prev%"><div class="page-switch">&lt;</div></a>
+		<div id="list">%imagelist%</div>
+		<a href="?manage=%next%"><div class="page-switch">&gt;</div></a>
+		<a href="?manage=last"><div class="page-switch">&gt;&gt;</div></a>
+	</div>
+	<div id="list" class="autoLR">
+		<div id="errmsg"></div>
+	</div>
+</main>
