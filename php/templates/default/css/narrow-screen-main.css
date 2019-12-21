@@ -302,6 +302,10 @@ main>div#error-msg {
 }
 
 /* 管理 */
+main>div#list img {
+	width: 200px;
+}
+
 main>div#list>div.file-detail {
 	
 }

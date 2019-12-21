@@ -3,7 +3,7 @@
 ### 写在前面
 
 >我决定又开坑了（喂），这次是一个图床（啪）……    
->PHP版本已基本完成，现在正在开发某个Python版本……    
+>PHP版本已基本完成（更新了版本），~现在正在开发某个Python版本……~（懒得做），至于node版本，饶了我吧    
 >写这个的原因是没有一个好用的图床啊……不要跟我提新浪的，详情请见下一段……github那种方法还是饶了我把……  
 >目前实际在用的是[这个](http://imghost.chenhai.net/)，其实是自用……    
  
@@ -30,8 +30,10 @@
 * 支持登录传图，支持更大的图（好像没什么用），支持不显示在略缩图中（你懂的），还有就是匿名用户是看不到的图（喂）
 
 ### 功能划分
->~先写个php版本吧~（已完成，现在正在开发Python版本，后面请无视），看向kagari匿名版    
->完全是静态文件的玩意，用不用数据库呢（试着不用一次试试    
+
+>~先写个php版本吧~（已完成，~现在正在开发Python版本~，后面请无视），看向kagari匿名版    
+>PHP版本完全未使用数据库，而是使用两个文件来保存用户信息和图片信息      
+>Python版本还是妥协了使用了SQLite      
 >说着要加上读取文件的锁，结果也没加……    
 
 #### 目录构成
@@ -44,13 +46,7 @@
 * `config/conf.php` 配置文件
 * `uploads/` 图文件目录
 * `thumbs/` 缓存图目录
-* `templates/default/uploadFile.html` 上传文件
-* `templates/default/random.html` 随机访问
-* `templates/default/login.html` 登录
-* `templates/default/register.html` 注册
-* `templates/default/userinfo.html` 用户信息
-* `templates/default/list.html` 图片列表 
-* `templates/default/error.html` 错误页面
+* `templates/default/*` default主题的模板
 * `data/userdata` 用户数据
 * `data/imagedata` 图片数据
 
@@ -186,6 +182,7 @@
 
 * register需要验证码？但是要区分是否恶意注册那个又需要维护一个列表（不想弄啊
 * 多语言支持？闲着没事干吗？    
+* 增加安装过程（闲的     
 
 ### Q&A
 
