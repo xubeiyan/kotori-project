@@ -1,36 +1,16 @@
-<!DOCTYPE html>
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="viewport" content="width=600, initial-scale=1">
-<link rel="stylesheet" type="text/css" href="%template%/css/main.css" />
-<title>登录</title>
-</head>
-<body>
-<div id="login-panel" class="autoLR">
-	<label>用户名</label>
-	<input id="username" type="text" class="input-box" placeholder="username"/>
-	<label>密码</label>
-	<input id="password" type="password" class="input-box" placeholder="password"/>
-	<input id="login-button" type="button" value="登录" />
+<main>
+	<div id="show-message">
+		<p>仅供测试</p>
+		<p>提供特性如下：</p>
+		<p>（登录后）允许上传文件可达10MiB，允许设置自己上传图片可见性</p>
+	</div>
+	<div id="login-panel">
+		<p><input id="username" type="text" class="text" placeholder="用户名"/></p>
+		<p><input id="password" type="password" class="text" placeholder="密码"/></p>
+		<p class="button-area">
+			<input id="login-button" type="button" class="button" value="登录" />
+			<input id="register-button" type="button" class="button" value="注册" />
+		</p>
+	</div>
 	<div id="error-msg"></div>
-</div>
-<div id="footer" class="autoLR">
-	<ul class="footer-left">
-		<li>&copy;2017</li>
-		<li>-</li>
-		<li title="某个图床">Kotori Project</li>
-		<li title="upload file"><a class="important" href="?upload">上传文件</a></li>
-		<li title="random visit"><a href="?random">随便看看</a></li>
-		<li title="image list"><a href="?list">文件列表</a></li>
-	</ul>
-	<ul class="footer-right">
-		%userinfo%
-		<li>|</li>
-		<li><a href="https://github.com/xubeiyan/kotori-project">Github</a></li>
-	</ul>
-	
-</div>
-</body>
-<script type="text/javascript" src="%template%/js/login.js"></script>
-</html>
+</main>

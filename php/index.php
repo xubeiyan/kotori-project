@@ -128,7 +128,11 @@ if ($clientInfo['requestMethod'] == 'GET') {
 		Util::template('register.html');
 	// 登录	
 	} else if ($clientInfo['query'] == 'login') {
-		$templateArray = User::generateRegisterandLoginList($clientInfo['query']);
+		$templateArray = Array(
+			'title' => '登录',
+			'userinfo' => User::generateRegisterandLoginList($clientInfo['query']),
+			'script' => 'login.js'
+		);
 		Util::template('login.html', $templateArray);
 	// 用户信息	
 	} else if ($clientInfo['query'] == 'userinfo') {
@@ -140,7 +144,7 @@ if ($clientInfo['requestMethod'] == 'GET') {
 		$templateArray = User::getUserInfo();
 		$templateArray = array_merge($templateArray, User::generateRegisterandLoginList($clientInfo['query']));
 		Util::template('userinfo.html', $templateArray);
-	// 清除session，跳转至首页
+	// 退出登录
 	} else if ($clientInfo['query'] == 'logout') {
 		session_unset();
 		header('refresh:0;url=.');

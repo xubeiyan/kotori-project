@@ -210,6 +210,89 @@ main>div.page-select-container button.right {
 	float: right;
 }
 
+/* 登录页面 */
+main>div#show-message {
+	background-color: #EEE;
+	padding-top: 0.5em;
+	padding-bottom: 0.5em;
+}
+
+main>div#show-message>p {
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 0.2em;
+	margin-bottom: 0.2em;
+	width: 300px;
+}
+
+main>div#login-panel {
+	padding-top: 1em;
+}
+
+main>div#login-panel>p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+
+}
+
+main>div#login-panel>p.button-area {
+	width: 300px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+main>div#login-panel>p>input {
+	width: 300px;
+	margin-left: auto;
+	margin-right: auto;
+	display: block;
+}
+
+main>div#login-panel>p>input.text {
+	padding-left: 0.5em;
+	padding-right: 0.5em;
+	padding-top: 0.3em;
+	padding-bottom: 0.3em;
+	border-radius: 0.5em;
+	border: 1px solid #BBB;
+}
+
+main>div#login-panel>p>input.button {
+	padding-top: 0.5em;
+	padding-bottom: 0.5em;
+	border-radius: 0.5em;
+	background-color: #FFF;
+	width: 145px;
+	display: inline-block;
+	cursor: pointer;
+}
+
+main>div#login-panel>p>input#login-button {
+	border: 1px solid #DDD;
+}
+
+main>div#login-panel>p>input#login-button:hover {
+	background-color: #DDD;
+}
+
+main>div#login-panel>p>input#register-button {
+	border: 1px solid #E3B04B;
+}
+
+main>div#login-panel>p>input#register-button:hover {
+	background-color: #E3B04B;
+}
+
+main>div#error-msg {
+	margin-left: auto;
+	margin-right: auto;
+	width: 300px;
+	padding: 0.5em;
+	border: 1px solid #C00;
+	display: none;
+}
+
+
 /* 页脚 */
 
 footer {

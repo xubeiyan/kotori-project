@@ -1,24 +1,29 @@
 var username = document.getElementById('username'),
 	password = document.getElementById('password'),
 	loginButton = document.getElementById('login-button'),
+	registerButton = document.getElementById('register-button'),
 	errmsg = document.getElementById('error-msg'),
 	xhr = new XMLHttpRequest(),
 	form = new FormData(),
-	loginPost =	function() {
+	beEmpty = function (word) {
+		errmsg.style.display = 'block';
+		errmsg.innerText = `${word} can not be empty`;
+	},
+	loginPost =	function () {
 		var un = username.value,
 			pw = password.value;
 			
 		// 检查用户名
 		if (un == '') {
-			console.log('请填写用户名');
-			errmsg.innerText = 'Please input username';
+			console.log('用户名不能为空');
+			beEmpty('Username');
 			return;
 		}
 		
 		// 检查密码
 		if (pw == '') {
-			console.log('请填写密码');
-			errmsg.innerText = 'Please input password';
+			console.log('密码不能为空');
+			beEmpty('Password');
 			return;
 		}
 		
@@ -29,6 +34,9 @@ var username = document.getElementById('username'),
 		xhr.open('POST', '?loginpost', true);
 		xhr.setRequestHeader('Kotori-Request', 'Login');
 		xhr.send(form);
+	},
+	register = function () {
+		window.location.href = '?register';
 	};
 	
 window.addEventListener("keypress", function (e) {
@@ -38,7 +46,7 @@ window.addEventListener("keypress", function (e) {
 });
 	
 loginButton.addEventListener("click", loginPost);
-
+registerButton.addEventListener('click', register);
 xhr.onreadystatechange = function () {
 	if (xhr.readyState == 4 && xhr.status == 200) {
 		var resp = JSON.parse(xhr.responseText);

@@ -275,22 +275,13 @@ class User {
 		$listRegister = '<a href="?register" title="register"><li class="right">想签定契约</li></a>';
 		$listLogin = '<a href="?login" title="login"><li class="right">想传更大文件</li></a>';
 		$listLogout = '<a href="?userinfo" title="userinfo"><li class="right">' . $userId . '</li></a>
-				<a href="?logout" title="logout"><li class="right">注销</li></a>';
-		// 是否登录
+				<a href="?logout" title="logout"><li class="right quit">注销</li></a>';
+		// 是否登录，等了后只渲染登出按钮
 		if ($_SESSION['currentUser']['anonymous'] == '0') {
 			$returnArray = $listLogout;
-			return $returnArray;
 		} else {
-			if ($uri == 'login') {
-				$returnArray = $listRegister;
-				return $returnArray;
-			} else if ($uri == 'register') {
-				$returnArray = $listLogin;
-				return $returnArray;
-			}
+			$returnArray = $listRegister . "\n" . $listLogin;
 		}
-		
-		$returnArray = $listRegister . "\n" . $listLogin;
 		return $returnArray;
 	}
 	
