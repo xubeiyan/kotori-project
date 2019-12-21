@@ -301,6 +301,48 @@ main>div#error-msg {
 	display: none;
 }
 
+/* 管理 */
+main>div#list>div.file-detail {
+	
+}
+
+main>div#list>div.file-detail>div.left {
+	width: 100%;
+}
+
+main>div#list>div.file-detail>div.right {
+	width: 100%;
+}
+
+main>div#list>div.file-detail>div.right>span {
+	display: inline-block;
+	word-break: break-all;
+	margin-right: 1em;
+}
+
+main>div#list>button#confirm {
+	padding-top: 0.5em;
+	padding-bottom: 0.5em;
+	border-radius: 0.5em;
+	background-color: #FFF;
+	border: 1px solid #DDD;
+	width: 200px;
+	display: block;
+	margin: 1em;
+	margin-left: auto;
+	margin-right: auto;
+	cursor: pointer;
+}
+
+main>div#list>button#confirm:hover {
+	background-color: #DDD;
+}
+
+main>div#errmsg {
+	width: 300px;
+	margin-left: auto;
+	margin-right: auto;
+}
 
 /* 页脚 */
 
