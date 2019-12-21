@@ -87,7 +87,7 @@ main>div#preview {
 	width: 1000px;
 }
 
-main>div#preview>div#image-area>img#uploadImg {
+main>div#preview>div#image-area img#uploadImg {
 	width: 100%;
 	display: block;
 }
@@ -297,6 +297,44 @@ main>div#error-msg {
 	padding: 0.5em;
 	border: 1px solid #C00;
 	display: none;
+}
+
+/* 图片管理页面 */
+main>div#list>div.file-detail {
+	
+}
+
+main>div#list>div.file-detail>div.left {
+	width: 20%;
+	display: inline-block;
+}
+
+main>div#list>div.file-detail>div.right {
+	width: 79%;
+	display: inline-block;
+}
+
+main>div#list>div.file-detail>div.right>span {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+main>div#list>button#confirm {
+	padding-top: 0.5em;
+	padding-bottom: 0.5em;
+	border-radius: 0.5em;
+	background-color: #FFF;
+	border: 1px solid #DDD;
+	width: 300px;
+	display: block;
+	margin: 1em;
+	margin-left: auto;
+	margin-right: auto;
+	cursor: pointer;
+}
+
+main>div#list>button#confirm:hover {
+	background-color: #DDD;
 }
 
 /* 页脚 */

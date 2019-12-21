@@ -118,7 +118,7 @@ if ($clientInfo['requestMethod'] == 'GET') {
 			'next' => $next,
 			'first-d' => $page == 1 ? 'disabled' : '',
 			'prev-d' => $page == 1 ? 'disabled' : '',
-			'next-d' => $pageInfo['list'] == 'last' ? 'disabled' : '',
+			'next-d' => count($imageSrcArray) == $config['file']['imagePerPage']? '' : 'disabled',
 			'last-d' => $pageInfo['list'] == 'last' ? 'disabled' : '',
 		);
 		
@@ -164,25 +164,67 @@ if ($clientInfo['requestMethod'] == 'GET') {
 		header('refresh:0;url=.');
 	// 管理页面（于是现在如何认定管理员呢……暂时认为叫kotori的就是管理员吧）
 	} else if (substr($clientInfo['query'], 0, 6) == 'manage') {
-		$manageArray = explode('=', $clientInfo['query']);
-		if (isset($manageArray[1]) && $manageArray[1] == 'last') {
-			$manageArray[1] = Image::getLastPage($config['file']['imagePerPage']);
-		} else if (!isset($manageArray[1]) || !is_numeric($manageArray[1]) || !$manageArray[1] > 0) {
-			$manageArray[1] = 1;
+		if ($_SESSION['currentUser']['username'] != $config['user']['adminUserName']) {
+			$templateArray = Array(
+				'title' => '出错了',
+				'userinfo' => User::generateRegisterandLoginList($clientInfo['query']),
+				'error' => '当前用户不是管理员用户',
+			);
+		
+			Util::template('error.html', $templateArray);
+			exit();
 		}
 		
-		$managePage = $manageArray[1];
+		// 处理页面参数
+		$pageInfo = Util::parameterParser($clientInfo['query']);
 		
-		if ($_SESSION['currentUser']['username'] != $config['user']['adminUserName']) {
-			Util::err('notAdminUser', Array('username' => $_SESSION['currentUser']['username']));
-			exit();
+		// 检测是否提供了页面值，否则赋值为1
+		// 2017.10.17 修改为last跳到最后一页
+		if ($pageInfo['manage'] == 'last') {
+			$page = Image::getLastPage($config['file']['imagePerPage']);
+		} else if ($pageInfo['manage'] == '' || !is_numeric($pageInfo['manage'])) {
+			$page = 1;
+		} else {
+			$page = intval($pageInfo['manage']);
 		}
 		
 		$managePerPage = $config['site']['manageImagePerPage'];
 		
-		$imageListArray = Image::generateImageList($managePage, $managePerPage);
-		$templateArray = Image::generateManageListTemplate($imageListArray, $managePage);
-		$templateArray = array_merge($templateArray, User::generateRegisterandLoginList($clientInfo['query']));
+		$imageListArray = Image::generateImageList($page, $managePerPage);
+		
+		if ($imageListArray == 'NoImageForList') {
+			$templateArray = Array(
+				'title' => '出错了',
+				'userinfo' => User::generateRegisterandLoginList($clientInfo['query']),
+				'error' => '没有图片可供管理',
+			);
+		
+			Util::template('error.html', $templateArray);
+			exit();
+		}
+		
+		$imageList = Image::generateManageListTemplate($imageListArray, $page);
+		
+		// 计算上一页和下一页的值
+		$prev = $page == 1 ? 1 : $page - 1;
+		$next = $page + 1;
+		
+		$templateArray = Array(
+			'title' => '图片管理',
+			'userinfo' => User::generateRegisterandLoginList($clientInfo['query']),
+			'imagelist' => $imageList,
+			'prev' => $prev,
+			'next' => $next,
+			'first-d' => $page == 1 ? 'disabled' : '',
+			'prev-d' => $page == 1 ? 'disabled' : '',
+			'next-d' => count($imageListArray) == $config['file']['imagePerPage']? '' : 'disabled',
+			'last-d' => $pageInfo['manage'] == 'last' ? 'disabled' : '',
+			'script' => 'manage.js'
+		);
+		
+		
+		// $imageList = Image::generateManageListTemplate($imageListArray, $managePage);
+		// $templateArray = array_merge($templateArray, User::generateRegisterandLoginList($clientInfo['query']));
 		Util::template('manage.html', $templateArray);
 		
 

@@ -202,7 +202,7 @@ class Image {
 		
 		foreach ($array as $value) {
 			if ($value['r18'] == 1) {
-				$imagelist .= '<a href="uploads/' . $value['filename'] . '"><img title="好孩子不要点开！" src="templates/' . $config['site']['template'] . '/' . $config['file']['r18Cover'] . '" /></a>';
+				$imagelist .= '<a href="uploads/' . $value['filename'] . '"><img title="好孩子不要点开！" src="templates/' . $config['site']['templateName'] . '/' . $config['file']['r18Cover'] . '" /></a>';
 			} else {
 				$imagelist .= '<a href="uploads/' . $value['filename'] . '"><img src="'. Image::getThumb($value['filename']). '" /></a>';
 			}
@@ -258,32 +258,26 @@ class Image {
 				$no = 'selected="selected"';
 			}
 			
-			$selectMenu = '<select class="r18select" id="' . $value['id'] . '"><option value="yes" ' . $yes . '>Jes</option>
-				<option value="no" ' . $no . '>Ne</option></select>';
+			$selectMenu = sprintf('<select class="r18select" id="%s">
+				<option value="yes" %s>是</option>
+				<option value="no" %s>否</option>
+			</select>', $value['id'], $yes, $no);
 				
-			$imagelist .= '<div class="file-detail"><a href="uploads/' . $value['filename'] . '"><img style="width:200px" src="' . Image::getThumb($value['filename']) . '"/></a>
-				<div style="width: 800px">
-					<span class="id" title="Image ID">Identeco: <span class="important">' . $id . '</span></span><span class="uploader" title="Uploader">Alŝutanto: <span class="important">' . $uploader . '</span></span><span class="filesize" title="FileSize">Grandeco: <span class="important">' . $filesize . '</span></span><span class="filename" title="FileName">Nomo: <span class="important">' . $filename . '</span></span><span class="filetype" title="FileType">Tipo: <span class="important">' . $filetype . '</span></span><span class="special" title="R18">Speciala: ' . $selectMenu .'</span>
-				</div></div>';
+			$imagelist .= sprintf('<div class="file-detail">
+				<div class="left"><a href="uploads/%s"><img src="%s"/></a></div>
+				<div class="right">
+					<span class="id" title="Image ID">图片ID: <span class="important">%s</span></span>
+					<span class="uploader" title="Uploader">上传者ID: %s</span>
+					<span class="filesize" title="FileSize">文件大小: %s</span>
+					<span class="filename" title="FileName">文件名: %s</span>
+					<span class="filetype" title="FileType">文件类型: %s</span>
+					<span class="special" title="R18">限制：%s</span>
+				</div></div>', $filename, Image::getThumb($value['filename']), $id, $uploader, $filesize, $filename, $filetype, $selectMenu);
 		}
 		
-		$imagelist .= '<button id="confirm">Konfirmu</button>';
+		$imagelist .= '<button id="confirm">确认修改</button>';
 		
-		if ($currentPage == 1) {
-			$prev = 1;
-			$next = 2;
-		} else {
-			$prev = $currentPage - 1;
-			$next = $currentPage + 1;
-		}
-		
-		$imageListTemplate = Array(
-			'%imagelist%' => $imagelist,
-			'%prev%' => $prev,
-			'%next%' => $next,
-		);
-		
-		return $imageListTemplate;
+		return $imagelist;
 	}
 	
 	/**
@@ -345,10 +339,10 @@ class Image {
 			$lineArray = self::imagedataString2Array($line);
 			if ($r18 == 'yes') {
 				$lineArray['r18'] = 1;
-				$displayText = "'show'";
+				$displayText = "'hide'";
 			} else if ($r18 == 'no') {
 				$lineArray['r18'] = 0;
-				$displayText = "'hide'";
+				$displayText = "'show'";
 			}
 			
 			$newLine = self::imagedataArray2String($lineArray);

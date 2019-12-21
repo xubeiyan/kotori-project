@@ -1,6 +1,8 @@
 <main>
 	<div id="preview">
-		<a href="{% imgPath %}" target="_blank"><img src="{% imgPath %}" id="uploadImg" /></a>
+		<div id="image-area">
+			<a href="{% imgPath %}" target="_blank"><img src="{% imgPath %}" id="uploadImg" /></a>
+		</div>
 		<div id="details-area">
 			<p class="details"><span>文件名: {% filename %}</span></p>
 			<p class="details"><span>上传者: {% uploader %}</span></p>
