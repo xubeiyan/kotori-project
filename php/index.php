@@ -73,7 +73,7 @@ if ($clientInfo['requestMethod'] == 'GET') {
 			'imgPath' => $config['file']['uploadFolder'] . '/' . $imageArray['filename'],
 			'uploader' => $imageArray['uploader'],
 			'size'	=> Util::suitableSize($imageArray['size']),
-			'uploadtime' => $imageArray['uploadtime'],
+			'uploadtime' => Util::formatTime($imageArray['uploadtime']),
 		);
 		// Image::generateHeader($imageArray['filename']);
 		Util::template('random.html', $templateArray);
@@ -203,7 +203,7 @@ if ($clientInfo['requestMethod'] == 'GET') {
 			exit();
 		}
 		
-		$imageList = Image::generateManageListTemplate($imageListArray, $page);
+		$imageList = Image::generateManageListTemplate($imageListArray);
 		
 		// 计算上一页和下一页的值
 		$prev = $page == 1 ? 1 : $page - 1;
@@ -213,6 +213,7 @@ if ($clientInfo['requestMethod'] == 'GET') {
 			'title' => '图片管理',
 			'userinfo' => User::generateRegisterandLoginList($clientInfo['query']),
 			'imagelist' => $imageList,
+			'use' => 'manage',
 			'prev' => $prev,
 			'next' => $next,
 			'first-d' => $page == 1 ? 'disabled' : '',
@@ -222,12 +223,59 @@ if ($clientInfo['requestMethod'] == 'GET') {
 			'script' => 'manage.js'
 		);
 		
-		
-		// $imageList = Image::generateManageListTemplate($imageListArray, $managePage);
-		// $templateArray = array_merge($templateArray, User::generateRegisterandLoginList($clientInfo['query']));
 		Util::template('manage.html', $templateArray);
+	// 查看上传图片
+	} else if (substr($clientInfo['query'], 0, 10) == 'userupload') {
+		// 判断是不是匿名用户
+		if ($_SESSION['currentUser']['anonymous'] == 1) {
+			$templateArray = Array(
+				'title' => '出错了',
+				'userinfo' => User::generateRegisterandLoginList($clientInfo['query']),
+				'error' => '匿名用户不可管理上传图片',
+			);
+			Util::template('error.html', $templateArray);
+			exit();
+		}
 		
-
+		// 处理页面参数
+		$pageInfo = Util::parameterParser($clientInfo['query']);
+		
+		$userid = $_SESSION['currentUser']['id'];
+		
+		if ($pageInfo['userupload'] == 'last') {
+			$page = Image::getLastPage($config['file']['imagePerPage']);
+		} else if ($pageInfo['userupload'] == '' || !is_numeric($pageInfo['userupload'])) {
+			$page = 1;
+		} else {
+			$page = intval($pageInfo['userupload']);
+		}
+		
+		$managePerPage = $config['site']['manageImagePerPage'];
+		
+		$imageListArray = Image::generateImageList($page, $managePerPage, $userid);
+		$imageList = Image::generateManageListTemplate($imageListArray);
+		
+		// 计算上一页和下一页的值
+		$prev = $page == 1 ? 1 : $page - 1;
+		$next = $page + 1;
+		
+		$templateArray = Array(
+			'title' => '图片管理',
+			'userinfo' => User::generateRegisterandLoginList($clientInfo['query']),
+			'imagelist' => $imageList,
+			'use' => 'userupload',
+			'prev' => $prev,
+			'next' => $next,
+			'first-d' => $page == 1 ? 'disabled' : '',
+			'prev-d' => $page == 1 ? 'disabled' : '',
+			'next-d' => count($imageListArray) == $config['file']['imagePerPage']? '' : 'disabled',
+			'last-d' => $pageInfo['userupload'] == 'last' ? 'disabled' : '',
+			'script' => ''
+		);
+		
+		Util::template('manage.html', $templateArray);
+		exit();
+		
 	} else {
 		$errInfo = Array(
 			'query' => $clientInfo['query'],
@@ -264,7 +312,7 @@ if ($clientInfo['requestMethod'] == 'GET') {
 		
 		header('Content-type:application/json');
 		echo $result;
-		
+		exit();
 		// print_r($_POST);
 		// print_r($_SESSION['currentUser']);
 	// 登录
@@ -278,7 +326,7 @@ if ($clientInfo['requestMethod'] == 'GET') {
 		
 		header('Content-type:application/json');
 		echo $result;
-		
+		exit();
 	// 更新用户信息
 	} else if ($clientInfo['query'] == 'userinfopost') {
 		$userInfo = Util::dataInspection('userinfo', $_POST);
@@ -304,7 +352,7 @@ if ($clientInfo['requestMethod'] == 'GET') {
 		
 		header('Content-type:application/json');
 		echo $result;
-		
+		exit();
 	// 未知的请求
 	} else {
 		$errInfo = Array(

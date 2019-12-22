@@ -225,6 +225,18 @@ class Util {
 		}
 	}
 	
+	/*
+	* 格式化时间
+	* 由于imagedata里面存放的并不是时间戳，所以还是自己写个时间格式转换函数
+	*/
+	public static function formatTime($timeStr) {
+		$year = substr($timeStr, 0, 4);
+		$month = substr($timeStr, 4, 2);
+		$day = substr($timeStr, 6, 2);
+		$rest = substr($timeStr, 9);
+		return sprintf("%s.%s.%s %s", $year, $month, $day, $rest);
+	}
+	
 	/**
 	* 清空所有图片和用户数据（跑路用
 	* 危险！请谨慎调用此方法

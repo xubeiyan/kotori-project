@@ -178,22 +178,6 @@ class Image {
 	}
 	
 	/**
-	* 生成随机访问的模板数组
-	*/
-	public static function generateRandomTemplate($imageArray) {
-		global $config;
-
-		$imageInfo = Array(
-			'%imgPath%' => $config['file']['uploadFolder'] . '/' . $imageArray['filename'],
-			'%filename%' => $imageArray['filename'],
-			'%size%' => round($imageArray['size'] / 1024) . 'KB',
-			'%uploader%' => $imageArray['uploader'],
-			'%uploadtime%' => substr($imageArray['uploadtime'], 0, 4) . '年' . substr($imageArray['uploadtime'], 4, 2) . '月' . substr($imageArray['uploadtime'], 6, 2) . '日' . substr($imageArray['uploadtime'], 8),
-		);
-		return $imageInfo;
-	}
-	
-	/**
 	* 生成列表访问的模板数组
 	*/
 	public static function generateListTemplate($array, $currentPage) {
@@ -233,7 +217,7 @@ class Image {
 	*	'size' 		=> 文件大小
 	* )
 	*/
-	public static function generateManageListTemplate($array, $currentPage) {
+	public static function generateManageListTemplate($array) {
 		$imagelist = '';
 		
 		global $config;
@@ -362,21 +346,25 @@ class Image {
 	/**
 	* 根据页数和每页图片数提供图片链接
 	*/
-	public static function generateImageList($page, $imgPerPage) {
+	public static function generateImageList($page, $imgPerPage, $uploaderId = '0') {
 		global $config;
 		$fp = fopen($config['file']['imageDataFile'], 'r') or die ('can not open file: ' . $config['file']['imageDataFile']);
 		
-		// 将传入的的页面值减1
+		// 将传入的的页面值减1乘以每页图片得到要跳过的图片量
 		$skipImage = ($page - 1) * $imgPerPage; 
 		$imageSrcArray = Array();
 		
-		// print('image per page: ' . $imgPerPage);
-
 		// 跳过#开头的注释行
 		for ($line = fgets($fp); $line[0] == '#'; $line = fgets($fp));
 
 		// 跳过前面的$skipImage行
-		for (; $skipImage > 0; $line = fgets($fp), $skipImage -= 1);
+		for (; $skipImage > 0; $line = fgets($fp), $skipImage -= 1) {
+			// 如果限定了只获取对应的uploader的话不是此uploader则加一
+			$imageArray = self::imagedataString2Array($line);
+			if ($uploaderId != 0 && $imageArray['uploader'] != $uploaderId) {
+				$skipImage += 1;
+			}
+		}
 		
 		if ($line == '') {
 			return 'NoImageForList';
@@ -385,7 +373,15 @@ class Image {
 		for (; $imgPerPage > 0 && $line != ''; $imgPerPage -= 1, $line = fgets($fp)) {
 			// print_r($line);
 			$imageArray = self::imagedataString2Array($line);
-			array_push($imageSrcArray, $imageArray);
+			
+			// 如果上传者id不为0，则只选此uploader的图
+			if ($uploaderId != 0) {
+				if ($imageArray['uploader'] == $uploaderId) {
+					array_push($imageSrcArray, $imageArray);
+				}
+			} else {
+				array_push($imageSrcArray, $imageArray);				
+			}
 		}
 		
 		fclose($fp);
