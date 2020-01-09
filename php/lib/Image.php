@@ -11,18 +11,21 @@ class Image {
 	* 参数：$file(要写入的imagedata文件)
 	*/
 	public static function uploadFile($img, $file) {
-		
-		if (empty($img)) {
-			return 'empty';
-		}
-		
 		// 先判断是否上传成功，不然imageFormatVerify那儿会出现一些问题
 		if ($img['error'] != 0) {
+			$err = Array(
+				'OK',										// UPLOAD_ERR_OK
+				'greater than upload_max_size in php.ini', 	// UPLOAD_ERR_INI_SIZE
+				'greater than MAX_FILE_SIZE in HTML form',	// UPLOAD_ERR_FORM_SIZE
+				'partial file was uploaded',				// UPLOAD_ERR_PARTIAL
+				'no file was uploaded',						// UPLOAD_ERR_NO_FILE
+				'can not find temp dir',					// UPLOAD_ERR_NO_TMP_DIR
+				'file failed to write',						// UPLOAD_ERR_CANT_WRITE
+			);
 			$returnArray = Array (
 				'api' => 'upload',
 				'result' => 'upload fail',
-				'error' => $img['error'],
-				'savePath' => '',
+				'error' => $err[$img['error']],
 			);
 			return json_encode($returnArray, JSON_UNESCAPED_UNICODE);
 		}
@@ -41,7 +44,7 @@ class Image {
 			'filename' => $md5Value . '.' . $ext,
 			'uploader' => $_SESSION['currentUser']['id'],
 			'uploadtime' => date("Ymd H:i:s"),
-			'r18' => 0
+			'r18' => 0,
 		);
 		// print '!';
 		$string = self::imagedataArray2String($imageArray);
@@ -56,15 +59,18 @@ class Image {
 			$returnArray = Array (
 				'api' => 'upload',
 				'result' => 'upload success',
-				'error' => '',
 				'savePath' => $filePath,
 			);
-			return json_encode($returnArray, JSON_UNESCAPED_UNICODE);
 		} else {
 			fclose($fp);
-			
-			die('move uploaded file failed...');
+			$returnArray = Array (
+				'api' => 'upload',
+				'result' => 'upload fail',
+				'error' => 'move uploaded file failed',
+			);
 		}
+		
+		return json_encode($returnArray, JSON_UNESCAPED_UNICODE);
 	}
 
 	/**

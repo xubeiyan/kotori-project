@@ -287,12 +287,12 @@ if ($clientInfo['requestMethod'] == 'GET') {
 	// 上传图片
 	if ($clientInfo['query'] == 'uploadpost') {
 		//print '<img src=' . $_POST['img'] . '>';
+		
 		if (isset($_FILES['img'])) {
 			$imageDataFile = $config['file']['imageDataFile'];
 			
-			$result = Image::uploadFile($_FILES['img'], $imageDataFile);
-			
 			header('Content-type:application/json');
+			$result = Image::uploadFile($_FILES['img'], $imageDataFile);
 			echo $result;
 			exit();
 		} else {
