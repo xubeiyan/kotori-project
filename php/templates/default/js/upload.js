@@ -43,7 +43,8 @@ var area = document.getElementById('area'),				// 点击或拖放区域
 		return true;
 	},
 	clearPreview = function () {
-		preview.innerHTML = '';
+		image.innerHTML = '';
+		details.innerHTML = '';
 		imgInfo = {											
 			img: undefined,
 			filename: undefined,
@@ -56,10 +57,11 @@ var area = document.getElementById('area'),				// 点击或拖放区域
 		var imgStr = '<img id="uploadImg" src="' + imgInfo.img + '">',
 			detailStr = '<p class="details"><span>图片名称：' + imgInfo.filename + '</span></p>' +
 				'<p class="details"><span>大小:' + imgInfo.filesize + 'KB</span></p>';
+		imgObj = fileList[0];
 		image.innerHTML = imgStr;
 		details.innerHTML = detailStr;
 		upload.style.display = "block";
-		imgObj = fileList[0];
+		
 	};
 	
 area.addEventListener("dragleave", function(e) {
