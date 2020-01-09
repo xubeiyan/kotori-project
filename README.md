@@ -36,133 +36,10 @@
 >Python版本还是妥协了使用了SQLite      
 >说着要加上读取文件的锁，结果也没加……    
 
-#### 目录构成
-##### PHP版本文件
-
-* `index.php` 入口文件
-* `lib/Image.php` 图片类Image
-* `lib/User.php` 用户类User
-* `lib/Util.php` 杂项类Util
-* `config/conf.php` 配置文件
-* `uploads/` 图文件目录
-* `thumbs/` 缓存图目录
-* `templates/default/*` default主题的模板
-* `data/userdata` 用户数据
-* `data/imagedata` 图片数据
-
-##### Python版本文件
-
-* `README.md` 某个没啥用的README
-
-#### 用户数据字段划分
-
-这部分写入userdata文件中    
-
-* id(自增，从1开始)
-* username(用户名，没有的话以创建时间生成一个)
-* password(没有的话为空，加密算法为sha1)
-* ip(ipv4和ipv6视为两个用户)
-* anonymous(是否匿名，0为否，1为是)
-
-#### 图片数据字段划分
-
-这部分写入imagedata文件中
-
-* id(估计是按照某个散列函数随机生成)
-* size(图片大小)
-* filename(文件名)
-* uploader(上传用户id)
-* uploadtime(上传时间)
-* r18(咳咳咳，你懂的)
-
-#### 路由
-
->暂时先想到这么多    
->目前暂时未使用目录重写(Rewrite)规则，主要考虑到Apache和nginx实现方式有区别……    
-
-###### GET方法
-
-* `/` 跳转到`/upload`
-* `/upload` 上传图片
-* `/random` 随机访问个图片
-* `/register` 注册新账户
-* `/login` 登录
-* `/logout` 注销登录
-* `/userinfo` 用户信息
-* `/list` 列出图片
-* `/manage` 管理页面
-
-
-###### POST方法
-
-* `/uploadpost`
-```javascript
-{
-	"api": "upload",
-	"result": "upload success/fail"
-}
-```
-* `/registerpost`
-
-注册成功    
-```javascript
-{
-	"api": "register",
-	"result": "register success",
-}
-```
-注册失败（用户存在/此用户为管理员账户）    
-```javascript
-{
-	"api": "register",
-	"result": "register fail",
-	"error": "user exits/it is admin user",
-}
-```
-* `/loginpost`
-    
-登录成功    
-```javascript
-{
-	"api": "login",
-	"result": "login success",
-}
-```
-登录失败（密码错误/无此用户）    
-```javascript
-{
-	"api": "login",
-	"result": "login fail",
-	"error": "password wrong/no user",
-}
-```
-* `/userinfopost`    
-
-用户信息修改成功    
-```javascript
-{
-	"api": "userinfo",
-	"result": "modify success",
-}
-```
-用户信息修改失败（id不匹配/用户名不匹配/旧密码不匹配）    
-```javascript
-{
-	"api": "userinfo",
-	"result": "modify fail",
-	"detail": "the id/username/password seems not match...",
-}
-```
-* `/managepost`
-```javascript
-{
-	"api": "manageinfo",
-	"result": "success/fail",
-	"detail": ""
-}
-```
 
 ### 目前进展
+
+#### PHP版本
 
 * upload页面基本完成
 * random页面基本完成
@@ -173,6 +50,10 @@
 * 已修改检测上传文件的信息而不是文件名判断是否是图片文件（原来的太制杖了  
 * 已增加某智障的图片作为列表的cover图片（现在在配置文件中只有cover的文件名了    
 * list=last以及manage=last跳转到最后一页（拖延症晚期居然完成了）    
+
+#### Python版本（无限咕咕咕
+
+* 好像实现了upload页面
 
 ### 遇到问题
 
