@@ -144,7 +144,15 @@ class Util {
 			die('upload file failed');
 		// 非管理员进入manage页面
 		} else if ($errType == 'notAdminUser') {
-			die('current user "' . $errinfo['username'] . '" is not administrator');
+			//
+			$returnArray = Array (
+				'api' => 'manage',
+				'result' => 'set status fail',
+				'error' => 'current user "' . $errinfo['username'] . '" is not administrator, can\'t update image status',
+			);
+			header('Content-type: application/json');
+			echo json_encode($returnArray, JSON_UNESCAPED_UNICODE);
+			exit();
 		// 开启rewrite模式而未找到对应文件
 		} else if ($errType == 'noRewriteFile') {
 			die('can not find ' . $errinfo['rewritefile'] . ' file at ' . $errinfo['rewritefilefolder']);

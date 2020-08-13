@@ -30,6 +30,8 @@ xhr.onreadystatechange = function () {
 			}
 		} else if (resp['result'] == 'fail') {
 			errmsg.innerText = 'seems no file to change status';
+		} else if (resp['result'] == 'set status fail') {
+			errmsg.innerText = resp['error'];
 		}
 	}
 }

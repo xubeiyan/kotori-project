@@ -270,7 +270,7 @@ if ($clientInfo['requestMethod'] == 'GET') {
 			'prev-d' => $page == 1 ? 'disabled' : '',
 			'next-d' => count($imageListArray) == $config['file']['imagePerPage']? '' : 'disabled',
 			'last-d' => $pageInfo['userupload'] == 'last' ? 'disabled' : '',
-			'script' => ''
+			'script' => 'manage.js'
 		);
 		
 		Util::template('manage.html', $templateArray);
