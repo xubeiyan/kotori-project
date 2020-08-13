@@ -224,6 +224,10 @@ class Image {
 	* )
 	*/
 	public static function generateManageListTemplate($array) {
+		if (count($array) == 0) {
+			return '<p>没有文件</p>';
+		}
+		
 		$imagelist = '';
 		
 		global $config;
@@ -372,8 +376,9 @@ class Image {
 			}
 		}
 		
+		// 是空则返回空数组
 		if ($line == '') {
-			return 'NoImageForList';
+			return Array();
 		}
 		
 		for (; $imgPerPage > 0 && $line != ''; $imgPerPage -= 1, $line = fgets($fp)) {
