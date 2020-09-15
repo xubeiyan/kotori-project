@@ -335,20 +335,17 @@ if ($clientInfo['requestMethod'] == 'GET') {
 		
 		echo $result;
 		exit();
-	// 更新管理信息
+	// 修改图片可见性
 	} else if ($clientInfo['query'] == 'managepost') {
-		// print_r($_SESSION['currentUser']);
-		
-		if ($_SESSION['currentUser']['username'] != $config['user']['adminUserName'] || $_SESSION['currentUser']['password'] != $config['user']['adminPassword']) {
-			Util::err('notAdminUser', Array('username' => $_SESSION['currentUser']['username']));
-			exit();
-		}
-		
 		$imageDataFile = $config['file']['imageDataFile'];
-		
 		$modifyInfo = $_POST;
 		
-		$result = Image::modifyStatus($imageDataFile, $modifyInfo);
+		// 判断是管理员还是普通用户
+		if ($_SESSION['currentUser']['username'] != $config['user']['adminUserName'] || $_SESSION['currentUser']['password'] != $config['user']['adminPassword']) {
+			$result = Image::modifyStatus($imageDataFile, $modifyInfo, $_SESSION['currentUser']['id']);
+		} else {
+			$result = Image::modifyStatus($imageDataFile, $modifyInfo);
+		}
 		
 		header('Content-type:application/json');
 		echo $result;

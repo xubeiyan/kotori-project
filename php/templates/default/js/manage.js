@@ -22,6 +22,7 @@ confirm.addEventListener('click', function () {
 xhr.onreadystatechange = function () {
 	if (xhr.readyState == 4 && xhr.status == 200) {
 		errmsg.innerText = '';
+		errmsg.style.display = 'block';
 		var resp = JSON.parse(xhr.responseText);
 		// console.log(resp);
 		if (resp['result'] == 'success') {

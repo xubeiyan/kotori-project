@@ -323,6 +323,13 @@ main>div#list>div.file-detail>div.right>span {
 	margin-right: 1em;
 }
 
+main>div#errmsg {
+	display: none;
+	border: 1px solid #F00;
+	padding: 0.5em 1em 0.5em 1em;
+	margin-bottom: 1em;
+}
+
 main>div#list>button#confirm {
 	padding-top: 0.5em;
 	padding-bottom: 0.5em;

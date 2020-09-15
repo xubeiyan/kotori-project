@@ -313,24 +313,27 @@ class Image {
 	* $id 图片ID
 	* $r18 r18值
 	*/
-	public static function modifyStatus($file, $modifyStatus) {
+	public static function modifyStatus($file, $modifyStatus, $role_id = -1) {
 		$returnArray = Array(
 			'api' => 'manageinfo',
 			'result' => 'fail',
 			'details' => Array(),
 		);
 		
+		$fp = fopen($file, 'r+') or die('can not open file: ' . $file);
+		// 跳过#开头的注释行
+		for ($line = fgets($fp); $line[0] == '#'; $line = fgets($fp));
+		
 		foreach ($modifyStatus as $id => $r18) {
-			$fp = fopen($file, 'r+') or die('can not open file: ' . $file);
-			
-			// 跳过#开头的注释行
-			for ($line = fgets($fp); $line[0] == '#'; $line = fgets($fp));
 			// 跳过id不符合的行
 			for ($lineID = self::imagedataString2Array($line)['id']; 
 				$line !='' && $lineID != $id;
 				$line = fgets($fp), $lineID = self::imagedataString2Array($line)['id']);
 				
 			$lineArray = self::imagedataString2Array($line);
+			if ($role_id != -1 && $lineArray['uploader'] != $role_id) {
+				continue;
+			}
 			if ($r18 == 'yes') {
 				$lineArray['r18'] = 1;
 				$displayText = "'hide'";
@@ -344,11 +347,11 @@ class Image {
 			fseek($fp, 0 - strlen($line), SEEK_CUR);
 			
 			fwrite($fp, $newLine) or die('failed to write into imagedata');
-			fclose($fp);
 			
 			$returnArray['result'] = 'success';
 			array_push($returnArray['details'], 'display status of ' . $id . ' has changed to ' . $displayText);
 		}
+		fclose($fp);
 		
 		return json_encode($returnArray);
 	}
