@@ -3,7 +3,7 @@ import os
 import sqlite3
 import time
 # werkzeug
-from werkzeug import secure_filename
+from werkzeug.utils import secure_filename
 
 # flask
 from flask import Flask, redirect, url_for, request, session, g, render_template, send_file
