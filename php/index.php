@@ -300,6 +300,14 @@ if ($clientInfo['requestMethod'] == 'GET') {
 		}
 	// 注册
 	} else if ($clientInfo['query'] == 'registerpost') {
+		// 如果不允许注册，即config['user']['allowRegister'] != true
+		if (!$config['user']['allowRegister']) {
+			$notReg = User::notAllowRegister();
+			header('Content-type:application/json');
+			echo $notReg;
+			exit();
+		}
+		
 		$returnArray = Array();
 		
 		$registerInfo = Array();

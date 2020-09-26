@@ -138,6 +138,11 @@ main>div#preview>p.result {
     margin-right: auto;
 }
 
+main>div#preview>div#details-area>p.details {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
 main>input#uploadButton {
 	display: none;
 	width: 1000px;

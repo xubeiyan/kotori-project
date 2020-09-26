@@ -11,7 +11,7 @@ $config = Array (
 		'allowAnonymousUpload' 	=> true, 			#是否允许匿名传图
 		'anonymousMaxFileSize' 	=> 4096, 			#匿名最大传图大小(单位K)
 		'userMaxFileSize' 		=> 10240,			#用户最大传图大小(单位K)
-		'allowRegister' 		=> true,			#允许注册
+		'allowRegister' 		=> false,			#是否允许注册
 		'userDataFile' 			=> 'data/userdata'	#用户信息所在位置
 	),
 	'file' => Array(

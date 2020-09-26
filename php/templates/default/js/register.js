@@ -66,6 +66,9 @@ xhr.onreadystatechange = function () {
 			} else if (resp['error'] == 'it is admin user') {
 				console.log('很遗憾这是管理员账号');
 				showErrMsg('"' + username.value + '" is admin user');
+			} else if (resp['error'] == 'not allow to register') {
+				console.log('现在不能够注册');
+				showErrMsg('not allow to register');
 			}
 		}
 	}
