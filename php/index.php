@@ -252,7 +252,7 @@ if ($clientInfo['requestMethod'] == 'GET') {
 		
 		$managePerPage = $config['site']['manageImagePerPage'];
 		
-		$imageListArray = Image::generateImageList($page, $managePerPage, $userid);
+		$imageListArray = Image::getImageListByUploader($page, $managePerPage, $userid);
 		$imageList = Image::generateManageListTemplate($imageListArray);
 		
 		// 计算上一页和下一页的值
@@ -268,7 +268,7 @@ if ($clientInfo['requestMethod'] == 'GET') {
 			'next' => $next,
 			'first-d' => $page == 1 ? 'disabled' : '',
 			'prev-d' => $page == 1 ? 'disabled' : '',
-			'next-d' => count($imageListArray) == $config['file']['imagePerPage']? '' : 'disabled',
+			'next-d' => count($imageListArray) == $config['site']['manageImagePerPage']? '' : 'disabled',
 			'last-d' => $pageInfo['userupload'] == 'last' ? 'disabled' : '',
 			'script' => 'manage.js'
 		);

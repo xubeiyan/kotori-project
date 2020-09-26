@@ -359,7 +359,7 @@ class Image {
 	/**
 	* 根据页数和每页图片数提供图片链接
 	*/
-	public static function generateImageList($page, $imgPerPage, $uploaderId = '0') {
+	public static function generateImageList($page, $imgPerPage) {
 		global $config;
 		$fp = fopen($config['file']['imageDataFile'], 'r') or die ('can not open file: ' . $config['file']['imageDataFile']);
 		
@@ -369,15 +369,9 @@ class Image {
 		
 		// 跳过#开头的注释行
 		for ($line = fgets($fp); $line[0] == '#'; $line = fgets($fp));
-
+		
 		// 跳过前面的$skipImage行
-		for (; $skipImage > 0; $line = fgets($fp), $skipImage -= 1) {
-			// 如果限定了只获取对应的uploader的话不是此uploader则加一
-			$imageArray = self::imagedataString2Array($line);
-			if ($uploaderId != 0 && $imageArray['uploader'] != $uploaderId) {
-				$skipImage += 1;
-			}
-		}
+		for (; $skipImage > 0 && $line != ''; $line = fgets($fp), $skipImage -= 1);
 		
 		// 是空则返回空数组
 		if ($line == '') {
@@ -387,19 +381,44 @@ class Image {
 		for (; $imgPerPage > 0 && $line != ''; $imgPerPage -= 1, $line = fgets($fp)) {
 			// print_r($line);
 			$imageArray = self::imagedataString2Array($line);
-			
-			// 如果上传者id不为0，则只选此uploader的图
-			if ($uploaderId != 0) {
-				if ($imageArray['uploader'] == $uploaderId) {
-					array_push($imageSrcArray, $imageArray);
-				}
-			} else {
-				array_push($imageSrcArray, $imageArray);				
-			}
+			array_push($imageSrcArray, $imageArray);
 		}
 		
 		fclose($fp);
 		return $imageSrcArray;
+	}
+	
+	/**
+	* 指定uploader获取其图片的list
+	*/
+	public static function getImageListByUploader($page, $imgPerPage, $uploaderId) {
+		global $config;
+		$fp = fopen($config['file']['imageDataFile'], 'r') or die ('can not open file: ' . $config['file']['imageDataFile']);
+		
+		// 将传入的的页面值减1乘以每页图片得到要跳过的图片量
+		$skipImage = ($page - 1) * $imgPerPage; 
+		$imageSrcArray = Array();
+		
+		// 跳过#开头的注释行
+		for ($line = fgets($fp); $line[0] == '#'; $line = fgets($fp));
+		
+		// 只选出该uploader的图
+		for (; $imgPerPage > 0 && $line != ''; $line = fgets($fp)) {
+			$imageArray = self::imagedataString2Array($line);
+			if ($imageArray['uploader'] == $uploaderId) {
+				// 跳过前面的
+				if ($skipImage > 0) {
+					$skipImage -= 1;
+					continue;
+				} else {
+					array_push($imageSrcArray, $imageArray);
+					$imgPerPage -= 1;
+				}
+			}
+		}
+		
+		fclose($fp);
+		return $imageSrcArray; 
 	}
 	
 	/** 
