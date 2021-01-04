@@ -54,56 +54,30 @@ if ($clientInfo['requestMethod'] == 'GET') {
 		
 	// 随机访问图片
 	} else if ($pageInfoArray['req'] == 'random') {
-		$imageArray = Image::randomImage($config['file']['imageDataFile']);
-		// 如果返回没有图片可随机
-		if ($imageArray == 'NoImageForRandom') {
+		// 空的直接返回没有文件可随机
+		if (Image::isImageFileEmpty($config['file']['imageDataFile'])) {
 			$router -> renderPage('noimage_random_error_page');
 		} else {
 			$router -> renderPage('random_image_page');
 		}
 	// 列出图片
 	} else if ($pageInfoArray['req'] == 'list') {
-		// 检测是否提供了页面值，否则赋值为1
-		// 2017.10.17 修改为last跳到最后一页
-		if (!isset($page) || $pageInfoArray['page'] == '' || !is_numeric($pageInfoArray['page'])) {
-			$page = 1;
-		} else if ($pageInfoArray['page'] == 'last') {
-			$page = Image::getLastPage($config['file']['imagePerPage']);
+		// 空的直接返回没有文件可列出
+		if (Image::isImageFileEmpty($config['file']['imageDataFile'])) {
+			$router -> renderPage('noimage_list_error_page');
 		} else {
-			$page = intval($pageInfoArray['page']);
+			$router -> renderPage('list_page');
 		}
-		
-		$imageSrcArray = Image::generateImageList($page, $config['file']['imagePerPage']);
-		
-		if ($imageSrcArray == 'NoImageForList') {
-			$templateArray = Array(
-				'title' => '出错了',
-				'userinfo' => User::generateRegisterandLoginList($clientInfo['query']),
-				'error' => '没有可显示的图片',
-			);
-		
-			Util::template('error.html', $templateArray);
-			exit();
+	// 查看某张图片
+	} else if ($pageInfoArray['req'] == 'view') {
+		$fullPath = sprintf("%s/%s", $config['file']['uploadFolder'], 	
+			$pageInfoArray['name']);
+		if (isset($pageInfoArray['name']) && 
+		Image::isFileExist($fullPath)) {
+			$router -> renderPage('view_image_page');
+		} else {
+			$router -> renderPage('no_such_image_page');
 		}
-		
-		// 计算上一页和下一页的值
-		$prev = $page == 1 ? 1 : $page - 1;
-		$next = $page + 1;
-		
-		// var_dump($listArray[1]);
-		$templateArray = Array(
-			'title' => '文件列表',
-			'userinfo' => User::generateRegisterandLoginList($clientInfo['query']),
-			'imagelist' => Image::generateListTemplate($imageSrcArray, $page),
-			'prev' => $prev,
-			'next' => $next,
-			'first-d' => $page == 1 ? 'disabled' : '',
-			'prev-d' => $page == 1 ? 'disabled' : '',
-			'next-d' => count($imageSrcArray) == $config['file']['imagePerPage']? '' : 'disabled',
-			'last-d' => $pageInfoArray['page'] == 'last' ? 'disabled' : '',
-		);
-		
-		Util::template('list.html', $templateArray);
 	// 注册
 	} else if ($clientInfo['query'] == 'register') {
 		$templateArray = Array(

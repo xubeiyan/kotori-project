@@ -135,6 +135,32 @@ class Image {
 	}
 	
 	/**
+	 * 判断文件是否存在
+	 */
+	public static function isFileExist($file) {
+		if (file_exists($file)) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	/**
+	 * 判断图像列表是否空的
+	 * 
+	 */
+	public static function isImageFileEmpty($file) {
+		$fp = fopen($file, 'r') or die('can not open file: ' . $file);
+		// 跳过#开头的注释行
+		for ($line = fgets($fp); $line[0] == '#'; $line = fgets($fp));
+		if ($line == '') {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	/**
 	* 随机访问图片
 	* 返回可读的
 	*/
@@ -150,16 +176,27 @@ class Image {
 		// 跳过#开头的注释行
 		for ($line = fgets($fp); $line[0] == '#'; $line = fgets($fp));
 		$selectLine = rand(0, $lineNum - 1);
-		// print($selectLine);
+
 		for (; $selectLine > 0; $selectLine -= 1, $line = fgets($fp));
-		
-		if ($line == '') {
-			return 'NoImageForRandom';
-		}
 		
 		$imageArray = self::imagedataString2Array($line);
 
 		return $imageArray;
+	}
+	/**
+	 * 根据文件名返回文件信息
+	 */
+	public static function getImageInfoFromName($fromFile, $filename) {
+		$fp = fopen($fromFile, 'r') or die('can not open file: ' . $fromFile);
+		// 跳过#开头的注释行
+		for ($line = fgets($fp); $line[0] == '#'; $line = fgets($fp));
+		// 跳过文件名不符合的若干行
+		for ($line_filename= self::imagedataString2Array($line)['filename']; 
+			$line !='' && $line_filename != $filename;
+			$line = fgets($fp), $line_filename = self::imagedataString2Array($line)['filename']);
+			
+		$lineArray = self::imagedataString2Array($line);
+		return $lineArray;
 	}
 	
 	/**
@@ -194,7 +231,8 @@ class Image {
 			if ($value['r18'] == 1) {
 				$imagelist .= '<a href="uploads/' . $value['filename'] . '"><img title="好孩子不要点开！" src="templates/' . $config['site']['templateName'] . '/' . $config['file']['r18Cover'] . '" /></a>';
 			} else {
-				$imagelist .= '<a href="uploads/' . $value['filename'] . '"><img src="'. Image::getThumb($value['filename']). '" /></a>';
+				// $imagelist .= '<a href="uploads/' . $value['filename'] . '"><img src="'. Image::getThumb($value['filename']). '" /></a>';
+				$imagelist .= sprintf('<a href="?view&name=%s"><img src="%s"></a>', $value['filename'], Image::getThumb($value['filename']));
 			}
 		}
 		
@@ -358,6 +396,7 @@ class Image {
 	
 	/**
 	* 根据页数和每页图片数提供图片链接
+	* 通过多读取一张判断是否后面还有
 	*/
 	public static function generateImageList($page, $imgPerPage) {
 		global $config;
@@ -377,7 +416,8 @@ class Image {
 		if ($line == '') {
 			return Array();
 		}
-		
+		// 增加imagePerPage
+		$imgPerPage += 1;
 		for (; $imgPerPage > 0 && $line != ''; $imgPerPage -= 1, $line = fgets($fp)) {
 			// print_r($line);
 			$imageArray = self::imagedataString2Array($line);
