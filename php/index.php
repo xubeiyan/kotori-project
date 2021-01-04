@@ -34,62 +34,43 @@ if ($config['site']['rewriteURI'] == true) {
 	}
 }
 
+// 调用router类，生成一个router
+require 'lib/Router.php';
+$router = new Router($config, $clientInfo);
+
+// 处理页面参数
+$pageInfoArray = Util::parameterParser($clientInfo['query']);
+
 // 路由GET部分
 if ($clientInfo['requestMethod'] == 'GET') {
 	// 直接访问根目录
-	if ($clientInfo['query'] == '') {
-		header('refresh:0;url=?upload');
+	if ($pageInfoArray['req'] == '') {
+		$router -> routeTo('upload_page');
 		exit();
 	// 上传文件	
-	} else if ($clientInfo['query'] == 'upload') {
+	} else if ($pageInfoArray['req'] == 'upload') {
 		// var_dump($_SESSION['currentUser']);
+		$router -> renderPage('upload_page');
 		
-		$templateArray = Array(
-			'title' => '上传文件',
-			'userinfo' => User::generateRegisterandLoginList($clientInfo['query']),
-			'script' => 'upload.js',
-		);
-		Util::template('uploadFile.html', $templateArray);
 	// 随机访问图片
-	} else if ($clientInfo['query'] == 'random') {
+	} else if ($pageInfoArray['req'] == 'random') {
 		$imageArray = Image::randomImage($config['file']['imageDataFile']);
-		
 		// 如果返回没有图片可随机
 		if ($imageArray == 'NoImageForRandom') {
-			$templateArray = Array(
-				'title' => '出错了',
-				'userinfo' => User::generateRegisterandLoginList($clientInfo['query']),
-				'error' => '没有可显示的图片',
-			);
-		
-			Util::template('error.html', $templateArray);
-			exit();
+			$router -> renderPage('noimage_random_error_page');
+		} else {
+			$router -> renderPage('random_image_page');
 		}
-		
-		$templateArray = Array(
-			'title' => '随便看看',
-			'userinfo' => User::generateRegisterandLoginList($clientInfo['query']),
-			'filename' => $imageArray['filename'],
-			'imgPath' => $config['file']['uploadFolder'] . '/' . $imageArray['filename'],
-			'uploader' => $imageArray['uploader'],
-			'size'	=> Util::suitableSize($imageArray['size']),
-			'uploadtime' => Util::formatTime($imageArray['uploadtime']),
-		);
-		// Image::generateHeader($imageArray['filename']);
-		Util::template('random.html', $templateArray);
 	// 列出图片
-	} else if (substr($clientInfo['query'], 0, 4) == 'list') {
-		// 处理页面参数
-		$pageInfo = Util::parameterParser($clientInfo['query']);
-		
+	} else if ($pageInfoArray['req'] == 'list') {
 		// 检测是否提供了页面值，否则赋值为1
 		// 2017.10.17 修改为last跳到最后一页
-		if ($pageInfo['list'] == 'last') {
-			$page = Image::getLastPage($config['file']['imagePerPage']);
-		} else if ($pageInfo['list'] == '' || !is_numeric($pageInfo['list'])) {
+		if (!isset($page) || $pageInfoArray['page'] == '' || !is_numeric($pageInfoArray['page'])) {
 			$page = 1;
+		} else if ($pageInfoArray['page'] == 'last') {
+			$page = Image::getLastPage($config['file']['imagePerPage']);
 		} else {
-			$page = intval($pageInfo['list']);
+			$page = intval($pageInfoArray['page']);
 		}
 		
 		$imageSrcArray = Image::generateImageList($page, $config['file']['imagePerPage']);
@@ -119,7 +100,7 @@ if ($clientInfo['requestMethod'] == 'GET') {
 			'first-d' => $page == 1 ? 'disabled' : '',
 			'prev-d' => $page == 1 ? 'disabled' : '',
 			'next-d' => count($imageSrcArray) == $config['file']['imagePerPage']? '' : 'disabled',
-			'last-d' => $pageInfo['list'] == 'last' ? 'disabled' : '',
+			'last-d' => $pageInfoArray['page'] == 'last' ? 'disabled' : '',
 		);
 		
 		Util::template('list.html', $templateArray);

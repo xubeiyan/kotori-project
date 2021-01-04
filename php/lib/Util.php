@@ -18,16 +18,18 @@ class Util {
 	
 	/*
 	* 处理页面参数返回一个数组
-	* 例如list=1&uid=2
-	* 返回['list' => '1', 'uid' => 2]
-	* 没有值为空字符串''
+	* 例如list&page=1&uid=2
+	* 返回['req' =>'list', 'page' => '1', 'uid' => 2]
+	* 没有值['req' => '']
 	*/
 	public static function parameterParser($param) {
 		$paramPair = explode('&', $param);
-		$returnArray = Array();
+		$returnArray = Array( // 将第一个作为req参数
+			'req' => array_shift($paramPair),
+		);
 		
 		foreach ($paramPair as $value) {
-			$pair = explode('=', $value, 2);
+			$pair = explode('=', $value);
 			$returnArray[$pair[0]] = isset($pair[1]) ? $pair[1] : '';
 		}
 		return $returnArray;
