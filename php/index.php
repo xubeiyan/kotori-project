@@ -244,10 +244,10 @@ if ($clientInfo['requestMethod'] == 'GET') {
 		//print '<img src=' . $_POST['img'] . '>';
 		
 		if (isset($_FILES['img'])) {
-			$imageDataFile = $config['file']['imageDataFile'];
+			$imageTable = $config['database']['imageTableName'];
 			
 			header('Content-type:application/json');
-			$result = Image::uploadFile($_FILES['img'], $imageDataFile);
+			$result = Image::uploadFile($_FILES['img'], $imageTable);
 			echo $result;
 			exit();
 		} else {

@@ -29,6 +29,7 @@ $config = Array (
 		'thumbWidth' 			=> 200,				#略缩图宽度 
 	),
 	'database' => Array(
+		'sqliteFile'			=> 'data/kotori.db',#sqlite数据库文件名
 		'imageTableName' 		=> 'imagedata',		#image表名称
 		'userTableName'			=> 'userdata'		#user表名称
 	),

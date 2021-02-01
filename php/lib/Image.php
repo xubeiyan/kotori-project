@@ -8,9 +8,9 @@ class Image {
 	/**
 	* 上传文件
 	* 参数：$img(需要上传的文件数组，目前是$_FILES['img'])
-	* 参数：$file(要写入的imagedata文件)
+	* 参数：$imagetable(要写入的imagetable)
 	*/
-	public static function uploadFile($img, $file) {
+	public static function uploadFile($img, $image_table) {
 		// 先判断是否上传成功，不然imageFormatVerify那儿会出现一些问题
 		if ($img['error'] != 0) {
 			$err = Array(
@@ -32,37 +32,42 @@ class Image {
 		
 		$ext = self::imageFormatVerify($img);
 		
-		$fp = fopen($file, 'a') or die('can not open file: ' . $file);
-		// $extArray = explode('.', $img['name']);
-		// $ext = array_pop($extArray);
-		
 		$md5Value = md5(time());
 		
-		$imageArray = Array(
-			'id' => $md5Value,
+		$ia = Array(
 			'size' => $img['size'],
-			'filename' => $md5Value . '.' . $ext,
-			'uploader' => $_SESSION['currentUser']['id'],
-			'uploadtime' => date("Ymd H:i:s"),
-			'r18' => 0,
+			'fn' => $md5Value,
+			'ft' => $ext,
+			'upld' => $_SESSION['currentUser']['id'],
+			'upldtime' => date("Ymd H:i:s"),
+			'nsfw' => 0,
 		);
 		// print '!';
-		$string = self::imagedataArray2String($imageArray);
+		$sql = sprintf('INSERT INTO `%s` 
+				(size, 	uploader, 	filename, 	filetype, 	upload_time, 	nsfw) VALUES 
+				(%d, 	%d, 		"%s", 		"%s", 		"%s", 			%d)',
+				$image_table,
+				$ia['size'], $ia['upld'], $ia['fn'], $ia['ft'], $ia['upldtime'], $ia['nsfw']);
+		// $string = self::imagedataArray2String($imageArray);
+		global $config;
+		$db = new SQLite3($config['database']['sqliteFile']);
+		if (!$db ->exec($sql)) { // 写入失败
+			$returnArray = Array (
+				'api' => 'upload',
+				'result' => 'upload fail',
+				'error' => $db ->lastErrorMsg(),
+			);
+			return json_encode($returnArray, JSON_UNESCAPED_UNICODE);
+		}
 		
-		$filePath = 'uploads/' . $imageArray['filename'];
-		if (move_uploaded_file($img['tmp_name'], $filePath)) {
-			// print 'uploaded to folder ' . $filePath . "\r\n";
-			fwrite($fp, $string);
-			fwrite($fp, "\r\n");
-			fclose($fp);
-			
+		$filePath = sprintf('uploads/%s.%s', $ia['fn'], $ia['ft']);
+		if (move_uploaded_file($img['tmp_name'], $filePath)) {	
 			$returnArray = Array (
 				'api' => 'upload',
 				'result' => 'upload success',
 				'savePath' => $filePath,
 			);
 		} else {
-			fclose($fp);
 			$returnArray = Array (
 				'api' => 'upload',
 				'result' => 'upload fail',
