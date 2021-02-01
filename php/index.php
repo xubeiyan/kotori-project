@@ -79,21 +79,12 @@ if ($clientInfo['requestMethod'] == 'GET') {
 			$router -> renderPage('no_such_image_page');
 		}
 	// 注册
-	} else if ($clientInfo['query'] == 'register') {
-		$templateArray = Array(
-			'title' => '注册',
-			'userinfo' => User::generateRegisterandLoginList($clientInfo['query']),
-			'script' => 'register.js'
-		);
-		Util::template('register.html', $templateArray);
+	} else if ($pageInfoArray['req'] == 'reg') {
+		$router -> renderPage('register_page');
 	// 登录	
 	} else if ($clientInfo['query'] == 'login') {
-		$templateArray = Array(
-			'title' => '登录',
-			'userinfo' => User::generateRegisterandLoginList($clientInfo['query']),
-			'script' => 'login.js'
-		);
-		Util::template('login.html', $templateArray);
+		$router -> renderPage('login_page');
+		
 	// 用户信息	
 	} else if ($clientInfo['query'] == 'userinfo') {
 		// 如果是管理员就跳转到管理页面

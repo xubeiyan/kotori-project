@@ -111,6 +111,21 @@ class Router {
 			);
 			Util::template('random.html', $templateArray);
 			exit();
+		} else if ($page == 'register_page') {
+			$templateArray = Array(
+				'title' => '注册',
+				'userinfo' => User::generateRegisterandLoginList(),
+				'script' => 'register.js'
+			);
+			Util::template('register.html', $templateArray);
+			exit();
+		} else if ($page == 'login_page') {
+			$templateArray = Array(
+				'title' => '登录',
+				'userinfo' => User::generateRegisterandLoginList(),
+				'script' => 'login.js'
+			);
+			Util::template('login.html', $templateArray);
 		}
 	}
 }

@@ -267,23 +267,30 @@ class User {
 	}
 	
 	/** 
-	* 生成注册登录列表
+	* 生成header栏的右端部分
 	*/
-	public static function generateRegisterandLoginList($uri) {
+	public static function generateRegisterandLoginList() {
 		$returnArray = Array();
-		$username = $_SESSION['currentUser']['id'] == 0 ? '<span class="admin">KOTORI</span>' : $_SESSION['currentUser']['username'];
-		$listRegister = '<a href="?register" title="register"><li class="right">想签定契约</li></a>';
-		$listLogin = '<a href="?login" title="login"><li class="right">想传更大文件</li></a>';
-		$listLogout = '<a href="?userinfo" title="userinfo"><li class="right username">' . $username . '</li></a>
+		global $config;
+		// 如果匿名用户
+		if ($_SESSION['currentUser']['anonymous'] == 1) {
+			$templateFile = sprintf('templates/%s/header_uinf_anonymous.html', $config['site']['templateName']);
+		// 如果管理员
+		} else if (isset($_SESSION['currentUser']['admin'])) {
+			
+		// 如果一般用户
+		} else {
+			
+		}
+		// $username = '<span class="admin">KOTORI</span>' : $_SESSION['currentUser']['username'];
+		
+		/* $listLogout = '<a href="?userinfo" title="userinfo"><li class="right username">' . $username . '</li></a>
 				<a href="?userupload" title="userupload"><li class="right">我上传的</li></a>
 				<a href="?logout" title="logout"><li class="right quit">注销</li></a>';
+				*/
 		// 是否登录，等了后只渲染登出按钮
-		if ($_SESSION['currentUser']['anonymous'] == '0') {
-			$returnArray = $listLogout;
-		} else {
-			$returnArray = $listRegister . "\n" . $listLogin;
-		}
-		return $returnArray;
+		$returnStr = file_get_contents($templateFile);
+		return $returnStr;
 	}
 	
 	// 生成用户信息
