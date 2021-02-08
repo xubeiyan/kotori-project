@@ -76,7 +76,7 @@ class Router {
 			$templateArray = Array(
 				'title' => '文件列表',
 				'userinfo' => $user_panel,
-				'imagelist' => Image::generateListTemplate($imageSrcArray, $page),
+				'imagelist' => Image::generateListTemplate($imageSrcArray),
 				'prev' => $prev,
 				'next' => $next,
 				'first-d' => $page == 1 ? 'disabled' : '',

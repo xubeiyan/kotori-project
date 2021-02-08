@@ -227,34 +227,37 @@ class Image {
 	
 	/**
 	* 生成列表访问的模板数组
+	* $imageArray = Array(
+	*	'id' 		=> 文件id 
+	*	'filename 	=> 文件名称
+	* 	'nsfw'		=> 是否自主规制
+	* )
 	*/
-	public static function generateListTemplate($array, $currentPage) {
-		$imagelist = '';
+	public static function generateListTemplate($imageArray) {
+		$imageListStr = '';
 		global $config;
 		
-		foreach ($array as $value) {
-			if ($value['r18'] == 1) {
-				$imagelist .= '<a href="uploads/' . $value['filename'] . '"><img title="好孩子不要点开！" src="templates/' . $config['site']['templateName'] . '/' . $config['file']['r18Cover'] . '" /></a>';
-			} else {
-				// $imagelist .= '<a href="uploads/' . $value['filename'] . '"><img src="'. Image::getThumb($value['filename']). '" /></a>';
-				$imagelist .= sprintf('<a href="?view&name=%s"><img src="%s"></a>', $value['filename'], Image::getThumb($value['filename']));
-			}
+		// 获取imageList模板
+		$imageList = file_get_contents(sprintf('templates/%s/imageList.html', 
+			$config['site']['templateName']));
+		// print_r($imageList);
+		// r18封面路径
+		$nsfwCoverFile = sprintf('templastes/%s/%s', $config['site']['templateName'], 
+			$config['file']['r18Cover']);
+		// r18 title提示
+		$nsfwTitle = 'NSFW警告！好孩子不要点开';
+
+		foreach ($imageArray as $single) {
+			$title = $single['nsfw'] ? $nsfwTitle : '';
+			$thumbSrc = $single['nsfw'] ? $nsfwCoverFile : Image::getThumb($single['filename']);
+			$imgSrc = sprintf('?view&name=%s', $single['filename']);
+			$toAddStr = str_replace('%title%', $title, $imageList);
+			$toAddStr = str_replace('%thumbSrc%', $thumbSrc, $toAddStr);
+			$toAddStr = str_replace('%imgSrc%', $imgSrc, $toAddStr);
+			$imageListStr .= $toAddStr;
 		}
 		
-		if ($currentPage == 1) {
-			$prev = 1;
-			$next = 2;
-		} else {
-			$prev = $currentPage - 1;
-			$next = $currentPage + 1;
-		}
-		
-		// $imageListTemplate = Array(
-			// '%imagelist%' => $imagelist,
-			// '%prev%' => $prev,
-			// '%next%' => $next,
-		// );
-		return $imagelist;
+		return $imageListStr;
 	}
 	
 	/**
@@ -405,32 +408,29 @@ class Image {
 	*/
 	public static function generateImageList($page, $imgPerPage) {
 		global $config;
-		$fp = fopen($config['file']['imageDataFile'], 'r') or die ('can not open file: ' . $config['file']['imageDataFile']);
 		
 		// 将传入的的页面值减1乘以每页图片得到要跳过的图片量
 		$skipImage = ($page - 1) * $imgPerPage; 
-		$imageSrcArray = Array();
+		$sql = sprintf('SELECT `id`, `filename`, `filetype`, `nsfw` FROM `imagedata` LIMIT %d OFFSET %d',
+			$imgPerPage, $skipImage);
 		
-		// 跳过#开头的注释行
-		for ($line = fgets($fp); $line[0] == '#'; $line = fgets($fp));
-		
-		// 跳过前面的$skipImage行
-		for (; $skipImage > 0 && $line != ''; $line = fgets($fp), $skipImage -= 1);
-		
-		// 是空则返回空数组
-		if ($line == '') {
-			return Array();
+		$imageArray	= Array();
+
+		$db = new SQLite3($config['database']['sqliteFile']);
+		$ret = $db ->query($sql);
+
+		while ($row = $ret ->fetchArray(SQLITE3_ASSOC)) {
+			$single = Array(
+				'id' 		=> $row['id'],
+				'filename' 	=> sprintf("%s.%s", $row['filename'], $row['filetype']),
+				'nsfw'		=> $row['nsfw'],
+			);
+			array_push($imageArray, $single); 
 		}
-		// 增加imagePerPage
-		$imgPerPage += 1;
-		for (; $imgPerPage > 0 && $line != ''; $imgPerPage -= 1, $line = fgets($fp)) {
-			// print_r($line);
-			$imageArray = self::imagedataString2Array($line);
-			array_push($imageSrcArray, $imageArray);
-		}
-		
-		fclose($fp);
-		return $imageSrcArray;
+
+		// var_dump($imageArray);
+		// exit();
+		return $imageArray;
 	}
 	
 	/**
