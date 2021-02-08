@@ -33,8 +33,8 @@ class Router {
 			Util::template('uploadFile.html', $templateArray);
 			exit();
 		} else if ($page == 'random_image_page') {
+			$imageArray = Image::randomImage();
 			global $config;
-			$imageArray = Image::randomImage($config['file']['imageDataFile']);
 			$templateArray = Array(
 				'title' => '随便看看',
 				'userinfo' => $user_panel,
@@ -42,7 +42,7 @@ class Router {
 				'imgPath' => $config['file']['uploadFolder'] . '/' . $imageArray['filename'],
 				'uploader' => $imageArray['uploader'],
 				'size'	=> Util::suitableSize($imageArray['size']),
-				'uploadtime' => Util::formatTime($imageArray['uploadtime']),
+				'uploadtime' => Util::formatTime($imageArray['upload_time']),
 			);
 			// Image::generateHeader($imageArray['filename']);
 			Util::template('random.html', $templateArray);

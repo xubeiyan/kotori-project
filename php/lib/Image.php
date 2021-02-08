@@ -117,7 +117,7 @@ class Image {
 	
 	/** 
 	* 图片格式检查
-	* 发现只检查文件名根本不行，已完全修改为使用getimagesize获取文件类型
+	* 发现只检查文件名根本不行，已完全修改为使用exif_imagetype获取文件类型
 	* 返回文件类型
 	*/
 	public static function imageFormatVerify($image) {
@@ -125,7 +125,7 @@ class Image {
 		$extArray = explode('.', $image['name']);
 		$ext = array_pop($extArray);
 		
-		// 使用getimagesize获取文件类型
+		// 使用exif_imagetype获取文件类型
 		$imageFormat = exif_imagetype($image['tmp_name']);
 		
 		$allowFileType = $config['file']['allowFileType'];
@@ -151,28 +151,48 @@ class Image {
 	}
 	
 	/**
-	* 随机访问图片
-	* 返回可读的
-	*/
-	public static function randomImage($file) {
-		$fp = fopen($file, 'r') or die('can not open file: ' . $file);
-		for ($lineNum = 0, $line = fgets($fp); !feof($fp); $line = fgets($fp)) {
-			if ($line[0] == '#') {
-				continue;
-			}
-			$lineNum += 1;
-		}
-		rewind($fp); // 返回文件开头
-		// 跳过#开头的注释行
-		for ($line = fgets($fp); $line[0] == '#'; $line = fgets($fp));
-		$selectLine = rand(0, $lineNum - 1);
-
-		for (; $selectLine > 0; $selectLine -= 1, $line = fgets($fp));
+	 * 随机访问图片
+	 * 返回可读的
+	 */
+	public static function randomImage() {
+		global $config;
+		$sql = sprintf('SELECT `value` FROM `statistics` WHERE `name` = "image_data_num" LIMIT 1');
 		
-		$imageArray = self::imagedataString2Array($line);
+		$db = new SQLite3($config['database']['sqliteFile']);
+		$ret = $db ->query($sql);
+		$row = $ret ->fetchArray(SQLITE3_ASSOC);
+		
+		$imageId = mt_rand(1, $row['value']);
+
+		$imageArray = self::getOneImage($imageId);
+		
+		return $imageArray;
+	}
+
+	/**
+	 * 根据id返回对应图片
+	 * 
+	 */
+	private static function getOneImage($imgId) {
+		global $config;
+		$sql = sprintf('SELECT `id`, `size`, `uploader`, `filename`, `filetype`, 
+			`upload_time` FROM `imagedata` LIMIT 1 OFFSET %d', $imgId-1);
+		
+		$db = new SQLite3($config['database']['sqliteFile']);
+		$ret = $db ->query($sql);
+
+		$imageArray = Array();
+		while($row = $ret ->fetchArray(SQLITE3_ASSOC)) {
+			$imageArray['id'] = $row['id'];
+			$imageArray['size'] = $row['size'];
+			$imageArray['uploader'] = $row['uploader'];
+			$imageArray['upload_time'] = $row['upload_time'];
+			$imageArray['filename'] = sprintf('%s.%s', $row['filename'], $row['filetype']);
+		}
 
 		return $imageArray;
 	}
+
 	/**
 	 * 根据文件名返回文件信息
 	 */
