@@ -54,20 +54,10 @@ if ($clientInfo['requestMethod'] == 'GET') {
 		
 	// 随机访问图片
 	} else if ($pageInfoArray['req'] == 'random') {
-		// 空的直接返回没有文件可随机
-		if (Image::isImageFileEmpty($config['file']['imageDataFile'])) {
-			$router -> renderPage('noimage_random_error_page');
-		} else {
-			$router -> renderPage('random_image_page');
-		}
+		$router -> renderPage('random_image_page');
 	// 列出图片
 	} else if ($pageInfoArray['req'] == 'list') {
-		// 空的直接返回没有文件可列出
-		if (Image::isImageFileEmpty($config['file']['imageDataFile'])) {
-			$router -> renderPage('noimage_list_error_page');
-		} else {
-			$router -> renderPage('list_page');
-		}
+		$router -> renderPage('list_page');
 	// 查看某张图片
 	} else if ($pageInfoArray['req'] == 'view') {
 		$fullPath = sprintf("%s/%s", $config['file']['uploadFolder'], 	

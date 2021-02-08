@@ -151,21 +151,6 @@ class Image {
 	}
 	
 	/**
-	 * 判断图像列表是否空的
-	 * 
-	 */
-	public static function isImageFileEmpty($file) {
-		$fp = fopen($file, 'r') or die('can not open file: ' . $file);
-		// 跳过#开头的注释行
-		for ($line = fgets($fp); $line[0] == '#'; $line = fgets($fp));
-		if ($line == '') {
-			return true;
-		} else {
-			return false;
-		}
-	}
-	
-	/**
 	* 随机访问图片
 	* 返回可读的
 	*/
@@ -413,7 +398,7 @@ class Image {
 		$skipImage = ($page - 1) * $imgPerPage; 
 		$sql = sprintf('SELECT `id`, `filename`, `filetype`, `nsfw` FROM `imagedata` LIMIT %d OFFSET %d',
 			$imgPerPage, $skipImage);
-		
+
 		$imageArray	= Array();
 
 		$db = new SQLite3($config['database']['sqliteFile']);

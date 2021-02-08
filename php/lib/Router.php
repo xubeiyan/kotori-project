@@ -47,15 +47,6 @@ class Router {
 			// Image::generateHeader($imageArray['filename']);
 			Util::template('random.html', $templateArray);
 			exit();
-		} else if ($page == 'noimage_random_error_page') {
-			$templateArray = Array(
-				'title' => '出错了',
-				'userinfo' => $user_panel,
-				'error' => '没有可供随机的图片',
-			);
-		
-			Util::template('error.html', $templateArray);
-			exit();
 		} else if ($page == 'list_page') {
 			global $config;
 			global $pageInfoArray;
@@ -68,7 +59,19 @@ class Router {
 			}
 			
 			$imageSrcArray = Image::generateImageList($page, $config['file']['imagePerPage']);
+
+			// 如果空了显示没有可显示的图片
+			if (empty($imageSrcArray)) {
+				$templateArray = Array(
+					'title' => '出错了',
+					'userinfo' => $user_panel,
+					'error' => '没有可显示的图片',
+				);
 			
+				Util::template('error.html', $templateArray);
+				exit();
+			}
+
 			// 计算上一页和下一页的值
 			$prev = $page == 1 ? 1 : $page - 1;
 			$next = $page + 1;
@@ -86,15 +89,6 @@ class Router {
 			);
 			
 			Util::template('list.html', $templateArray);
-			exit();
-		} else if ($page == 'noimage_list_error_page') {
-			$templateArray = Array(
-				'title' => '出错了',
-				'userinfo' => $user_panel,
-				'error' => '没有可显示的图片',
-			);
-		
-			Util::template('error.html', $templateArray);
 			exit();
 		} else if ($page == 'view_image_page') {
 			global $config;
