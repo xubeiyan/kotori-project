@@ -6,6 +6,7 @@
 $db_file_path = 'data/kotori.db';
 $image_table = 'imagedata';
 $user_table = 'userdata';
+$statistics_table = 'statistics';
 
 $db = new SQLite3('../' . $db_file_path);
 
@@ -47,4 +48,24 @@ if ($db ->exec($sql)) {
 	print($db ->lastErrorMsg(). '<br />');
 	exit();
 }
+
+// 增加static表
+$sql = 'CREATE TABLE ' . $statistics_table . '
+	(id			INTEGER PRIMARY KEY AUTOINCREMENT,
+	name		VARCHAR(40)		NOT NULL,
+	value		INTEGER			NOT NULL)';
+
+if (!$db ->exec($sql)) {
+	print($db ->lastErrorMsg(). '<br />');
+	exit();
+} else {
+	print(sprintf('create table %s successfullly!', $statistics_table). '<br />');
+}
+
+// 写入static表
+$sql = 'INSERT INTO ' . $statistics_table . ' (name, value) VALUES (`image`, 0)';
+$db ->exec($sql);
+$sql = 'INSERT INTO ' . $statistics_table . ' (name, value) VALUES (`user`, 0)';
+$db ->exec($sql);
+
 ?>
