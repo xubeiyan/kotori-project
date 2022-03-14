@@ -28,6 +28,9 @@ class Router {
 			$templateArray = Array(
 				'title' => '上传文件',
 				'userinfo' => $user_panel,
+				'upload_class' => 'select',
+				'random_class' => '',
+				'list_class' => '',
 				'script' => 'upload.js',
 			);
 			Util::template('uploadFile.html', $templateArray);
@@ -38,6 +41,9 @@ class Router {
 			$templateArray = Array(
 				'title' => '随便看看',
 				'userinfo' => $user_panel,
+				'upload_class' => '',
+				'random_class' => 'select',
+				'list_class' => '',
 				'filename' => $imageArray['filename'],
 				'imgPath' => $config['file']['uploadFolder'] . '/' . $imageArray['filename'],
 				'uploader' => $imageArray['uploader'],
@@ -64,6 +70,9 @@ class Router {
 			if (empty($imageSrcArray)) {
 				$templateArray = Array(
 					'title' => '出错了',
+					'upload_class' => '',
+					'random_class' => '',
+					'list_class' => 'select',
 					'userinfo' => $user_panel,
 					'error' => '没有可显示的图片',
 				);
@@ -78,6 +87,9 @@ class Router {
 			
 			$templateArray = Array(
 				'title' => '文件列表',
+				'upload_class' => '',
+				'random_class' => '',
+				'list_class' => 'select',
 				'userinfo' => $user_panel,
 				'imagelist' => Image::generateListTemplate($imageSrcArray),
 				'prev' => $prev,

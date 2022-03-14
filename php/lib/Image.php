@@ -161,8 +161,8 @@ class Image {
 		$db = new SQLite3($config['database']['sqliteFile']);
 		$ret = $db ->query($sql);
 		$row = $ret ->fetchArray(SQLITE3_ASSOC);
-		
-		$imageId = mt_rand(1, $row['value']);
+
+		$imageId = $row['value'] > 1 ? mt_rand(1, $row['value']) : 1;
 
 		$imageArray = self::getOneImage($imageId);
 		

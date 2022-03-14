@@ -1,8 +1,12 @@
 <header>
-	<ul class="header-menu">
-		<a href="?upload"><li title="upload">上传文件</li></a>
-		<a href="?random"><li title="random visit">随便看看</li></a>
-		<a href="?list"><li title="image list">文件列表</li></a>
-		{% userinfo %}
-	</ul>
+	<div class="container">
+		<ul class="left-part">
+			<a class="{% upload_class %}" href="?upload"><li title="upload">上传文件</li></a>
+			<a class="{% random_class %}" href="?random"><li title="random visit">随便看看</li></a>
+			<a class="{% list_class %}" href="?list"><li title="image list">文件列表</li></a>
+		</ul>
+		<ul class="right-part">
+			{% userinfo %}
+		</ul>
+	</div>
 </header>

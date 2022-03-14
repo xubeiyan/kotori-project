@@ -1,66 +1,90 @@
-html {
-	min-height: 100vh;
-	position: relative;
+*, *::before, *::after {
+	box-sizing: border-box;
 }
 
 body {
 	margin: 0;
-	margin-bottom: 2em;
-	
 }
 
 /* #F8F8F8 #F1D6AB #E3B04B #2B2B28 */
+:root {
+	--content-width: 1000px;
+	--header-height: 2em;
+	--header-shadow-height: .25em;
+	--main-margin-top: 1em;
+	--first-color: #F1D6AB;
+	--first-color-hover: #EEE;
+	--second-color: #E3B04B;
+}
 
 /* Header部分 */
 header {
-	width: 100%;
-	background-color: #F1D6AB;
-	box-shadow: 0 5px 5px #DDD;
+	width: 100vw;
+	/* height: var(--header-height); */
+	background-color: var(--first-color);
+	box-shadow: 0 var(--header-shadow-height) 5px #DDD;
+	display: flex;
+	place-content: center;
+	position: absolute;
+	top: 0;
 }
 
-header>ul.header-menu {
+/* header container */
+header > .container {
+	width: var(--content-width);
+	display: flex;
+	justify-content: space-between;
+}
+
+/* header container左边部分 */
+header > .container > .left-part {
+	width: max-content;
+}
+
+header ul {
+	list-style: none;
+	display: flex;
 	margin: 0;
 	padding-left: 0;
-	width: 1000px;
-	margin-left: auto;
-	margin-right: auto;
-	list-style: none;
-
 }
 
-header>ul.header-menu>a>li {
-	display: inline-block;
-	padding-left: 0.5em;
-	padding-right: 0.5em;
-	height: 2em;
-	line-height: 2em;
-}
-
-
-header>ul.header-menu>a>li.right {
-	background-color: #E1C69B;
-	float: right;
-	margin-left: 0.1em;
-	border-radius: 0.2em;
-}
-
-header>ul.header-menu>a>li.username {
-	background-color: #E3B04B;
-}
-
-header>ul.header-menu>a>li:hover {
-	background-color: #E3B04B;
-}
-
-header>ul.header-menu>a {
-	color: #2B2B28;
+header > .container a {
 	text-decoration: none;
+	color: black;
 }
 
+header > .container a:hover {
+	background-color: var(--first-color-hover);
+	border-radius: 10px;
+}
+/* 当前选择的tab */
+header > .container a.select {
+	border-radius: 10px;
+	background-color: white;
+}
+
+header > .container > .right-part a:hover {
+	background-color: var(--second-color);
+}
+
+header > .container li {
+	padding: .5em 1em;
+}
+
+header > .container li:hover {
+	text-decoration: underline;
+}
+
+/* header container 右边部分 */
+header > .container > .right-part {
+	width: max-content;
+}
 /* 主体部分 */
 
 main {
-	margin-top: 1em;
+	margin-top: calc(var(--header-height) + 
+		var(--header-shadow-height) +
+		var(--main-margin-top));
 	width: 1000px;
 	margin-left: auto;
 	margin-right: auto;
