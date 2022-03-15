@@ -2,6 +2,7 @@
 /**
 * User类
 */
+
 class User {
 	
 	// 更新用户信息
@@ -30,6 +31,7 @@ class User {
 	// 用户登录
 	public static function login($file, $content) {
 		if (!isset($content['username']) || !isset($content['password'])) {
+			// TODO: to json
 			die('username or password is not set!');
 		}
 		
@@ -44,6 +46,7 @@ class User {
 				);
 				$content['id'] = 0;
 				$content['anonymous'] = 0;
+				$content['admin'] = 'kotori';
 				$_SESSION['currentUser'] = $content;
 				
 				return json_encode($returnArray, JSON_UNESCAPED_UNICODE);
@@ -174,45 +177,43 @@ class User {
 	}
 	
 	// 生成随机匿名帐号
-	// 看起来目前$content里只需要提供ip
-	public static function addAnonymous($file, $content) {
-		if (!isset($content['ip'])) {
-			http_response_code(400);
-			die('the ip seems not to set...');
-		}
-		
+	public static function generateAnonymous() {
 		// 使用kotori+当前时间戳的md5的前20位作为用户名
 		$content['username'] = substr(md5('kotori' + time()), 0, 20);
 		$content['password'] = sha1('kotori');
-		$content['anonymous'] = '1';
-		
-		$content = self::addData($file, $content);
 		return $content;
 	}
 	
 	// 检查分配SESSION
 	public static function sessionCheck($currentIP) {
-		// if (isset($_SESSION['currentUser'])) {
-		// 	return;
-		// }
-		$username = $_SESSION['currentUser']['username'];
-		$password = $_SESSION['currentUser']['password'];
-		$ip = $_SESSION['currentUser']['ip'];
-
+		// 如果$_SESSION['current']有，则什么都不做
+		if (isset($_SESSION['currentUser'])) {
+			return;
+		}
+		
+		// 从无到有
 		global $config;
 		
-		$db = new SQLite3($config['database']['sqliteFile']);
+		$db = DB::database();
 		$userTable = $config['database']['userTableName'];
-		$sql = sprintf("SELECT `id` FROM `%s` WHERE `ip` = '%s' LIMIT 1", $userTable, $ip);
-		$result = $db ->query($sql);
+		// 查询对应的IP是否有用户
+		$stmt = $db ->prepare("SELECT `id`, `username` FROM $userTable WHERE `ip` = :ip LIMIT 1");
+		$stmt ->bindParam(':ip', $currentIP);
+		$result = $stmt ->execute();
 		$row = $result ->fetchArray();
 		// 没有则增加
 		if (!$row) {
+			$content = self::generateAnonymous();
+			$username = $content['username'];
 			$insert_sql = sprintf('INSERT INTO `%s` (`username`, `password`, `ip`, `anonymous`) 
 				VALUES ("%s", "%s", "%s", 1)',
-				$userTable, $username, $password, $ip);
+				$userTable, $content['username'], $content['password'], $currentIP);
 			$db ->exec($insert_sql);
 		}
+		$username = $row['username'];
+		$_SESSION['currentUser']['anonymous'] = 1;
+		$_SESSION['currentUser']['username'] = $username;
+		$_SESSION['currentUser']['ip'] = $currentIP;
 
 	}
 	
@@ -224,10 +225,12 @@ class User {
 		global $config;
 		// 如果匿名用户
 		if ($_SESSION['currentUser']['anonymous'] == 1) {
-			$templateFile = sprintf('templates/%s/header_uinf_anonymous.html', $config['site']['templateName']);
+			$templateFile = sprintf('templates/%s/header_uinf_anonymous.html', 
+			$config['site']['templateName']);
 		// 如果管理员
 		} else if (isset($_SESSION['currentUser']['admin'])) {
-			
+			$templateFile = sprintf('templates/%s/header_uinf_admin.html', 
+			$config['site']['templateName']);
 		// 如果一般用户
 		} else {
 			

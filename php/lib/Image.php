@@ -4,7 +4,6 @@
 * 负责图片文件上传
 * 方法有uploadFile(上传文件)
 */
-require 'Database.php';
 
 class Image {
 	/**

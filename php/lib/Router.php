@@ -32,6 +32,8 @@ class Router {
 				'upload_class' => 'select',
 				'random_class' => '',
 				'list_class' => '',
+				'SESSION' => var_export($_SESSION, true),
+				'username' => $_SESSION['currentUser']['username'],
 				'anonymous_file_size_limit' => Util::suitableSize(
 					$this ->conf['user']['anonymousMaxFileSize']),
 				'script' => 'upload.js',

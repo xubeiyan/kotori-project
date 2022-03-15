@@ -82,6 +82,10 @@ header > .container li:hover {
 header > .container > .right-part {
 	width: max-content;
 }
+
+header > .container > .right-part .primary{
+	background-color: var(--second-color);
+}
 /* 主体部分 */
 
 main {
@@ -115,10 +119,14 @@ main>div#preview {
 	width: 1000px;
 }
 
-main>div#preview>div#image-area img#uploadImg {
-	width: 100%;
-	display: block;
+main>div#preview>div#image-area  {
+	display: flex;
+	justify-content: center;
 }
+
+img#uploadImg {
+	width: 100%;
+} 
 
 /* 图像信息 */
 main>div#preview>p.details {

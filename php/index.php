@@ -14,8 +14,12 @@ if(!file_exists('config/conf.php')) {
 require 'config/conf.php';
 global $config;
 
+//
+require 'lib/Database.php';
+
 // 调用Util类，获取一些基本信息
 $clientInfo = Util::getClientInfo();
+
 
 // 调用User类，建立SESSION
 require 'lib/User.php';
