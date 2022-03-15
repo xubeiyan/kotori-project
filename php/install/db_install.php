@@ -63,9 +63,20 @@ if (!$db ->exec($sql)) {
 }
 
 // 写入static表
-$sql = 'INSERT INTO ' . $statistics_table . ' (name, value) VALUES (`image`, 0)';
-$db ->exec($sql);
-$sql = 'INSERT INTO ' . $statistics_table . ' (name, value) VALUES (`user`, 0)';
-$db ->exec($sql);
+$sql = "INSERT INTO $statistics_table (name, value) VALUES ('image', 0)";
+if (!$db ->exec($sql)) {
+	print($db ->lastErrorMsg(). '<br />');
+	exit();
+} else {
+	print(sprintf('insert table %s successfullly!', $statistics_table). '<br />');
+}
+
+$sql = "INSERT INTO $statistics_table (name, value) VALUES ('user', 0)";
+if (!$db ->exec($sql)) {
+	print($db ->lastErrorMsg(). '<br />');
+	exit();
+} else {
+	print(sprintf('insert table %s successfullly!', $statistics_table). '<br />');
+}
 
 ?>

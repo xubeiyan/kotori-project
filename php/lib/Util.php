@@ -37,7 +37,7 @@ class Util {
 	
 	/* 
 	* 获取对应的模板并渲染
-	* 参数：要渲染的页面名称，已经模板字符串数组
+	* 参数：要渲染的页面名称，以及模板字符串数组
 	*/
 	public static function template($pageName, $templateStringArray = Array()) {
 		global $config;
@@ -234,7 +234,6 @@ class Util {
 			return sprintf('%.1f', $byteSize) . 'B';
 		}
 	}
-	
 	/*
 	* 格式化时间
 	* 由于imagedata里面存放的并不是时间戳，所以还是自己写个时间格式转换函数
@@ -279,11 +278,11 @@ class Util {
 		$statistics_table = $config['database']['statisticsTableName'];
 		$db = new SQLite3('../' . $db_file_path);
 	
-		$sql = sprintf('DELETE FROM "%s"', $image_table);
+		$sql = "DROP TABLE $image_table";
 		$db->exec($sql);
-		$sql = sprintf('DELETE FROM "%s"', $user_table);
+		$sql = "DROP TABLE $user_table";
 		$db->exec($sql);
-		$sql = sprintf('DELETE FROM "%s"', $statistics_table);
+		$sql = "DROP TABLE $statistics_table";
 		$db->exec($sql);
 	}
 }

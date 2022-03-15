@@ -212,12 +212,18 @@ if ($clientInfo['requestMethod'] == 'GET') {
 		Util::template('manage.html', $templateArray);
 		exit();
 		
+	} else if ($pageInfoArray['req'] == 'upload_limit_info') {
+		$ret = Array();
+		$ret['upload_size_limit'] = $config['user']['anonymousMaxFileSize'];
+		header('Content-Type: application/json');
+		echo json_encode($ret, JSON_UNESCAPED_UNICODE);
+		exit();
 	} else {
 		$errInfo = Array(
 			'query' => $clientInfo['query'],
 		);
 		Util::err('notAllowedReqQuery', $errInfo);
-	}
+	} 
 // 路由POST部分
 } else if ($clientInfo['requestMethod'] == 'POST') {
 	// 上传图片

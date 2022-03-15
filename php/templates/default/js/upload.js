@@ -1,68 +1,74 @@
-var area = document.getElementById('area'),				// 点击或拖放区域
-	image = document.getElementById('image-area'),		// 图片预览区域
-	details = document.getElementById('details-area'),	// 图片详细区域
-	file = document.getElementById('file'),				// 上传input
-	upload = document.getElementById('uploadButton'),	// 上传按钮
-	notice = document.getElementById('notice'),			// 提示信息
-	UPLOAD_FILE_SIZE = 1024 * 10,						// 上传文件大小限制
-	imgObj = {},
-	imgInfo = {											// 待上传文件信息
+const area = document.getElementById('area');				// 点击或拖放区域
+const image = document.getElementById('image-area');		// 图片预览区域
+const details = document.getElementById('details-area');	// 图片详细区域
+const file = document.getElementById('file');				// 上传input
+const upload = document.getElementById('uploadButton');		// 上传按钮
+const notice = document.getElementById('notice');			// 提示信息
+let UPLOAD_FILE_SIZE = 1024 * 10;							// 上传文件大小限制
+let imgObj = {};
+let imgInfo = {											// 待上传文件信息
+	img: undefined,
+	filename: undefined,
+	filesize: undefined,
+};
+// 显示提示信息
+const showNotice = function (text) {
+	notice.innerHTML = '<span>' + text + '</text>';
+};
+// 清除提示信息
+const clearNotice = function () {
+	notice.innerHTML = '';
+};
+// 检查图片
+const imgValidate = function (fileList) {
+	clearNotice();
+	
+	if (fileList.length == 0) {
+		return false;
+	}
+	
+	if (fileList[0].type.indexOf('image') == -1) {
+		showNotice('注意：选择上传的文件不是图片');
+		return false;
+	}
+	
+	imgInfo.img = window.URL.createObjectURL(fileList[0]);
+	imgInfo.filename = fileList[0].name;
+	imgInfo.filesize = Math.floor((fileList[0].size) / 1024);
+		
+	if (imgInfo.filesize > UPLOAD_FILE_SIZE) {
+		showNotice('注意：文件大小不能超过10M');
+		return false;
+	}
+	return true;
+};
+const clearPreview = function () {
+	image.innerHTML = '';
+	details.innerHTML = '';
+	imgInfo = {											
 		img: undefined,
 		filename: undefined,
 		filesize: undefined,
-	},
-	// 显示提示信息
-	showNotice = function (text) {
-		notice.innerHTML = '<span>' + text + '</text>';
-	},
-	// 清除提示信息
-	clearNotice = function () {
-		notice.innerHTML = '';
-	},
-	// 检查图片
-	imgValidate = function (fileList) {
-		clearNotice();
-		
-		if (fileList.length == 0) {
-			return false;
-		}
-		
-		if (fileList[0].type.indexOf('image') == -1) {
-			showNotice('注意：选择上传的文件不是图片');
-			return false;
-		}
-		
-		imgInfo.img = window.URL.createObjectURL(fileList[0]);
-		imgInfo.filename = fileList[0].name;
-		imgInfo.filesize = Math.floor((fileList[0].size) / 1024);
-			
-		if (imgInfo.filesize > UPLOAD_FILE_SIZE) {
-			showNotice('注意：文件大小不能超过10M');
-			return false;
-		}
-		return true;
-	},
-	clearPreview = function () {
-		image.innerHTML = '';
-		details.innerHTML = '';
-		imgInfo = {											
-			img: undefined,
-			filename: undefined,
-			filesize: undefined,
-		}
 	}
-	// 显示图片预览信息
-	showUploadFileDetails = function (fileList) {
-		
-		var imgStr = '<img id="uploadImg" src="' + imgInfo.img + '">',
-			detailStr = '<p class="details"><span>图片名称：' + imgInfo.filename + '</span></p>' +
-				'<p class="details"><span>大小:' + imgInfo.filesize + 'KB</span></p>';
-		imgObj = fileList[0];
-		image.innerHTML = imgStr;
-		details.innerHTML = detailStr;
-		upload.style.display = "block";
-		
-	};
+};
+// 显示图片预览信息
+const showUploadFileDetails = function (fileList) {
+	var imgStr = '<img id="uploadImg" src="' + imgInfo.img + '">',
+		detailStr = '<p class="details"><span>图片名称：' + imgInfo.filename + '</span></p>' +
+			'<p class="details"><span>大小:' + imgInfo.filesize + 'KB</span></p>';
+	imgObj = fileList[0];
+	image.innerHTML = imgStr;
+	details.innerHTML = detailStr;
+	upload.style.display = "block";
+	
+};
+
+fetch('?upload_limit_info')
+	.then((res) => res.json())
+	.then(data => {
+		console.log(`从服务端获取的上传文件大小限制为：${data.upload_size_limit}`);
+		UPLOAD_FILE_SIZE = data.upload_size_limit;
+	});
 	
 area.addEventListener("dragleave", function(e) {
 	e.preventDefault();

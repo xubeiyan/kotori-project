@@ -10,8 +10,8 @@ class Router {
 	
 	// 初始化
 	public function __construct($config, $clientInfo) {
-		$conf = $config;
-		$client_info = $clientInfo;
+		$this ->conf = $config;
+		$this ->client_info = $clientInfo;
 	}
 	
 	// 导航路由
@@ -25,13 +25,15 @@ class Router {
 	public function renderPage($page) {
 		$user_panel = User::generateRegisterandLoginList($this ->client_info['query']);
 		if ($page == 'upload_page') {
+			
 			$templateArray = Array(
 				'title' => '上传文件',
 				'userinfo' => $user_panel,
 				'upload_class' => 'select',
 				'random_class' => '',
 				'list_class' => '',
-				// 'SESSION' => var_export($_SESSION, true),
+				'anonymous_file_size_limit' => Util::suitableSize(
+					$this ->conf['user']['anonymousMaxFileSize']),
 				'script' => 'upload.js',
 			);
 			Util::template('uploadFile.html', $templateArray);
