@@ -21,7 +21,8 @@ $clientInfo = Util::getClientInfo();
 require 'lib/User.php';
 // 使用SESSION
 session_start();
-User::sessionCheck($config['user']['userDataFile'], $clientInfo['remoteAddr']);
+User::sessionCheck($clientInfo['remoteAddr']);
+
 
 // 调用Image类
 require 'lib/Image.php';
@@ -72,11 +73,11 @@ if ($clientInfo['requestMethod'] == 'GET') {
 	} else if ($pageInfoArray['req'] == 'reg') {
 		$router -> renderPage('register_page');
 	// 登录	
-	} else if ($clientInfo['query'] == 'login') {
+	} else if ($pageInfoArray['req'] == 'login') {
 		$router -> renderPage('login_page');
 		
 	// 用户信息	
-	} else if ($clientInfo['query'] == 'userinfo') {
+	} else if ($pageInfoArray['req'] == 'userinfo') {
 		// 如果是管理员就跳转到管理页面
 		if ($_SESSION['currentUser']['id'] == 0) {
 			header('refresh:0;url=?manage');
@@ -95,7 +96,7 @@ if ($clientInfo['requestMethod'] == 'GET') {
 		
 		Util::template('userinfo.html', $templateArray);
 	// 退出登录
-	} else if ($clientInfo['query'] == 'logout') {
+	} else if ($pageInfoArray['req'] == 'logout') {
 		session_unset();
 		header('refresh:0;url=.');
 	// 管理页面（于是现在如何认定管理员呢……暂时认为叫kotori的就是管理员吧）

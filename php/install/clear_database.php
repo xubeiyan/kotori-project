@@ -8,19 +8,21 @@ require '../config/conf.php';
 // 引入一个简单的渲染引擎
 require 'template.php';
 
+$db_file_path = $config['database']['sqliteFile'];
+
+$db = new SQLite3('../' . $db_file_path);
+
 define('PROD', 'production');
 define('DEV', 'development');
 
-if (isset($config['user']['userDataFile'])) {
-	$user_data_file = '../' . $config['user']['userDataFile'];
-} else {
-	$user_data_file = '../data/userdata';
-}
+// 将提示信息置空
+$hint_message = '';
 
-if (isset($config['file']['imageDataFile'])) {
-	$image_data_file = '../' . $config['file']['imageDataFile'];
+if (!$db) {
+	print($db ->lastErrorMsg() . '<br />');
+	exit();
 } else {
-	$image_data_file = '../data/imagedata';
+	$hint_message = sprintf('open %s successfullly!', $db_file_path);
 }
 
 // 处理no的情况
@@ -60,7 +62,7 @@ if ($config['environment'] == DEV) {
 	$template = Array(
 		'title' => '提示信息...',
 		'header' => '注意',
-		'info' => '确定要清空所有图像和用户数据？',
+		'info' => $hint_message . '<br>确定要清空所有图像和用户数据？',
 	);
 	
 	echo Template::render('question', $template);

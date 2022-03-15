@@ -272,17 +272,19 @@ class Util {
 			array_map('unlink', glob($lower));
 		}
 		
-		
-		// 清空data/userdata
-		require 'User.php';
-		$file = $config['user']['userDataFile'];
-		User::clearAllUserData('../' . $file);
-		
-		// 清空data/imagedata
-		require 'Image.php';
-		$file = $config['file']['imageDataFile'];
-		Image::clearAllImageData('../' . $file);
-		
+		// 删除数据库中内容
+		$db_file_path = $config['database']['sqliteFile'];
+		$image_table = $config['database']['imageTableName'];
+		$user_table = $config['database']['userTableName'];
+		$statistics_table = $config['database']['statisticsTableName'];
+		$db = new SQLite3('../' . $db_file_path);
+	
+		$sql = sprintf('DELETE FROM "%s"', $image_table);
+		$db->exec($sql);
+		$sql = sprintf('DELETE FROM "%s"', $user_table);
+		$db->exec($sql);
+		$sql = sprintf('DELETE FROM "%s"', $statistics_table);
+		$db->exec($sql);
 	}
 }
 ?>

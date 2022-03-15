@@ -31,12 +31,29 @@ class Router {
 				'upload_class' => 'select',
 				'random_class' => '',
 				'list_class' => '',
+				// 'SESSION' => var_export($_SESSION, true),
 				'script' => 'upload.js',
 			);
 			Util::template('uploadFile.html', $templateArray);
 			exit();
 		} else if ($page == 'random_image_page') {
 			$imageArray = Image::randomImage();
+
+			// 没有图片
+			if (empty($imageArray)) {
+				$templateArray = Array(
+					'title' => '出错了',
+					'upload_class' => '',
+					'random_class' => 'select',
+					'list_class' => '',
+					'userinfo' => $user_panel,
+					'error' => '没有可显示的图片',
+				);
+			
+				Util::template('error.html', $templateArray);
+				exit();
+			}
+
 			global $config;
 			$templateArray = Array(
 				'title' => '随便看看',

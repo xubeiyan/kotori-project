@@ -15,7 +15,7 @@
 
 #### 用户数据字段划分
 
-这部分写入userdata文件中    
+这部分写入userdata表中    
 
 * id(自增，从1开始)
 * username(用户名，没有的话以创建时间生成一个)
@@ -25,14 +25,22 @@
 
 #### 图片数据字段划分
 
-这部分写入imagedata文件中
+这部分写入imagedata表中
 
-* id(估计是按照某个散列函数随机生成)
+* id(自增，从1开始)
 * size(图片大小)
 * filename(文件名)
 * uploader(上传用户id)
 * uploadtime(上传时间)
-* r18(咳咳咳，你懂的)
+* nsfw(not safe for work)
+
+#### 统计数据字段划分
+
+这部分写入statistics表中
+
+* id
+* name(目前有image和user这两项)
+* value(对应的值)
 
 #### 路由
 

@@ -31,7 +31,8 @@ $config = Array (
 	'database' => Array(
 		'sqliteFile'			=> 'data/kotori.db',#sqlite数据库文件名
 		'imageTableName' 		=> 'imagedata',		#image表名称
-		'userTableName'			=> 'userdata'		#user表名称
+		'userTableName'			=> 'userdata',		#user表名称
+		'statisticsTableName'	=> 'statistics'		#statistics表名称
 	),
 	'site' => Array(
 		'manageImagePerPage' 	=> 20,				#管理页面每页显示图片

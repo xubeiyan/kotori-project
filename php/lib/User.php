@@ -4,38 +4,6 @@
 */
 class User {
 	
-	// 将用户信息数组转为字符串
-	public static function detailArraytoString($detailArray) {
-		// 判断数组长度是否为5
-		if (count($detailArray) != 5) {
-			die('the length of user detail string is invaild(in array2string)...');
-		}
-		$format = '%-10s|%-20s|%-40s|%-40s|%s';
-		$detailString = sprintf($format, $detailArray['id'], $detailArray['username'], 
-			$detailArray['password'], $detailArray['ip'], $detailArray['anonymous']);
-		return $detailString;
-	}
-	
-	// 将用户资料字符串转为数组
-	public static function detailStringtoArray($detailString) {
-		//print($detailString);
-		$splitString = explode('|', $detailString);
-		//print_r($splitString);
-		// 增加一个数组长度判断
-		if (count($splitString) != 5) {
-			die('the length of user detail string is invaild(in string2array)...');
-		}
-		
-		$detailArray = Array(
-			'id' => trim($splitString[0]),
-			'username' => trim($splitString[1]),
-			'password' => trim($splitString[2]),
-			'ip' => trim($splitString[3]),
-			'anonymous' => trim($splitString[4]),
-		);
-		return $detailArray;
-	}
-	
 	// 更新用户信息
 	public static function updateData($file, $content) {
 		$fp = fopen($file, 'r+') or die('can not open file: ' . $file);
@@ -209,6 +177,7 @@ class User {
 	// 看起来目前$content里只需要提供ip
 	public static function addAnonymous($file, $content) {
 		if (!isset($content['ip'])) {
+			http_response_code(400);
 			die('the ip seems not to set...');
 		}
 		
@@ -222,48 +191,29 @@ class User {
 	}
 	
 	// 检查分配SESSION
-	public static function sessionCheck($file, $currentIP) {
-		if (isset($_SESSION['currentUser'])) {
-			return;
+	public static function sessionCheck($currentIP) {
+		// if (isset($_SESSION['currentUser'])) {
+		// 	return;
+		// }
+		$username = $_SESSION['currentUser']['username'];
+		$password = $_SESSION['currentUser']['password'];
+		$ip = $_SESSION['currentUser']['ip'];
+
+		global $config;
+		
+		$db = new SQLite3($config['database']['sqliteFile']);
+		$userTable = $config['database']['userTableName'];
+		$sql = sprintf("SELECT `id` FROM `%s` WHERE `ip` = '%s' LIMIT 1", $userTable, $ip);
+		$result = $db ->query($sql);
+		$row = $result ->fetchArray();
+		// 没有则增加
+		if (!$row) {
+			$insert_sql = sprintf('INSERT INTO `%s` (`username`, `password`, `ip`, `anonymous`) 
+				VALUES ("%s", "%s", "%s", 1)',
+				$userTable, $username, $password, $ip);
+			$db ->exec($insert_sql);
 		}
-		
-		$fp = fopen($file, 'r+') or die('can not open file: ' . $file);
-	
-		// 跳过前面的#行
-		for ($line = fgets($fp); $line[0] == '#'; $line = fgets($fp));
-		
-		// 若是没有记录则生成一行然后返回
-		if (feof($fp)) {
-			fclose($fp);
-			$content = self::addAnonymous($file, Array('ip' => $currentIP));
-			$_SESSION['currentUser'] = $content;
-			
-			return;
-		} 
-		
-		// 跳过ip不符合的几行
-		
-		$ip = self::detailStringtoArray($line)['ip'];
-		
-		for (; $ip != $currentIP; ) {
-			// print('line:' . $line);
-			$line = fgets($fp);
-			if ($line == '') {
-				break;
-			}
-			$ip = self::detailStringtoArray($line)['ip'];
-		}
-		
-		// 如果已经到了文件结尾
-		if (feof($fp)) {
-			fclose($fp);
-			$content = self::addAnonymous($file, Array('ip' => $currentIP));
-		} else if ($currentIP == $ip) {
-			$content = self::detailStringtoArray($line);
-			fclose($fp);
-		}
-		$_SESSION['currentUser'] = $content;
-		
+
 	}
 	
 	/** 
