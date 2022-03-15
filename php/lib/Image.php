@@ -4,6 +4,8 @@
 * 负责图片文件上传
 * 方法有uploadFile(上传文件)
 */
+require 'Database.php';
+
 class Image {
 	/**
 	* 上传文件
@@ -50,7 +52,7 @@ class Image {
 				$ia['size'], $ia['upld'], $ia['fn'], $ia['ft'], $ia['upldtime'], $ia['nsfw']);
 		// $string = self::imagedataArray2String($imageArray);
 		global $config;
-		$db = new SQLite3($config['database']['sqliteFile']);
+		$db = DB::database();
 		if (!$db ->exec($sql)) { // 写入失败
 			$returnArray = Array (
 				'api' => 'upload',
@@ -158,7 +160,7 @@ class Image {
 		global $config;
 		$sql = sprintf('SELECT `value` FROM `statistics` WHERE `name` = "image_data_num" LIMIT 1');
 		
-		$db = new SQLite3($config['database']['sqliteFile']);
+		$db = DB::database();
 		$ret = $db ->query($sql);
 		$row = $ret ->fetchArray(SQLITE3_ASSOC);
 
@@ -175,10 +177,11 @@ class Image {
 	 */
 	private static function getOneImage($imgId) {
 		global $config;
-		$sql = sprintf('SELECT `id`, `size`, `uploader`, `filename`, `filetype`, 
-			`upload_time` FROM `imagedata` LIMIT 1 OFFSET %d', $imgId-1);
+		$imageTable = $config['database']['imageTableName'];
+		$sql = sprintf("SELECT `id`, `size`, `uploader`, `filename`, `filetype`, 
+			`upload_time` FROM $imageTable LIMIT 1 OFFSET %d", $imgId-1);
 		
-		$db = new SQLite3($config['database']['sqliteFile']);
+		$db = DB::database();
 		$ret = $db ->query($sql);
 
 		$imageArray = Array();
@@ -195,18 +198,37 @@ class Image {
 
 	/**
 	 * 根据文件名返回文件信息
+	 * @param 文件名
+	 * @return {
+	 * 		size		大小（以B计算）
+	 * 		uploader	上传者ID
+	 * 		filetype	文件类型
+	 * 		filename	文件名
+	 * 		upload_time	上传时间
+	 * 		nsfw		是否NSFW
+	 * }
 	 */
-	public static function getImageInfoFromName($fromFile, $filename) {
-		$fp = fopen($fromFile, 'r') or die('can not open file: ' . $fromFile);
-		// 跳过#开头的注释行
-		for ($line = fgets($fp); $line[0] == '#'; $line = fgets($fp));
-		// 跳过文件名不符合的若干行
-		for ($line_filename= self::imagedataString2Array($line)['filename']; 
-			$line !='' && $line_filename != $filename;
-			$line = fgets($fp), $line_filename = self::imagedataString2Array($line)['filename']);
-			
-		$lineArray = self::imagedataString2Array($line);
-		return $lineArray;
+	public static function getImageInfoFromName($filename) {
+		global $config;
+		$db = DB::database();
+		$imageTable = $config['database']['imageTableName'];
+		$stmt = $db -> prepare("SELECT `id`, `size`, `uploader`, `filetype`, `upload_time`, `nsfw` 
+			FROM $imageTable WHERE `filename` = :filename LIMIT 1");
+		$stmt ->bindParam(':imageTable', $imageTable);
+		$stmt ->bindParam(':filename', $filename);
+		$ret = $stmt ->execute();
+		
+		$imageArray = Array();
+		while($row = $ret ->fetchArray(SQLITE3_ASSOC)) {
+			$imageArray['id'] = $row['id'];
+			$imageArray['size'] = $row['size'];
+			$imageArray['uploader'] = $row['uploader'];
+			$imageArray['upload_time'] = $row['upload_time'];
+			$imageArray['filename'] = $filename;
+			$imageArray['filetype'] = $row['filetype'];
+		}
+
+		return $imageArray;
 	}
 	
 	/**
@@ -254,7 +276,8 @@ class Image {
 
 		foreach ($imageArray as $single) {
 			$title = $single['nsfw'] ? $nsfwTitle : '';
-			$thumbSrc = $single['nsfw'] ? $nsfwCoverFile : Image::getThumb($single['filename']);
+			$fullName = sprintf("%s.%s", $single['filename'], $single['filetype']);
+			$thumbSrc = $single['nsfw'] ? $nsfwCoverFile : Image::getThumb($fullName);
 			$imgSrc = sprintf('?view&name=%s', $single['filename']);
 			$toAddStr = str_replace('%title%', $title, $imageList);
 			$toAddStr = str_replace('%thumbSrc%', $thumbSrc, $toAddStr);
@@ -413,21 +436,22 @@ class Image {
 	*/
 	public static function generateImageList($page, $imgPerPage) {
 		global $config;
-		
+		$imageTable = $config['database']['imageTableName'];
 		// 将传入的的页面值减1乘以每页图片得到要跳过的图片量
 		$skipImage = ($page - 1) * $imgPerPage; 
-		$sql = sprintf('SELECT `id`, `filename`, `filetype`, `nsfw` FROM `imagedata` LIMIT %d OFFSET %d',
+		$sql = sprintf("SELECT `id`, `filename`, `filetype`, `nsfw` FROM $imageTable LIMIT %d OFFSET %d",
 			$imgPerPage, $skipImage);
 
 		$imageArray	= Array();
 
-		$db = new SQLite3($config['database']['sqliteFile']);
+		$db = DB::database();
 		$ret = $db ->query($sql);
 
 		while ($row = $ret ->fetchArray(SQLITE3_ASSOC)) {
 			$single = Array(
 				'id' 		=> $row['id'],
-				'filename' 	=> sprintf("%s.%s", $row['filename'], $row['filetype']),
+				'filename' 	=> $row['filename'],
+				'filetype'	=> $row['filetype'],
 				'nsfw'		=> $row['nsfw'],
 			);
 			array_push($imageArray, $single); 

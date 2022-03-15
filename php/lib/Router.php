@@ -122,17 +122,19 @@ class Router {
 		} else if ($page == 'view_image_page') {
 			global $config;
 			global $pageInfoArray;
-			$fileInfo = Image::getImageInfoFromName($config['file']['imageDataFile'], $pageInfoArray['name']);
+			$fileInfo = Image::getImageInfoFromName($pageInfoArray['name']);
 			$templateArray = Array(
-				'title' => $pageInfoArray['name'],
+				'title' => '浏览图片',
 				'userinfo' => $user_panel,
-				'imgPath' => sprintf("%s/%s", $config['file']['uploadFolder'], $pageInfoArray['name']),
+				'imgPath' => sprintf("%s/%s.%s", 
+					$config['file']['uploadFolder'], $fileInfo['filename'], $fileInfo['filetype']),
 				'filename' => $fileInfo['filename'],
+				'filetype' => $fileInfo['filetype'],
 				'uploader' => $fileInfo['uploader'],
 				'size' => Util::suitableSize($fileInfo['size']),
-				'uploadtime' => Util::formatTime($fileInfo['uploadtime']),
+				'uploadtime' => Util::formatTime($fileInfo['upload_time']),
 			);
-			Util::template('random.html', $templateArray);
+			Util::template('view.html', $templateArray);
 			exit();
 		} else if ($page == 'register_page') {
 			$templateArray = Array(

@@ -63,8 +63,7 @@ if ($clientInfo['requestMethod'] == 'GET') {
 	} else if ($pageInfoArray['req'] == 'view') {
 		$fullPath = sprintf("%s/%s", $config['file']['uploadFolder'], 	
 			$pageInfoArray['name']);
-		if (isset($pageInfoArray['name']) && 
-		Image::isFileExist($fullPath)) {
+		if (isset($pageInfoArray['name'])) {
 			$router -> renderPage('view_image_page');
 		} else {
 			$router -> renderPage('no_such_image_page');
