@@ -36,7 +36,7 @@ class Router {
 				'username' => $_SESSION['currentUser']['username'],
 				'anonymous_file_size_limit' => Util::suitableSize(
 					$this ->conf['user']['anonymousMaxFileSize']),
-				'script' => 'upload.js',
+				'script' => 'upload.js, menu.js',
 			);
 			Util::template('uploadFile.html', $templateArray);
 			exit();
@@ -52,6 +52,7 @@ class Router {
 					'list_class' => '',
 					'userinfo' => $user_panel,
 					'error' => '没有可显示的图片',
+					'script' => 'menu.js',
 				);
 			
 				Util::template('error.html', $templateArray);
@@ -70,6 +71,7 @@ class Router {
 				'uploader' => $imageArray['uploader'],
 				'size'	=> Util::suitableSize($imageArray['size']),
 				'uploadtime' => Util::formatTime($imageArray['upload_time']),
+				'script' => 'menu.js',
 			);
 			// Image::generateHeader($imageArray['filename']);
 			Util::template('random.html', $templateArray);
@@ -96,6 +98,7 @@ class Router {
 					'list_class' => 'select',
 					'userinfo' => $user_panel,
 					'error' => '没有可显示的图片',
+					'script' => 'menu.js'
 				);
 			
 				Util::template('error.html', $templateArray);
@@ -119,6 +122,7 @@ class Router {
 				'prev-d' => $page == 1 ? 'disabled' : '',
 				'next-d' => count($imageSrcArray) == ($config['file']['imagePerPage'] + 1) ? '' : 'disabled',
 				'last-d' => isset($pageInfoArray['page']) && $pageInfoArray['page'] == 'last' ? 'disabled' : '',
+				'script' => 'menu.js',
 			);
 			
 			Util::template('list.html', $templateArray);

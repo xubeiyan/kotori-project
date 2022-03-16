@@ -1,5 +1,5 @@
-html {
-	
+*, *::before, *::after {
+	box-sizing: border-box;
 }
 
 body {
@@ -14,47 +14,56 @@ header {
 	width: 100%;
 	background-color: #F1D6AB;
 	box-shadow: 0 5px 5px #DDD;
+	position: sticky;
+	top: 0;
+	z-index: 10;
 }
 
-header>ul.header-menu {
-	margin: 0;
-	padding-top: 1em;
-	padding-bottom: 1em;
-	padding-left: 0;
-	width: 300px;
-	margin-left: auto;
-	margin-right: auto;
-	list-style: none;
+header > .container {
+	display: flex;
+	margin: 0 1em;
+	justify-content: space-between;
+	align-items: center;
+	position: relative;
 }
 
-
-header>ul.header-menu>a {
-	color: #2B2B28;
-	text-decoration: none;
+header > .container > .menu {
+	width: 2em;
+	height: 2em;
 }
 
-header>ul.header-menu>a>li {
-	padding-left: 1em;
-	padding-right: 0.1em;
-	margin-bottom: 0.1em;
-	height: 1.5em;
-	line-height: 1.5em;
-	border: 0.05em solid #E1C69B;
-	border-radius: 0.5em;
-}
-
-
-header>ul.header-menu>a>li.right {
-	background-color: #E1C69B;
-}
-
-header>ul.header-menu>a>li:hover {
+header > .container > .left-part {
+	position: absolute;
+	left: 0;
+	top: 3em;
 	background-color: #E3B04B;
+}
+
+.left-part.hide {
+	display: none;
+}
+
+header ul {
+	list-style: none;
+	padding-left: 0;
+	margin: 0;
+}
+
+header li {
+	border: 1px solid #E3B04B;
+	border-radius: .25em;
+	padding: .25em 1em;
+}
+
+header a {
+	color: black;
+	text-decoration: none;
 }
 
 
 /* 页面部分 */
 main {
+	z-index: 2;
 	margin-top: 0.5em;
 	position: relative;
 }

@@ -201,6 +201,7 @@ class User {
 		$stmt ->bindParam(':ip', $currentIP);
 		$result = $stmt ->execute();
 		$row = $result ->fetchArray();
+
 		// 没有则增加
 		if (!$row) {
 			$content = self::generateAnonymous();
@@ -208,9 +209,13 @@ class User {
 			$insert_sql = sprintf('INSERT INTO `%s` (`username`, `password`, `ip`, `anonymous`) 
 				VALUES ("%s", "%s", "%s", 1)',
 				$userTable, $content['username'], $content['password'], $currentIP);
-			$db ->exec($insert_sql);
+			$db ->exec($insert_sql); 
+			$id = $db ->lastInsertRowID();
+		} else {
+			$username = $row['username'];
+			$id = $row['id'];
 		}
-		$username = $row['username'];
+		$_SESSION['currentUser']['id'] = $id;
 		$_SESSION['currentUser']['anonymous'] = 1;
 		$_SESSION['currentUser']['username'] = $username;
 		$_SESSION['currentUser']['ip'] = $currentIP;

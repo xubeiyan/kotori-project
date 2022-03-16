@@ -4,6 +4,8 @@ const details = document.getElementById('details-area');	// 图片详细区域
 const file = document.getElementById('file');				// 上传input
 const upload = document.getElementById('uploadButton');		// 上传按钮
 const notice = document.getElementById('notice');			// 提示信息
+const menu_button = document.querySelector('.menu');		// 菜单按钮
+const left_part = document.querySelector('.left-part');		// 菜单左边部分
 let UPLOAD_FILE_SIZE = 1024 * 10;							// 上传文件大小限制
 let imgObj = {};
 let imgInfo = {											// 待上传文件信息
@@ -66,7 +68,7 @@ const showUploadFileDetails = function (fileList) {
 fetch('?upload_limit_info')
 	.then((res) => res.json())
 	.then(data => {
-		console.log(`从服务端获取的上传文件大小限制为：${data.upload_size_limit}`);
+		console.log(`从服务端获取的上传文件大小限制为：${data.upload_size_limit / 1024} KB`);
 		UPLOAD_FILE_SIZE = data.upload_size_limit;
 	});
 	
@@ -152,5 +154,8 @@ upload.addEventListener("click", function () {
 	formData.append('img', imgObj);
 	
 	xhr.send(formData);
-	
 });
+
+menu_button.addEventListener('click', () => {
+	left_part.classList.toggle('hide');
+})

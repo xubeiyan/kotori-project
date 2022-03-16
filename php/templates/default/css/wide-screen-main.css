@@ -44,6 +44,10 @@ header > .container > .left-part {
 	width: max-content;
 }
 
+header > .container > .menu {
+	display: none;
+}
+
 header ul {
 	list-style: none;
 	display: flex;
