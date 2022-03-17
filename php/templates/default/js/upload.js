@@ -2,10 +2,9 @@ const area = document.getElementById('area');				// 点击或拖放区域
 const image = document.getElementById('image-area');		// 图片预览区域
 const details = document.getElementById('details-area');	// 图片详细区域
 const file = document.getElementById('file');				// 上传input
-const upload = document.getElementById('uploadButton');		// 上传按钮
+const upload_button = document.getElementById('uploadButton');		// 上传按钮
 const notice = document.getElementById('notice');			// 提示信息
-const menu_button = document.querySelector('.menu');		// 菜单按钮
-const left_part = document.querySelector('.left-part');		// 菜单左边部分
+
 let UPLOAD_FILE_SIZE = 1024 * 10;							// 上传文件大小限制
 let imgObj = {};
 let imgInfo = {											// 待上传文件信息
@@ -15,7 +14,7 @@ let imgInfo = {											// 待上传文件信息
 };
 // 显示提示信息
 const showNotice = function (text) {
-	notice.innerHTML = '<span>' + text + '</text>';
+	notice.innerHTML = '<span>' + text + '</span>';
 };
 // 清除提示信息
 const clearNotice = function () {
@@ -61,8 +60,8 @@ const showUploadFileDetails = function (fileList) {
 	imgObj = fileList[0];
 	image.innerHTML = imgStr;
 	details.innerHTML = detailStr;
-	upload.style.display = "block";
-	
+	area.classList.add('preview');
+	upload_button.classList.remove('hide');
 };
 
 fetch('?upload_limit_info')
@@ -105,14 +104,14 @@ file.addEventListener("change", function (e) {
 	showUploadFileDetails(fileList);
 });
 
-upload.addEventListener("click", function () {
+upload_button.addEventListener("click", function () {
 	var xhr = new XMLHttpRequest(),
 		formData = new FormData(),
 		preview = document.getElementById("preview"),
 		progress = preview.appendChild(document.createElement("p"));
 		
 	// 隐藏上传按钮
-	uploadButton.style.display = 'none';
+	upload_button.style.display = 'none';
 	
 	progress.appendChild(document.createTextNode("上传中"));
 	progress.id = "progress";	
@@ -155,7 +154,3 @@ upload.addEventListener("click", function () {
 	
 	xhr.send(formData);
 });
-
-menu_button.addEventListener('click', () => {
-	left_part.classList.toggle('hide');
-})

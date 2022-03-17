@@ -18,6 +18,9 @@ body {
 	--first-color: #F1D6AB;
 	--first-color-hover: #EEE;
 	--second-color: #E3B04B;
+	--second-color-hover: #C3902B;
+	--upload-color: #F8F8F8;
+	--upload-hover-color: #ABABAB;
 }
 
 /* Header部分 */
@@ -57,12 +60,13 @@ header ul {
 
 header > .container a {
 	text-decoration: none;
+	transition: background-color 200ms linear;
 	color: black;
+	border-radius: 10px;
 }
 
 header > .container a:hover {
 	background-color: var(--first-color-hover);
-	border-radius: 10px;
 }
 /* 当前选择的tab */
 header > .container a.select {
@@ -100,23 +104,58 @@ main {
 	margin-right: auto;
 }
 
+/* 原生上传文件框 */
 main>input#file {
 	display:none;
 }
 
-main>div#area {
+main > #area {
 	width: 100%;
 	height: 200px;
+	font-size: larger;
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
-	background-color: #EEE;
+	background-color: var(--upload-color);
 	cursor: pointer;
+	border: 2px dashed #DDD;
+	transition: background-color 200ms linear;
 }
 
-main>div#area:hover {
-	background-color: #DDD;
+#area:hover {
+	background-color: var(--upload-hover-color);
+	color: #FEFEFE;
+}
+
+#area.preview {
+	height: 140px;
+	transition: height 400ms linear;
+}
+
+main > #uploadButton {
+	width: 1000px;
+	height: 60px;
+	font-size: larger;
+	border: none;
+	border-radius: 1em;
+	padding: 0;
+	background-color: var(--first-color);
+	margin-left: auto;
+	margin-right: auto;
+	transition: height 400ms linear;
+}
+
+#uploadButton.hide {
+	height: 0;
+}
+
+#uploadButton:hover {
+	background-color: var(--second-color);
+	color: #FEFEFE;
+	cursor: pointer;
+	
+	transition: all 200ms ease-in-out;
 }
 
 main>div#preview {
@@ -181,14 +220,6 @@ main>div#preview>p.result {
 main>div#preview>div#details-area>p.details {
 	margin-top: 0.5em;
 	margin-bottom: 0.5em;
-}
-
-main>input#uploadButton {
-	display: none;
-	width: 1000px;
-	height: 30px;
-	margin-left: auto;
-	margin-right: auto;
 }
 
 main>div#notice {
