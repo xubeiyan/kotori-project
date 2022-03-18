@@ -55,8 +55,8 @@ const clearPreview = function () {
 // 显示图片预览信息
 const showUploadFileDetails = function (fileList) {
 	var imgStr = '<img id="uploadImg" src="' + imgInfo.img + '">',
-		detailStr = '<p class="details"><span>图片名称：' + imgInfo.filename + '</span></p>' +
-			'<p class="details"><span>大小:' + imgInfo.filesize + 'KB</span></p>';
+		detailStr = '<p class="details"><span>图片名称: ' + imgInfo.filename + '</span></p>' +
+			'<p class="details"><span>大小: ' + imgInfo.filesize + 'KB</span></p>';
 	imgObj = fileList[0];
 	image.innerHTML = imgStr;
 	details.innerHTML = detailStr;
@@ -111,7 +111,7 @@ upload_button.addEventListener("click", function () {
 		progress = preview.appendChild(document.createElement("p"));
 		
 	// 隐藏上传按钮
-	upload_button.style.display = 'none';
+	upload_button.classList.add('hide');
 	
 	progress.appendChild(document.createTextNode("上传中"));
 	progress.id = "progress";	

@@ -172,22 +172,6 @@ img#uploadImg {
 } 
 
 /* 图像信息 */
-main>div#preview>p.details {
-	width: 100%;
-	display: inline-block;
-	margin-top: 0;
-	margin-bottom: 0;	
-	padding-top: 0.5em;
-	padding-bottom: 0.5em;
-	background-color: #EEE;
-}
-
-main>div#preview>p.details>span {
-	width: 90%;
-	display: block;
-	margin-left: auto;
-	margin-right: auto;
-}
 
 /* 上传进度条 */
 main>div#preview>p#progress {
@@ -217,11 +201,14 @@ main>div#preview>p.result {
     margin-right: auto;
 }
 
-main>div#preview>div#details-area>p.details {
-	margin-top: 0.5em;
-	margin-bottom: 0.5em;
+main > #preview > #details-area {
+	margin: .5em auto;
 }
-
+main > #preview > #details-area> .details {
+	margin-top: 0.25em;
+	margin-bottom: 0.25em;
+}
+/* 通知 */
 main>div#notice {
 	margin-top: 0.5em;
 	background-color: #FEE;
@@ -232,10 +219,6 @@ main>div#notice>span {
 	padding-left: 2em;
 	padding-top: 0.5em;
 	padding-bottom: 0.5em;
-}
-
-main>div.page-select-container {
-	
 }
 
 main>div.page-select-container button {
@@ -302,7 +285,6 @@ main>div#login-panel {
 main>div#login-panel>p {
 	margin-top: 0.5em;
 	margin-bottom: 0.5em;
-
 }
 
 main>div#login-panel>p.button-area {
@@ -380,10 +362,6 @@ main>div#list img {
 	width: 200px;
 }
 
-main>div#list>div.file-detail {
-	
-}
-
 main>div#list>div.file-detail>div.left {
 	width: 20%;
 	display: inline-block;
@@ -429,7 +407,10 @@ footer {
 	width: 100%;
 	position: absolute;
 	bottom: 0;
-	height: 2em;
+	height: max-content;
+	box-shadow: 0 0 5px 2px #eee;
+	background: rgb(238,238,238);
+	background: linear-gradient(123deg, rgba(238,238,238,1) 0%, rgba(204,204,204,1) 30%, rgba(204,204,204,1) 70%, rgba(238,238,238,1) 100%);
 }
 
 footer>ul.footer-menu {
@@ -439,27 +420,30 @@ footer>ul.footer-menu {
 	margin-left: auto;
 	margin-right: auto;
 	list-style: none;
+	display: flex;
+	justify-content: space-between;
 }
 
 footer>ul.footer-menu>li {
-	display: inline-block;
+	display: flex;
+	align-items: center;
 	padding: 0;
 	height: 2em;
-	line-height: 2em;
-}
-
-footer>ul.footer-menu>li.right {
-	float: right;
 }
 
 footer>ul.footer-menu>li.right img {
-	vertical-align: middle;
 	height: 1em;
+}
+
+.right > a > span {
+	padding-left: .5em;
 }
 
 footer>ul.footer-menu>li.right a {
 	text-decoration: none;
-	color: #000;
+	color: black;
+	display: flex;
+	align-items: center;
 }
 
 footer>ul.footer-menu>li.right a:hover {
