@@ -25,6 +25,7 @@ $sql = "CREATE TABLE " . $image_table . "
 		filename	CHAR(32)		NOT NULL,
 		filetype	CHAR(8)			NOT NULL,
 		upload_time DATETIME		NOT NULL,
+		expired		INT DEFAULT 0	NOT NULL,
 		nsfw		INT	DEFAULT 0	NOT NULL)";
 		
 if ($db ->exec($sql)) {

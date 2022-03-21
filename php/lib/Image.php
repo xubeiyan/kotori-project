@@ -52,7 +52,7 @@ class Image {
 		// $string = self::imagedataArray2String($imageArray);
 		global $config;
 		$db = DB::database();
-		if (!$db ->exec($sql)) { // 写入失败
+		if (!$db ->query($sql)) { // 写入失败
 			$returnArray = Array (
 				'api' => 'upload',
 				'result' => 'upload fail',
@@ -63,6 +63,10 @@ class Image {
 		
 		$filePath = sprintf('uploads/%s.%s', $ia['fn'], $ia['ft']);
 		if (move_uploaded_file($img['tmp_name'], $filePath)) {	
+			// 更新统计表
+			$db ->query("UPDATE `statistics` 
+				SET `value` = `value` + 1 WHERE `name` = 'image'");
+
 			$returnArray = Array (
 				'api' => 'upload',
 				'result' => 'upload success',
@@ -157,10 +161,14 @@ class Image {
 	 */
 	public static function randomImage() {
 		global $config;
-		$sql = sprintf('SELECT `value` FROM `statistics` WHERE `name` = "image_data_num" LIMIT 1');
+		$sql = sprintf('SELECT `value` FROM `statistics` WHERE `name` = "image" LIMIT 1');
 		
 		$db = DB::database();
 		$ret = $db ->query($sql);
+		if (!$ret) {
+			return Array();
+		}
+
 		$row = $ret ->fetchArray(SQLITE3_ASSOC);
 
 		$imageId = $row['value'] > 1 ? mt_rand(1, $row['value']) : 1;
