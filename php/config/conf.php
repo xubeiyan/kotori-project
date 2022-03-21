@@ -27,7 +27,7 @@ $config = Array (
 		'r18Cover' 				=> 'r18cover.jpg',	#r18封面名称
 		'imageDataFile' 		=> 'data/imagedata',#图片信息所在位置
 		'imagePerPage' 			=> 10,
-		'thumbWidth' 			=> 200,				#略缩图宽度 
+		'thumbHeight' 			=> 180,				#略缩图高度 
 	),
 	'database' => Array(
 		'sqliteFile'			=> 'data/kotori.db',#sqlite数据库文件名

@@ -176,12 +176,12 @@ img#uploadImg {
 /* 上传进度条 */
 main>div#preview>p#progress {
 	display: block;
+	color: white;
 	width: 1000px;
-	padding: 0;
-	margin: 2px 0;
-	border: 1px inset #466;
-	border-radius: 2px;
-	background: linear-gradient(#cc0, #cc0);
+	padding: .5em 2em;
+	margin: 0;
+	border-radius: 5px;
+	background: linear-gradient(rgb(247, 247, 83), rgb(187, 187, 85));
 	background-size: 0% 100%;
 	background-repeat: no-repeat;
 }
@@ -194,11 +194,24 @@ main>div#preview>p#progress.failed {
 	background: linear-gradient(#c00, #c00);
 }
 
-main>div#preview>p.result {
+main>div#preview>p#result {
 	width: 1000px;
     word-break: break-all;
-    margin-left: auto;
-    margin-right: auto;
+	padding: .75em 2em;
+    margin: 0 auto;
+	
+	border-top: none;
+	border-radius: 5px;
+	top: -5px;
+	position: relative;
+}
+
+p#result.failed {
+	border: 1px solid #c00;
+}
+
+p#result.success {
+	border: 1px solid #0c0;
 }
 /* 文件信息 */
 main > #preview > #details-area {
@@ -373,8 +386,19 @@ main>div#error-msg {
 }
 
 /* 图片管理页面 */
+main > #list {
+	display: flex;
+	flex-wrap: wrap;
+	gap: .5em;
+	justify-content: space-around;
+}
+
 main>div#list img {
-	width: 200px;
+	height: 180px;
+}
+
+main > #list img:hover {
+	box-shadow: 0 0 3px 3px #ccc;
 }
 
 main>div#list>div.file-detail>div.left {

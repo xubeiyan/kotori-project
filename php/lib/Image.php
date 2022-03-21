@@ -571,8 +571,8 @@ class Image {
 		$width = imagesx($img);
 		$height = imagesy($img);
 		
-		$newWidth = $config['file']['thumbWidth'];
-		$newHeight = round($height / $width * $newWidth);
+		$newHeight = $config['file']['thumbHeight'];
+		$newWidth = round($width / $height * $newHeight);
 		$newImage = imagecreatetruecolor($newWidth, $newHeight);
 		
 		if (!imagecopyresampled($newImage, $img, 0, 0, 0, 0, $newWidth, $newHeight, $width, $height)) {

@@ -55,8 +55,8 @@ const clearPreview = function () {
 // 显示图片预览信息
 const showUploadFileDetails = function (fileList) {
 	var imgStr = '<img id="uploadImg" src="' + imgInfo.img + '">',
-		detailStr = '<p class="details"><span>图片名称: ' + imgInfo.filename + '</span></p>' +
-			'<p class="details"><span>大小: ' + imgInfo.filesize + 'KB</span></p>';
+		detailStr = '<p class="details"><span>图片名称: </span><span>' + imgInfo.filename + '</span></p>' +
+			'<p class="details"><span>大小: </span></span>' + imgInfo.filesize + 'KB</span></p>';
 	imgObj = fileList[0];
 	image.innerHTML = imgStr;
 	details.innerHTML = detailStr;
@@ -127,25 +127,29 @@ upload_button.addEventListener("click", function () {
 		
 	xhr.onreadystatechange = function() {
 		if (xhr.readyState == 4 && xhr.status == 200) {
-			var responseArray = JSON.parse(xhr.responseText),
-				p_result = document.createElement("p");
-				p_result.className = 'result';
-			var	folder = preview.appendChild(p_result);
+			// 返回整体
+			let responseArray = JSON.parse(xhr.responseText);
+			let p_result = document.createElement("p");
+			p_result.id = 'result';
+			let	folder = preview.appendChild(p_result);
 				
 			if (responseArray['result'] == 'upload success') {
 				progress.className = "success";
 				progress.innerHTML = "上传成功";
 				
-				folder.innerHTML = '上传路径: <a class="upload" href="' + responseArray['savePath'] + '">' + responseArray['savePath'] + '</a>';
+				folder.innerHTML = '图片地址: <a class="upload" href="' + responseArray['savePath'] + '">' + responseArray['savePath'] + '</a>';
+				folder.classList.add('success');
 			} else if (responseArray['result'] == 'upload fail'){
 				progress.className = "failed";
-				progress.innerHTML = "上传失败";
+				progress.textContent = "上传失败";
 
 				folder.innerHTML = '出错原因:' + responseArray['error'];
+				folder.classList.add('failed');
 			} else if (responseArray['result'] == 'not upload') {
 				progress.className = 'failed';
-				progress.innerHTML = '未能上传';
+				progress.textContent = '未能上传';
 				folder.innerHTML = '出错原因:' + responseArray['error'];
+				folder.classList.add('failed');
 			}
 		}
 	}
