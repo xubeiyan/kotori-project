@@ -142,13 +142,16 @@ upload_button.addEventListener("click", function () {
 				progress.innerHTML = "上传失败";
 
 				folder.innerHTML = '出错原因:' + responseArray['error'];
+			} else if (responseArray['result'] == 'not upload') {
+				progress.className = 'failed';
+				progress.innerHTML = '未能上传';
+				folder.innerHTML = '出错原因:' + responseArray['error'];
 			}
 		}
 	}
 	
 	xhr.open('POST', '?uploadpost', true);
-	xhr.setRequestHeader('X-FILENAME', 'XMLHttpRequest');
-	xhr.setRequestHeader('Kotori-Request', 'FileUpload');
+	xhr.setRequestHeader('KotoriRequest', 'FileUpload');
 	
 	formData.append('img', imgObj);
 	

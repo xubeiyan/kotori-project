@@ -21,6 +21,7 @@ $config = Array (
 			IMAGETYPE_PNG 		=> 'png', 
 			IMAGETYPE_WEBP 		=> 'webp'			#PHP需要7.1才支持此文件类型判断
 		),
+		'customHeaders'			=> 'KotoriRequest:FileUpload',
 		'uploadFolder' 			=> 'uploads',		#上传文件夹
 		'thumbFolder' 			=> 'thumbs',		#略缩图文件夹
 		'r18Cover' 				=> 'r18cover.jpg',	#r18封面名称

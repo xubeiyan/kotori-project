@@ -15,6 +15,27 @@ class Util {
 		}
 		return $info;
 	}
+
+	/**
+	 * 验证自定义请求头字段
+	 * 处理$_SERVER全局变量
+	 */
+	public static function customHeadersValidate() {
+		global $config;
+		// 没有就不验证
+		if ($config['file']['customHeaders'] == '') {
+			return;
+		}
+
+		$customHeaders = explode(':', $config['file']['customHeaders'], 2);
+		$httpHeader = strtoupper("HTTP_$customHeaders[0]");
+
+		if (!isset($_SERVER[$httpHeader]) || 
+			$_SERVER[$httpHeader] != $customHeaders[1]) {
+			
+			self::err('notMatchCustomHeader');
+		}
+}
 	
 	/*
 	* 处理页面参数返回一个数组
@@ -151,6 +172,16 @@ class Util {
 				'api' => 'manage',
 				'result' => 'set status fail',
 				'error' => 'current user "' . $errinfo['username'] . '" is not administrator, can\'t update image status',
+			);
+			header('Content-type: application/json');
+			echo json_encode($returnArray, JSON_UNESCAPED_UNICODE);
+			exit();
+		// 未匹配自定义header
+		} else if ($errType == 'notMatchCustomHeader') {
+			$returnArray = Array(
+				'api' 		=> 'upload',
+				'result'	=> 'not upload',
+				'error'		=> 'server enable custom header, which client has not match',
 			);
 			header('Content-type: application/json');
 			echo json_encode($returnArray, JSON_UNESCAPED_UNICODE);

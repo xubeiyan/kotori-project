@@ -233,7 +233,8 @@ if ($clientInfo['requestMethod'] == 'GET') {
 	// 上传图片
 	if ($clientInfo['query'] == 'uploadpost') {
 		//print '<img src=' . $_POST['img'] . '>';
-		
+		// 验证header中是否有Kotori-Request
+		Util::customHeadersValidate();
 		if (isset($_FILES['img'])) {
 			$imageTable = $config['database']['imageTableName'];
 			
