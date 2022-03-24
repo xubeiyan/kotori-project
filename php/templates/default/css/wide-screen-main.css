@@ -17,8 +17,8 @@ body {
 	--footer-height: 2em;
 	--first-color: #F1D6AB;
 	--first-color-hover: #f3f3f3;
-	--second-color: #E3B04B;
-	--second-color-hover: #C3902B;
+	--second-color: #F3C05B;
+	--second-color-hover: #E3B04B;
 	--upload-color: #F8F8F8;
 	--upload-hover-color: #ABABAB;
 }
@@ -75,7 +75,7 @@ header > .container a.select {
 }
 
 header > .container > .right-part a:hover {
-	background-color: var(--second-color);
+	background-color: var(--second-color-hover);
 }
 
 header > .container li {
@@ -91,7 +91,7 @@ header > .container > .right-part {
 	width: max-content;
 }
 
-header > .container > .right-part .primary{
+header > .container > .right-part .select{
 	background-color: var(--second-color);
 }
 /* 主体部分 */

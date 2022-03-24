@@ -32,6 +32,8 @@ class Router {
 				'upload_class' => 'select',
 				'random_class' => '',
 				'list_class' => '',
+				'register_class' => '',
+				'login_class' => '',
 				'SESSION' => var_export($_SESSION, true),
 				'username' => $_SESSION['currentUser']['username'],
 				'anonymous_file_size_limit' => Util::suitableSize(
@@ -47,10 +49,12 @@ class Router {
 			if (empty($imageArray)) {
 				$templateArray = Array(
 					'title' => '出错了',
+					'userinfo' => $user_panel,
 					'upload_class' => '',
 					'random_class' => 'select',
 					'list_class' => '',
-					'userinfo' => $user_panel,
+					'register_class' => '',
+					'login_class' => '',
 					'error' => '没有可显示的图片',
 					'script' => 'menu.js',
 				);
@@ -66,6 +70,8 @@ class Router {
 				'upload_class' => '',
 				'random_class' => 'select',
 				'list_class' => '',
+				'register_class' => '',
+				'login_class' => '',
 				'filename' => $imageArray['filename'],
 				'imgPath' => $config['file']['uploadFolder'] . '/' . $imageArray['filename'],
 				'uploader' => $imageArray['uploader'],
@@ -93,10 +99,12 @@ class Router {
 			if (empty($imageSrcArray)) {
 				$templateArray = Array(
 					'title' => '出错了',
+					'userinfo' => $user_panel,
 					'upload_class' => '',
 					'random_class' => '',
 					'list_class' => 'select',
-					'userinfo' => $user_panel,
+					'register_class' => '',
+					'login_class' => '',
 					'error' => '没有可显示的图片',
 					'script' => 'menu.js'
 				);
@@ -111,10 +119,12 @@ class Router {
 			
 			$templateArray = Array(
 				'title' => '文件列表',
+				'userinfo' => $user_panel,
 				'upload_class' => '',
 				'random_class' => '',
 				'list_class' => 'select',
-				'userinfo' => $user_panel,
+				'register_class' => '',
+				'login_class' => '',
 				'imagelist' => Image::generateListTemplate($imageSrcArray),
 				'prev' => $prev,
 				'next' => $next,
@@ -134,6 +144,11 @@ class Router {
 			$templateArray = Array(
 				'title' => '浏览图片',
 				'userinfo' => $user_panel,
+				'upload_class' => '',
+				'random_class' => '',
+				'list_class' => '',
+				'register_class' => '',
+				'login_class' => '',
 				'imgPath' => sprintf("%s/%s.%s", 
 					$config['file']['uploadFolder'], $fileInfo['filename'], $fileInfo['filetype']),
 				'filename' => sprintf("%s.%s", $fileInfo['filename'], $fileInfo['filetype']),
@@ -147,6 +162,11 @@ class Router {
 			$templateArray = Array(
 				'title' => '注册',
 				'userinfo' => User::generateRegisterandLoginList(),
+				'upload_class' => '',
+				'random_class' => '',
+				'list_class' => '',
+				'register_class' => 'select',
+				'login_class' => '',
 				'script' => 'register.js'
 			);
 			Util::template('register.html', $templateArray);
@@ -155,6 +175,11 @@ class Router {
 			$templateArray = Array(
 				'title' => '登录',
 				'userinfo' => User::generateRegisterandLoginList(),
+				'upload_class' => '',
+				'random_class' => '',
+				'list_class' => '',
+				'register_class' => '',
+				'login_class' => 'select',
 				'script' => 'login.js'
 			);
 			Util::template('login.html', $templateArray);

@@ -165,6 +165,15 @@ class Util {
 		// 上传图片失败	
 		} else if ($errType == 'uploadFileFailed') {
 			die('upload file failed');
+		// 不允许注册
+		} else if ($errType == 'notAllowedRegister') {
+			$returnArray = Array(
+				'api' => 'register',
+				'result' => 'register fail',
+				'error' => 'not allow to register'
+			);
+			echo json_encode($returnArray, JSON_UNESCAPED_UNICODE);
+			exit();
 		// 非管理员进入manage页面
 		} else if ($errType == 'notAdminUser') {
 			//
@@ -205,44 +214,47 @@ class Util {
 		
 		// userinfo检查
 		if($inspectRule == 'userinfo') {
-			if (isset($dataArray['userid']) && isset($dataArray['oldpass']) && isset($dataArray['newpass']) && isset($dataArray['username'])) {
-				$currentUser = $_SESSION['currentUser'];
-				
-				if ($currentUser['id'] != $dataArray['userid']) {
-					$returnArray['error'] = 'the id seems not match...';
-					return $returnArray;
-				} 
-				
-				if ($currentUser['username'] != $dataArray['username']) {
-					$returnArray['error'] = 'the username seems not match...';
-					return $returnArray;
-				}
-				
-				// print($currentUser['password'] . ' ' . sha1($dataArray['oldpass']));
-				if ($currentUser['password'] != sha1($dataArray['oldpass'])) {
-					// print('!');
-					$returnArray['error'] = 'the password seems not match...';
-					return $returnArray;
-				}
-				
-				if (!$currentUser['anonymous'] == 0) {
-					$returnArray['error'] = 'you can not modify the user information of anonymous...';
-					return $returnArray;
-				}
-				
-				$returnArray['id'] = $dataArray['userid'];
-				$returnArray['username'] = $dataArray['username'];
-				$returnArray['password'] = sha1($dataArray['newpass']);
-				$returnArray['ip'] = $currentUser['ip'];
-				$returnArray['anonymous'] = $currentUser['anonymous'];
-				
-				return $returnArray;
-			} else {
+			if (!isset($dataArray['userid'] , $dataArray['oldpass'], 
+				$dataArray['newpass'], $dataArray['username'])) {
 				die('user information provided seems to wrong...');
 			}
+
+			$currentUser = $_SESSION['currentUser'];
 			
+			if ($currentUser['id'] != $dataArray['userid']) {
+				$returnArray['error'] = 'the id seems not match...';
+				return $returnArray;
+			} 
+			
+			if ($currentUser['username'] != $dataArray['username']) {
+				$returnArray['error'] = 'the username seems not match...';
+				return $returnArray;
+			}
+			
+			// print($currentUser['password'] . ' ' . sha1($dataArray['oldpass']));
+			if ($currentUser['password'] != sha1($dataArray['oldpass'])) {
+				// print('!');
+				$returnArray['error'] = 'the password seems not match...';
+				return $returnArray;
+			}
+			
+			if (!$currentUser['anonymous'] == 0) {
+				$returnArray['error'] = 'you can not modify the user information of anonymous...';
+				return $returnArray;
+			}
+			
+			$returnArray['id'] = $dataArray['userid'];
+			$returnArray['username'] = $dataArray['username'];
+			$returnArray['password'] = sha1($dataArray['newpass']);
+			$returnArray['ip'] = $currentUser['ip'];
+			$returnArray['anonymous'] = $currentUser['anonymous'];
+			
+			return $returnArray;
+		
 		} else if ($inspectRule == 'register') {
-			
+			if (!isset($dataArray['username'], $dataArray)) {
+
+			}
 		} else if ($inspectRule == 'login') {
 			
 		} else {

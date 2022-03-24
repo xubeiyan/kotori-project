@@ -278,16 +278,6 @@ class User {
 		return json_encode($returnArray, JSON_UNESCAPED_UNICODE);
 	}
 	
-	// 不允许注册页面
-	public static function notAllowRegister() {
-		$returnArray = Array(
-			'api' => 'register',
-			'result' => 'register fail',
-			'error' => 'not allow to register'
-		);
-		return json_encode($returnArray, JSON_UNESCAPED_UNICODE);
-	}
-	
 	// 清除所有用户信息（跑路用
 	public static function clearAllUserData($file) {
 		$fp = fopen($file, 'r+');

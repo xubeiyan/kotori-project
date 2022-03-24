@@ -1,14 +1,16 @@
-var username = document.getElementById('username'),
-	password = document.getElementById('password'),
-	passwordConfirm = document.getElementById('password-confirm'),
-	registerButton = document.getElementById('register-button-s'),
-	errmsg = document.getElementById('error-msg'),
-	xhr = new XMLHttpRequest(),
-	form = new FormData(),
-	showErrMsg = function (msg) {
-		errmsg.style.display = 'block';
-		errmsg.innerText = msg;
-	};
+const username = document.getElementById('username');
+const password = document.getElementById('password');
+const passwordConfirm = document.getElementById('password-confirm');
+const registerButton = document.getElementById('register-button-s');
+const errmsg = document.getElementById('error-msg');
+	
+let	xhr = new XMLHttpRequest();
+let	form = new FormData();
+	
+const showErrMsg = function (msg) {
+	errmsg.style.display = 'block';
+	errmsg.innerText = msg;
+};
 	
 registerButton.addEventListener("click", function() {
 	var un = username.value,
@@ -17,29 +19,37 @@ registerButton.addEventListener("click", function() {
 	
 	// 检查用户名长度
 	if (un.length > 20 || un.length < 1) {
-		console.log('用户名长度为1~20');
+		console.warn('用户名长度必须为1~20');
 		showErrMsg('Length of username must to be 1 to 20');
 		return;
-	} else {
-		// 是否格式正确
-		var pattr = new RegExp("^[a-zA-Z0-9]+$");
-		if(!pattr.test(un)) {
-			console.log('不符合大小写字母及数字的用户名');
-			showErrMsg('Username characters must to be a-z, A-Z and 0-9');
-			return;
-		}
+	} 
+
+	// 是否格式正确
+	var pattr = new RegExp("^[a-zA-Z0-9]+$");
+	if(!pattr.test(un)) {
+		console.warn('不符合大小写字母及数字的用户名');
+		showErrMsg('Username characters must to be a-z, A-Z and 0-9');
+		return;
 	}
+
+	// 检查密码是否过长
+	if (pc.length > 256 || pw.length > 256) {
+		console.warn('密码过长超过了256');
+		showErrMsg('Password too long than 256');
+		return;
+	}
+
 	
 	// 检查密码是否填写
 	if (pw == '' || pc == '') {
-		console.log('密码或者不能为空');
+		console.warn('密码或者确认密码不能为空');
 		showErrMsg('Password or Confirmation is empty');
 		return;
 	}
 	
 	// 检查两次密码一致性	
 	if (pw !== pc) {
-		console.log('两次密码不一样！');
+		console.warn('两次密码不一样！');
 		showErrMsg('Password and Confirmation is not same');
 		return;
 	}

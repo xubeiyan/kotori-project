@@ -249,9 +249,7 @@ if ($clientInfo['requestMethod'] == 'GET') {
 	} else if ($clientInfo['query'] == 'registerpost') {
 		// 如果不允许注册，即config['user']['allowRegister'] != true
 		if (!$config['user']['allowRegister']) {
-			$notReg = User::notAllowRegister();
-			header('Content-type:application/json');
-			echo $notReg;
+			Util::err('notAllowedRegister');
 			exit();
 		}
 		
@@ -262,6 +260,9 @@ if ($clientInfo['requestMethod'] == 'GET') {
 		$registerInfo['password'] = $_POST['password'];
 		$registerInfo['ip'] = $clientInfo['remoteAddr'];
 		$registerInfo['anonymous'] = '0';
+		// 检查注册信息是否正确
+		Util::dataInspection('register', $registerInfo);
+
 		$result = User::addUserData($config['user']['userDataFile'], $registerInfo);
 		// $returnArray['currentUser'] = $_SESSION['currentUser'];
 		
