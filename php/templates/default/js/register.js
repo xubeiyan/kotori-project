@@ -70,14 +70,14 @@ xhr.onreadystatechange = function () {
 		if (resp['result'] == 'register success') {
 			window.location.href = "?upload";
 		} else if (resp['result'] == 'register fail') {
-			if (resp['error'] == 'user exits') {
-				console.log('该用户已存在');
+			if (resp['error'] == 'user exists') {
+				console.warn('该用户已存在');
 				showErrMsg('user has existed');
 			} else if (resp['error'] == 'it is admin user') {
-				console.log('很遗憾这是管理员账号');
-				showErrMsg('"' + username.value + '" is admin user');
+				console.warn('很遗憾这是管理员账号');
+				showErrMsg(`"${username.value}" is admin user`);
 			} else if (resp['error'] == 'not allow to register') {
-				console.log('现在不能够注册');
+				console.warn('现在不能够注册');
 				showErrMsg('not allow to register');
 			}
 		}

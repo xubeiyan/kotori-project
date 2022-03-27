@@ -1,16 +1,16 @@
 <main>
 	<div id="show-message">
-		<p>仅供测试</p>
 		<p>提供特性如下：</p>
 		<p>（登录后）允许上传文件可达10MiB，允许设置自己上传图片可见性</p>
+		<p>没有用户可选择<a href="?reg">注册</a></p>
 	</div>
 	<div id="login-panel">
-		<p><input id="username" type="text" class="text" placeholder="用户名"/></p>
-		<p><input id="password" type="password" class="text" placeholder="密码"/></p>
-		<p class="button-area">
-			<input id="login-button" type="button" class="button" value="登录" />
-			<input id="register-button" type="button" class="button" value="注册" />
-		</p>
+		<input id="username" type="text" class="text" placeholder="用户名"/>
+		<input id="password" type="password" class="text" placeholder="密码"/>
+		<div class="button-area">
+			<input id="login-button" type="button" class="primary" value="登录" />
+			<input id="clear-button" type="button" value="清除" />
+		</div>
 	</div>
 	<div id="error-msg"></div>
 </main>

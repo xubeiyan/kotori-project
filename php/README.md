@@ -94,7 +94,7 @@
 	{
 		"api": "register",
 		"result": "register fail",
-		"error": "user exits/it is admin user",
+		"error": "user exists/it is admin user",
 	}
 	```
 * `/loginpost` 登录

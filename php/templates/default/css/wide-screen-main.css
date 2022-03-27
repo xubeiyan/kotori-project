@@ -308,72 +308,49 @@ main>div#show-message>p {
 
 main>div#login-panel {
 	padding-top: 4em;
+	padding-bottom: 1em;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
 }
 
-main>div#login-panel>p {
-	margin-top: 0.5em;
-	margin-bottom: 0.5em;
-}
-
-main>div#login-panel>p.button-area {
+input[type="text"],input[type="password"] {
 	width: 300px;
-	margin-left: auto;
-	margin-right: auto;
+	border: 1px solid #CCC;
+	padding: .25em .5em;
+	font-size: large;
+	margin-bottom: .5em;
+	border-radius: 5px;
 }
 
-main>div#login-panel>p>input {
-	width: 300px;
-	margin-left: auto;
-	margin-right: auto;
-	display: block;
+input[type="text"]:focus,input[type="password"]:focus {
+	background-color: #ededed;
+	border: 1px solid var(--first-color);
+	outline: none;
 }
 
-main>div#login-panel>p>input.text {
-	padding-left: 0.5em;
-	padding-right: 0.5em;
-	padding-top: 0.3em;
-	padding-bottom: 0.3em;
+input[type="button"] {
+	font-size: large;
+	padding: .25em 0;
 	border-radius: 0.5em;
-	border: 1px solid #BBB;
-}
-
-main>div#login-panel>p>input.button {
-	padding-top: 0.5em;
-	padding-bottom: 0.5em;
-	border-radius: 0.5em;
-	background-color: #FFF;
+	border: none;
+	background-color: #EEE;
 	width: 145px;
 	display: inline-block;
 	cursor: pointer;
+	transition: background-color 400ms linear;
 }
 
-main>div#login-panel>p>input.disabled {
-	border: 1px solid #EEE;
+input[type="button"]:hover {
+	background-color: #CCC;
 }
 
-main>div#login-panel>p>input#login-button {
-	border: 1px solid #DDD;
+input[type="button"].primary {
+	background-color: var(--first-color);
 }
 
-main>div#login-panel>p>input#login-button:hover {
-	background-color: #DDD;
-}
-
-main>div#login-panel>p>input#register-button {
-	border: 1px solid #E3B04B;
-}
-
-main>div#login-panel>p>input#register-button:hover {
-	background-color: #E3B04B;
-}
-
-main>div#login-panel>p>input#register-button-s {
-	border: 1px solid #DDD;
-	width: 300px;
-}
-
-main>div#login-panel>p>input#register-button-s:hover {
-	background-color: #DDD;
+input[type="button"].primary:hover {
+	background-color: var(--second-color-hover);
 }
 
 main>div#error-msg {

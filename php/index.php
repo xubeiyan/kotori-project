@@ -14,7 +14,7 @@ if(!file_exists('config/conf.php')) {
 require 'config/conf.php';
 global $config;
 
-//
+// 数据库调用，使用DB变量
 require 'lib/Database.php';
 
 // 调用Util类，获取一些基本信息
@@ -263,7 +263,7 @@ if ($clientInfo['requestMethod'] == 'GET') {
 		// 检查注册信息是否正确
 		Util::dataInspection('register', $registerInfo);
 
-		$result = User::addUserData($config['user']['userDataFile'], $registerInfo);
+		$result = User::addUser($registerInfo);
 		// $returnArray['currentUser'] = $_SESSION['currentUser'];
 		
 		header('Content-type:application/json');
@@ -276,9 +276,11 @@ if ($clientInfo['requestMethod'] == 'GET') {
 		$loginInfo = Array();
 		$loginInfo['username'] = $_POST['username'];
 		$loginInfo['password'] = $_POST['password'];
+		// 检查登录信息
+		Util::dataInspection('login', $loginInfo);
 		
 		// $returnArray = Array();
-		$result = User::login($config['user']['userDataFile'], $loginInfo);
+		$result = User::login($loginInfo);
 		
 		header('Content-type:application/json');
 		echo $result;

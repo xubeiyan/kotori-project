@@ -252,11 +252,16 @@ class Util {
 			return $returnArray;
 		
 		} else if ($inspectRule == 'register') {
-			if (!isset($dataArray['username'], $dataArray)) {
+			if (!isset($dataArray['username'], $dataArray['password'])) {
 
 			}
 		} else if ($inspectRule == 'login') {
-			
+			if (!isset($dataArray['username'], $dataArray['password'])) {
+				$returnArray['error'] = 'invalid username or password';
+				header('Content-type: application/json');
+				echo json_encode($returnArray, JSON_UNESCAPED_UNICODE);
+				exit();
+			}
 		} else {
 			
 		}

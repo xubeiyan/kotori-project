@@ -29,93 +29,121 @@ class User {
 	}
 	
 	// 用户登录
-	public static function login($file, $content) {
-		if (!isset($content['username']) || !isset($content['password'])) {
-			// TODO: to json
-			die('username or password is not set!');
-		}
-		
-		global $config;
-		
-		// admin登录
-		if ($content['username'] == $config['user']['adminUserName']) {
-			if ($content['password'] == $config['user']['adminPassword']) {
-				$returnArray = Array(
-					'api' => 'adminLogin',
-					'result' => 'login success',
-				);
-				$content['id'] = 0;
-				$content['anonymous'] = 0;
-				$content['admin'] = 'kotori';
-				$_SESSION['currentUser'] = $content;
-				
-				return json_encode($returnArray, JSON_UNESCAPED_UNICODE);
-			} else {
-				$returnArray = Array(
-					'api' => 'adminLogin',
-					'result' => 'login fail',
-					'error' => 'password wrong',
-				);
-				
-				return json_encode($returnArray, JSON_UNESCAPED_UNICODE);
-			}
-		}
-		
-		$fp = fopen($file, 'r') or die('can not open file: ' . $file);
-	
-		// 跳过前面的#行
-		for ($line = fgets($fp); $line[0] == '#'; $line = fgets($fp));
-		
+	public static function login($userInfo) {
+		$db = DB::database();
+		// 返回
 		$returnArray = Array(
 			'api' => 'login',
 		);
-		
-		for (; !feof($fp); $line = fgets($fp)) {
-			$userdataArray = self::detailStringtoArray($line);
-			if ($content['username'] == $userdataArray['username']) {
-				if (sha1($content['password']) == $userdataArray['password']) {
-					$_SESSION['currentUser'] = $userdataArray;
-					$returnArray['result'] = 'login success';
-					return json_encode($returnArray, JSON_UNESCAPED_UNICODE);
-				} else {
-					$returnArray['result'] = 'login fail';
-					$returnArray['error'] = 'password wrong';
-					return json_encode($returnArray, JSON_UNESCAPED_UNICODE);
-				}
+
+		global $config;
+		// 检查是否管理员
+		if ($userInfo['username'] == $config['user']['adminUserName']) { 
+			if ($userInfo['password'] == $config['user']['adminPassword']) {
+				// session增加内容
+				$_SESSION['currentUser'] = Array(
+					'id' => 0,
+					'anonymous' => 0,
+					'admin'	=> 1,
+					'username'	=> $userInfo['username'],
+				);
+
+				$returnArray['result'] = 'login success';
+				return json_encode($returnArray, JSON_UNESCAPED_UNICODE);
 			}
-			continue;
-			
+			// 密码错误
+			$returnArray['result'] = 'login fail';
+			$returnArray['error'] = 'password wrong';
+			return json_encode($returnArray, JSON_UNESCAPED_UNICODE);
+		}
+
+		// 一般用户检查
+		$userTable = $config['database']['userTableName'];
+		$stmt = $db ->prepare("SELECT `id`, `password` FROM $userTable 
+			WHERE `username` = :username LIMIT 1");
+		$stmt ->bindParam(':username', $userInfo['username']);
+		$result = $stmt ->execute();
+		$row = $result ->fetchArray(SQLITE3_ASSOC);
+		// 结果为空
+		if (!$row) {
+			$returnArray['result'] = 'login fail';
+			$returnArray['error'] = 'no user';
+			return json_encode($returnArray, JSON_UNESCAPED_UNICODE);
 		}
 		
-		$returnArray['result'] = 'login fail';
-		$returnArray['error'] = 'no user';
+		// 查询到结果
+		if (!password_verify($userInfo['password'], $row['password'])) {
+			$returnArray['result'] = 'login fail';
+			$returnArray['error'] = 'password wrong';
+			return json_encode($returnArray, JSON_UNESCAPED_UNICODE);
+		}
+
+		
+		// session增加内容
+		$_SESSION['currentUser'] = Array(
+			'id' => $row['id'],
+			'anonymous' => 0,
+			'username'	=> $userInfo['username'],
+		);
+
+		$returnArray['result'] = 'login success';
 		return json_encode($returnArray, JSON_UNESCAPED_UNICODE);
 	}
 	
 	// 增加新用户信息
-	public static function addData($file, $content) {
-		//print('enter addData');
-		$fp = fopen($file, 'a+') or die('can not open file: ' . $file);
-		
-		// 中间加1是|所占字节，最后加2为换行和回车(还是改为读到\r\n停止呢)
-		// TODO: 更改为更合适的方法，目前方法需要上一行长度和下面相同
-		fseek($fp, 0 - (10 + 1 + 20 + 1 + 40 + 1 + 40 + 1 + 1 + 2), SEEK_END);
-		$line = fgets($fp);
-		
-		// 如果第一行没有的话，直接将id赋值为1
-		if ($line[0] == '#') {
-			$content['id'] = 1;
-		} else {
-			$id = self::detailStringtoArray($line)['id'];
-			$content['id'] = intval($id) + 1;
+	public static function addUser($userInfo) {
+		$db = DB::database();
+		// 返回的JSON数组
+		$returnArray = Array(
+			'api' => 'register',
+		);
+
+		global $config;
+		// 检查是否是管理员用户名
+		if ($userInfo['username'] == $config['user']['adminUserName']) {
+			$returnArray['result'] = 'register fail';
+			$returnArray['error'] = 'it is admin user';
+			return json_encode($returnArray, JSON_UNESCAPED_UNICODE);
 		}
-		
-		fseek($fp, 0, SEEK_END);
-		$write = self::detailArraytoString($content);
-		fwrite($fp, $write) or die('write userdata file failed!');
-		fwrite($fp, "\r\n");
-		fclose($fp);
-		return $content;
+
+		$userTable = $config['database']['userTableName'];
+		// 检查是否已经存在用户
+		$stmt = $db -> prepare("SELECT `id` FROM $userTable WHERE `username` = :username LIMIT 1");
+		$stmt ->bindParam(':username', $userInfo['username']);
+
+		$ret = $stmt ->execute();
+		$row = $ret ->fetchArray(SQLITE3_ASSOC);
+	
+		if ($row) {
+			$returnArray['result'] = 'register fail';
+			$returnArray['error'] = 'user exists';
+			return json_encode($returnArray, JSON_UNESCAPED_UNICODE);
+		}
+
+		$stmt = $db -> prepare("INSERT INTO $userTable 
+			(`username`, `password`, `ip`, `anonymous`) VALUES 
+			(:username, :pass, :ip, 0)");
+		$stmt ->bindParam(':username', $userInfo['username']);
+		$hash = password_hash($userInfo['password'], PASSWORD_DEFAULT);
+		$stmt ->bindParam(':pass', $hash);
+		$stmt ->bindParam(':ip', $userInfo['ip']);
+
+		$stmt ->execute() -> finalize();
+		if ($db ->lastErrorMsg() != 'not an error') {
+			$returnArray['result'] = 'reigster fail';
+			$returnArray['error'] = $db ->lastErrorMsg();
+			return json_encode($returnArray, JSON_UNESCAPED_UNICODE);
+		}
+
+		// session增加内容
+		$_SESSION['currentUser'] = Array(
+			'id' => $db -> lastInsertRowID(),
+			'anonymous' => 0,
+			'username'	=> $userInfo['username'],
+		);
+
+		$returnArray['result'] = 'register success';
+		return json_encode($returnArray, JSON_UNESCAPED_UNICODE);
 	}
 	
 	/** 
@@ -238,7 +266,8 @@ class User {
 			$config['site']['templateName']);
 		// 如果一般用户
 		} else {
-			
+			$templateFile = sprintf('templates/%s/header_uinf_user.html', 
+			$config['site']['templateName']);
 		}
 		// $username = '<span class="admin">KOTORI</span>' : $_SESSION['currentUser']['username'];
 		
