@@ -80,4 +80,12 @@ if (!$db ->exec($sql)) {
 	print(sprintf('insert table %s successfullly!', $statistics_table). '<br />');
 }
 
+$sql = "INSERT INTO $statistics_table (name, value) VALUES ('nsfw', 0)";
+if (!$db ->exec($sql)) {
+	print($db ->lastErrorMsg(). '<br />');
+	exit();
+} else {
+	print(sprintf('insert table %s successfullly!', $statistics_table). '<br />');
+}
+
 ?>

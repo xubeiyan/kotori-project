@@ -85,7 +85,8 @@ class Router {
 		} else if ($page == 'list_page') {
 			global $config;
 			global $pageInfoArray;
-			if (!isset($pageInfoArray['page']) || $pageInfoArray['page'] == '' || !is_numeric($pageInfoArray['page'])) {
+			if (!isset($pageInfoArray['page']) || $pageInfoArray['page'] == '' 
+				|| !is_numeric($pageInfoArray['page'])) {
 				$page = 1;
 			} else if ($pageInfoArray['page'] == 'last') {
 				$page = Image::getLastPage($config['file']['imagePerPage']);

@@ -236,10 +236,10 @@ if ($clientInfo['requestMethod'] == 'GET') {
 		// 验证header中是否有Kotori-Request
 		Util::customHeadersValidate();
 		if (isset($_FILES['img'])) {
-			$imageTable = $config['database']['imageTableName'];
-			
+			// 检查$_POST中是否有'nsfw'
+			$nsfw = isset($_POST['nsfw']) && $_POST['nsfw'] == 'not safe' ? 1 : 0;
 			header('Content-type:application/json');
-			$result = Image::uploadFile($_FILES['img'], $imageTable);
+			$result = Image::uploadFile($_FILES['img'], $nsfw);
 			echo $result;
 			exit();
 		} else {

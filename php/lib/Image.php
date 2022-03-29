@@ -11,7 +11,9 @@ class Image {
 	* 参数：$img(需要上传的文件数组，目前是$_FILES['img'])
 	* 参数：$imagetable(要写入的imagetable)
 	*/
-	public static function uploadFile($img, $image_table) {
+	public static function uploadFile($img, $nsfw) {
+		global $config;
+		$imageTable = $config['database']['imageTableName'];
 		// 先判断是否上传成功，不然imageFormatVerify那儿会出现一些问题
 		if ($img['error'] != 0) {
 			$err = Array(
@@ -41,16 +43,16 @@ class Image {
 			'ft' => $ext,
 			'upld' => $_SESSION['currentUser']['id'],
 			'upldtime' => date("Ymd H:i:s"),
-			'nsfw' => 0,
+			'nsfw' => $nsfw,
 		);
 		// print '!';
 		$sql = sprintf('INSERT INTO `%s` 
 				(size, 	uploader, 	filename, 	filetype, 	upload_time, 	nsfw) VALUES 
 				(%d, 	%d, 		"%s", 		"%s", 		"%s", 			%d)',
-				$image_table,
+				$imageTable,
 				$ia['size'], $ia['upld'], $ia['fn'], $ia['ft'], $ia['upldtime'], $ia['nsfw']);
 		// $string = self::imagedataArray2String($imageArray);
-		global $config;
+		
 		$db = DB::database();
 		if (!$db ->query($sql)) { // 写入失败
 			$returnArray = Array (
@@ -64,8 +66,14 @@ class Image {
 		$filePath = sprintf('uploads/%s.%s', $ia['fn'], $ia['ft']);
 		if (move_uploaded_file($img['tmp_name'], $filePath)) {	
 			// 更新统计表
-			$db ->query("UPDATE `statistics` 
-				SET `value` = `value` + 1 WHERE `name` = 'image'");
+			if ($nsfw == 'safe') {
+				$db ->query("UPDATE `statistics` 
+					SET `value` = `value` + 1 WHERE `name` = 'image'");
+			} else {
+				$db ->query("UPDATE `statistics` 
+					SET `value` = `value` + 1 WHERE `name` = 'nsfw'");
+			}
+			
 
 			$returnArray = Array (
 				'api' => 'upload',
@@ -83,42 +91,7 @@ class Image {
 		return json_encode($returnArray, JSON_UNESCAPED_UNICODE);
 	}
 
-	/**
-	* 生成图片信息字符串
-	* 具体请参考data\imagedata文件头部说明
-	*/
-	public static function imagedataArray2String($imageArray) {
-		// 判断数组长度是否为6
-		if (count($imageArray) != 6) {
-			print_r($imageArray);
-			die('the length of image detail string is invaild(in array2string)...');
-		}
-		$format = '%-32s|%-8s|%-37s|%-10s|%-17s|%s';
-		$detailString = sprintf($format, $imageArray['id'], $imageArray['size'], 
-			$imageArray['filename'], $imageArray['uploader'], $imageArray['uploadtime'], $imageArray['r18']);
-		return $detailString;
-	}
 	
-	/**
-	* 由图片信息字符串生成数组
-	*/
-	public static function imagedataString2Array($imageString) {
-		$instant = explode('|', $imageString);
-		if (count($instant) != 6) {
-			print_r($instant);
-			die('the length of image detail string is invaild(in string2array)...');
-		}
-		
-		$detailArray = Array(
-			'id' =>  trim($instant[0]),
-			'size' =>  trim($instant[1]),
-			'filename' =>  trim($instant[2]),
-			'uploader' =>  trim($instant[3]),
-			'uploadtime' =>  trim($instant[4]),
-			'r18' =>  trim($instant[5])
-		);
-		return $detailArray;
-	}
 	
 	/** 
 	* 图片格式检查
@@ -161,7 +134,8 @@ class Image {
 	 */
 	public static function randomImage() {
 		global $config;
-		$sql = sprintf('SELECT `value` FROM `statistics` WHERE `name` = "image" LIMIT 1');
+		$sql = sprintf('SELECT `value` FROM `statistics` 
+			WHERE `name` = "image" LIMIT 1');
 		
 		$db = DB::database();
 		$ret = $db ->query($sql);
@@ -186,7 +160,7 @@ class Image {
 		global $config;
 		$imageTable = $config['database']['imageTableName'];
 		$sql = sprintf("SELECT `id`, `size`, `uploader`, `filename`, `filetype`, 
-			`upload_time` FROM $imageTable LIMIT 1 OFFSET %d", $imgId-1);
+			`upload_time` FROM $imageTable WHERE `nsfw` = 0 LIMIT 1 OFFSET %d", $imgId-1);
 		
 		$db = DB::database();
 		$ret = $db ->query($sql);
@@ -261,10 +235,14 @@ class Image {
 	
 	/**
 	* 生成列表访问的模板数组
-	* $imageArray = Array(
-	*	'id' 		=> 文件id 
-	*	'filename 	=> 文件名称
-	* 	'nsfw'		=> 是否自主规制
+	* $array = Array(
+	*	'file' => Array(
+	* 		'id' 		=> 图片ID（和文件名相同）
+	* 		'uploader' 	=> 上传者ID
+	* 		'filename' 	=> 文件名
+	*		'size' 		=> 文件大小
+	*	),
+	*	'total' = Number,
 	* )
 	*/
 	public static function generateListTemplate($imageArray) {
@@ -276,12 +254,12 @@ class Image {
 			$config['site']['templateName']));
 		// print_r($imageList);
 		// r18封面路径
-		$nsfwCoverFile = sprintf('templastes/%s/%s', $config['site']['templateName'], 
+		$nsfwCoverFile = sprintf('templates/%s/%s', $config['site']['templateName'], 
 			$config['file']['r18Cover']);
 		// r18 title提示
 		$nsfwTitle = 'NSFW警告！好孩子不要点开';
 
-		foreach ($imageArray as $single) {
+		foreach ($imageArray['files'] as $single) {
 			$title = $single['nsfw'] ? $nsfwTitle : '';
 			$fullName = sprintf("%s.%s", $single['filename'], $single['filetype']);
 			$thumbSrc = $single['nsfw'] ? $nsfwCoverFile : Image::getThumb($fullName);
@@ -298,10 +276,13 @@ class Image {
 	/**
 	* 生成管理用的列表
 	* $array = Array(
-	* 	'id' 		=> 图片ID（和文件名相同）
-	* 	'uploader' 	=> 上传者ID
-	* 	'filename' 	=> 文件名
-	*	'size' 		=> 文件大小
+	*	'file' => Array(
+	* 		'id' 		=> 图片ID（和文件名相同）
+	* 		'uploader' 	=> 上传者ID
+	* 		'filename' 	=> 文件名
+	*		'size' 		=> 文件大小
+	*	),
+	*	'total' = Number,
 	* )
 	*/
 	public static function generateManageListTemplate($array) {
@@ -313,7 +294,7 @@ class Image {
 		
 		global $config;
 		
-		foreach ($array as $value) {
+		foreach ($array['files'] as $value) {
 			$id = $value['id'];
 			$uploader = $value['uploader'];
 			$filename = $value['filename'];
@@ -439,20 +420,26 @@ class Image {
 	
 	/**
 	* 根据页数和每页图片数提供图片链接
-	* 通过多读取一张判断是否后面还有
 	*/
-	public static function generateImageList($page, $imgPerPage) {
+	public static function generateImageList($page) {
 		global $config;
 		$imageTable = $config['database']['imageTableName'];
+		$imgPerPage = $config['file']['imagePerPage'];
 		// 将传入的的页面值减1乘以每页图片得到要跳过的图片量
 		$skipImage = ($page - 1) * $imgPerPage; 
-		$sql = sprintf("SELECT `id`, `filename`, `filetype`, `nsfw` FROM $imageTable LIMIT %d OFFSET %d",
-			$imgPerPage, $skipImage);
-
-		$imageArray	= Array();
-
 		$db = DB::database();
-		$ret = $db ->query($sql);
+		$stmt = $db ->prepare("SELECT `id`, `filename`, `filetype`, `nsfw` FROM $imageTable 
+			LIMIT :image_per_page OFFSET :skip_image");
+		
+		$stmt ->bindParam(':image_per_page', $imgPerPage);
+		$stmt ->bindParam(':skip_image', $skipImage);
+		
+
+		$imageArray	= Array(
+			'files' => Array(),
+			'total' => 0,
+		);
+		$ret = $stmt ->execute();
 
 		while ($row = $ret ->fetchArray(SQLITE3_ASSOC)) {
 			$single = Array(
@@ -461,9 +448,16 @@ class Image {
 				'filetype'	=> $row['filetype'],
 				'nsfw'		=> $row['nsfw'],
 			);
-			array_push($imageArray, $single); 
+			array_push($imageArray['files'], $single); 
 		}
 
+		$statisticsTable = $config['database']['statisticsTableName'];
+		$stmt = $db -> prepare("SELECT `value` FROM $statisticsTable 
+			WHERE `name` = 'image' LIMIT 1");
+		$ret = $stmt ->execute();
+
+		$row = $ret ->fetchArray();
+		$imageArray['total'] = $row['value'];
 		// var_dump($imageArray);
 		// exit();
 		return $imageArray;

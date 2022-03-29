@@ -16,7 +16,7 @@ body {
 	--main-margin-top: 1em;
 	--footer-height: 2em;
 	--first-color: #F1D6AB;
-	--first-color-hover: #f3f3f3;
+	--first-color-hover: #D1B68B;
 	--second-color: #F3C05B;
 	--second-color-hover: #E3B04B;
 	--upload-color: #F8F8F8;
@@ -82,7 +82,7 @@ header > .container li {
 	padding: .5em 1em;
 }
 
-header > .container li:hover {
+header > .container > ul > a > li:hover {
 	text-decoration: underline;
 }
 
@@ -133,9 +133,43 @@ main > #area {
 	transition: height 400ms linear;
 }
 
-main > #uploadButton {
-	width: 1000px;
-	height: 60px;
+main > div#upload-button-area {
+	position: relative;
+	--height: 60px;
+}
+
+main > div#upload-button-area.hide > #uploadButton, 
+main > div#upload-button-area.hide > #nsfw-mark {
+	height: 0;
+	
+}
+
+#uploadButton, #nsfw-mark {
+	transition: height 400ms linear;
+}
+
+div#upload-button-area > #nsfw-mark {
+	border: none;
+	width: 11%;
+	margin-left: 89%;
+	padding: 0;
+	padding-left: 2em;
+	padding-right: .25em;
+	height: var(--height);
+	background-color: var(--second-color);
+	border-radius: 1em;
+}
+
+div#upload-button-area > #nsfw-mark.selected {
+	background-color: crimson;
+	color: white;
+}
+
+#uploadButton {
+	width: 975px;
+	position: absolute;
+	left: 0;
+	height: var(--height);
 	font-size: larger;
 	border: none;
 	border-radius: 1em;
@@ -143,19 +177,18 @@ main > #uploadButton {
 	background-color: var(--first-color);
 	margin-left: auto;
 	margin-right: auto;
-	transition: height 400ms linear;
-}
-
-#uploadButton.hide {
-	height: 0;
 }
 
 #uploadButton:hover {
-	background-color: var(--second-color);
-	color: #FEFEFE;
-	cursor: pointer;
-	
+	color: white;
+	background-color: var(--first-color-hover);
 	transition: all 200ms ease-in-out;
+}
+
+#uploadButton.over {
+	cursor: pointer;
+	width: 925px;
+	transition: all 400ms ease-in-out;
 }
 
 main>div#preview {
@@ -169,8 +202,7 @@ main>div#preview>div#image-area  {
 
 img#uploadImg {
 	width: 100%;
-} 
-
+}
 /* 图像信息 */
 
 /* 上传进度条 */
@@ -315,7 +347,7 @@ main>div#login-panel {
 }
 
 input[type="text"],input[type="password"] {
-	width: 300px;
+	width: 500px;
 	border: 1px solid #CCC;
 	padding: .25em .5em;
 	font-size: large;
@@ -335,7 +367,7 @@ input[type="button"] {
 	border-radius: 0.5em;
 	border: none;
 	background-color: #EEE;
-	width: 145px;
+	width: 245px;
 	display: inline-block;
 	cursor: pointer;
 	transition: background-color 400ms linear;
@@ -356,7 +388,7 @@ input[type="button"].primary:hover {
 main>div#error-msg {
 	margin-left: auto;
 	margin-right: auto;
-	width: 300px;
+	width: 500px;
 	padding: 0.5em;
 	border: 1px solid #C00;
 	display: none;

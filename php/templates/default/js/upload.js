@@ -2,10 +2,14 @@ const area = document.getElementById('area');				// 点击或拖放区域
 const image = document.getElementById('image-area');		// 图片预览区域
 const details = document.getElementById('details-area');	// 图片详细区域
 const file = document.getElementById('file');				// 上传input
+const upload_button_area = document.getElementById('upload-button-area');
 const upload_button = document.getElementById('uploadButton');		// 上传按钮
 const notice = document.getElementById('notice');			// 提示信息
+const nsfw_mark = document.getElementById('nsfw-mark');		// NSFW标志
+
 
 let UPLOAD_FILE_SIZE = 1024 * 10;							// 上传文件大小限制
+let nsfw = 'safe';
 let imgObj = {};
 let imgInfo = {											// 待上传文件信息
 	img: undefined,
@@ -61,7 +65,7 @@ const showUploadFileDetails = function (fileList) {
 	image.innerHTML = imgStr;
 	details.innerHTML = detailStr;
 	area.classList.add('preview');
-	upload_button.classList.remove('hide');
+	upload_button_area.classList.remove('hide');
 };
 
 fetch('?upload_limit_info')
@@ -111,7 +115,7 @@ upload_button.addEventListener("click", function () {
 		progress = preview.appendChild(document.createElement("p"));
 		
 	// 隐藏上传按钮
-	upload_button.classList.add('hide');
+	upload_button_area.classList.add('hide');
 	
 	progress.appendChild(document.createTextNode("上传中"));
 	progress.id = "progress";	
@@ -158,6 +162,21 @@ upload_button.addEventListener("click", function () {
 	xhr.setRequestHeader('KotoriRequest', 'FileUpload');
 	
 	formData.append('img', imgObj);
+	formData.append('nsfw', nsfw);
 	
 	xhr.send(formData);
 });
+
+nsfw_mark.addEventListener('mouseenter', () => {
+	upload_button.classList.add('over');
+});
+
+nsfw_mark.addEventListener('mouseleave', () => {
+	upload_button.classList.remove('over');
+});
+
+nsfw_mark.addEventListener('click', () => {
+	nsfw_mark.classList.toggle('selected');
+	nsfw = nsfw == 'safe' ? 'not safe' : 'safe';
+	nsfw_mark.value = nsfw; 
+})

@@ -4,7 +4,10 @@
     <span>点此选择图片或将图片拖到此处</span>
     <span>目前支持{% anonymous_file_size_limit %}以下的jpg, png, gif, webp</span>
   </div>
-  <input type="button" id="uploadButton" class="hide" value="上传" />
+  <div id="upload-button-area" class="hide">
+    <input type="button" id="uploadButton" value="上传" />
+    <input type="button" class="" id="nsfw-mark" value="safe" title="点击切换NSFW"/>
+  </div>
   <div id="preview">
     <div id="image-area"></div>
     <div id="details-area"></div>
