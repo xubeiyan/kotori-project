@@ -1,0 +1,10 @@
+.header {
+  width: 100%;
+  position: sticky;
+  display: flex;
+  justify-content: center;
+}
+
+.header.color-light {
+  background-color: aliceblue;
+}
