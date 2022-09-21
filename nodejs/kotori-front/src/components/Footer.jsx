@@ -3,7 +3,10 @@ import './Footer.css';
 function Footer() {
   return (
     <div className="footer">
-      页脚
+      <div className='container space-between'>
+        <span>© 2021~2022 - Kotori Project</span>
+        <span>By xubeiyan with <span className='heart'>♥</span></span>
+      </div>
     </div>
   )
 }

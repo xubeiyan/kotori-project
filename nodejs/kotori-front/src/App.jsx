@@ -14,12 +14,14 @@ function App() {
   const color = 'light';
   return (
     <div className="App">
-      <Header color={color}/>
-      <Routes>
-        <Route index path="/upload" element={<Upload />} />
-        <Route path="*" element={<NotFound />} />
-      </Routes>
-      <Footer color={color}/>
+      <Header color={color} />
+      <div className='main-part'>
+        <Routes>
+          <Route index path="/" element={<Upload />} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </div>
+      <Footer color={color} />
     </div>
   )
 }

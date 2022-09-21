@@ -1,4 +1,18 @@
 .footer {
+  width: 100vw;
+  height: 2em;
   position: absolute;
   bottom: 0;
+  display: flex;
+  justify-content: center;
+} 
+
+.footer > .space-between {
+  display: flex;
+  justify-content: space-between;
+}
+
+.heart {
+  font-size: large;
+  color: red;
 }
