@@ -1,3 +1,6 @@
+import { useContext } from 'react';
+import ColorContext from '../context/colorContext.js';
+
 import './MainPart.css';
 
 import {
@@ -8,8 +11,9 @@ import {
 import NotFound from '../routes/NotFound'
 import Upload from '../routes/Upload'
 
-function MainPart({color}) {
-  let colorScheme = color == 'light' ? 'color-light' : 'color-dark';
+function MainPart() {
+  const { toggleText } = useContext(ColorContext);
+  let colorScheme = toggleText == '🌞' ? 'color-light' : 'color-dark';
   let mainPartColor = `main-part ${colorScheme}`;
 
   return (

@@ -1,15 +1,17 @@
-import { useState } from 'react';
+import { useContext } from 'react';
 import './ColorSwitch.css';
 
+import ColorContext from '../context/colorContext';
+
 function ColorSwitch({default_color, alter_color}) {
-  const [toggleText, setToggleText] = useState('亮')
+  const { toggleText, setToggleText } = useContext(ColorContext);
 
   const handleChange = e => {
     if (e.target.checked) {
-      setToggleText('暗');
+      setToggleText('🌙');
       return;
     }
-    setToggleText('亮')
+    setToggleText('🌞');
   }
 
   const dark = {

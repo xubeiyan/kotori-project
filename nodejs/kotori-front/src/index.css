@@ -17,11 +17,19 @@
 
 a {
   font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
+  text-decoration: none;
 }
 a:hover {
-  color: #535bf2;
+  color: inherit;
+  text-decoration: underline;
+}
+
+.color-light a {
+  color: black;
+}
+
+.color-dark a {
+  color: white;
 }
 
 body {

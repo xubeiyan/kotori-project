@@ -1,9 +1,13 @@
+import { useContext } from 'react';
+import ColorContext from '../context/colorContext.js';
+
 import MenuItem from "./MenuItem";
 
 import './Header.css';
 
-function Header({color}) {
-  let colorScheme = color == 'light' ? 'color-light' : 'color-dark';
+function Header() {
+  const { toggleText } = useContext(ColorContext);
+  let colorScheme = toggleText == '🌞' ? 'color-light' : 'color-dark';
   let headerColor = `header ${colorScheme}`;
   return (
     <div className={headerColor}>

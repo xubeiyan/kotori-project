@@ -1,19 +1,25 @@
+import { createContext, useState } from 'react';
 import './App.css'
 
 import Header from './components/Header'
 import MainPart from './components/MainPart'
 import Footer from './components/Footer'
 
+import ColorContext from './context/colorContext.js';
 
 function App() {
-  const color = 'light';
+  const colorTexts = ['🌞', '🌙']
+  const [toggleText, setToggleText] = useState(colorTexts[0]);
+  const value = {toggleText, setToggleText};
   
   return (
-    <div className="App">
-      <Header color={color} />
-      <MainPart color={color} />
-      <Footer color={color} />
-    </div>
+    <ColorContext.Provider value={value}>
+      <div className="App">
+        <Header />
+        <MainPart />
+        <Footer />
+      </div>
+    </ColorContext.Provider>
   )
 }
 
