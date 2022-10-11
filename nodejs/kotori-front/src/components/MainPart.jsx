@@ -19,7 +19,7 @@ function MainPart() {
   return (
     <div className={mainPartColor} >
       <Routes>
-        <Route index path="/" element={<Upload />} />
+        <Route index path="/upload" element={<Upload />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </div>

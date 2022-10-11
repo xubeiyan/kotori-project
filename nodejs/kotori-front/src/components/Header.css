@@ -8,11 +8,16 @@
 
 /* 亮色主题 */
 .header.color-light {
-  background-color: aliceblue;
+  background-color: var(--second-color);
   color: black;
 }
 
 /* 暗色主题 */
 .header.color-dark {
-  background-color: darkslategrey;
+  background-color: var(--first-color-d);
+}
+
+.vertical-center {
+  display: flex;
+  align-items: center;
 }

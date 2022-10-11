@@ -11,8 +11,9 @@ function Header() {
   let headerColor = `header ${colorScheme}`;
   return (
     <div className={headerColor}>
-      <div className="container">
+      <div className="container vertical-center">
         <MenuItem url="/" text="首页"/>
+        <MenuItem url="/upload" text="上传"/>
       </div>
     </div>
   )

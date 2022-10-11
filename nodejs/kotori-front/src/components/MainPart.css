@@ -5,5 +5,9 @@
 }
 
 .main-part.color-light {
-  background: #fefefe;
+  background: white;
+}
+
+.main-part.color-dark {
+  background: var(--second-color-d);
 }

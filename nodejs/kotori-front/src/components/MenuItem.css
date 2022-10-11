@@ -1,0 +1,14 @@
+.color-light .menu-item:hover {
+  background: var(--fourth-color);
+  color: white;
+}
+
+.color-dark .menu-item:hover {
+  background: var(--fourth-color-d);
+  color: var(--first-color-d);
+}
+
+.menu-item {
+  padding: .5em .75em;
+  border-radius: .5em;
+}
