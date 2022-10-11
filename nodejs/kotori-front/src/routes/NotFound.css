@@ -1,0 +1,18 @@
+.not-found {
+  width: var(--main-width);
+  margin: 3em 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 1em;
+}
+
+.color-light .not-found {
+  background-color: var(--light-color);
+  color: black;
+}
+
+.color-dark .not-found {
+  background-color: var(--dark-color);
+  color: white;
+}

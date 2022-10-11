@@ -15,5 +15,5 @@ body {
 }
 
 .container {
-  width: 1200px;
+  width: var(--main-width);
 }
