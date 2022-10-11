@@ -8,8 +8,9 @@ import {
   Route,
 } from "react-router-dom"
 
-import NotFound from '../routes/NotFound'
-import Upload from '../routes/Upload'
+import NotFound from '../routes/NotFound';
+import Upload from '../routes/Upload';
+import Main from '../routes/Main';
 
 function MainPart() {
   const { toggleText } = useContext(ColorContext);
@@ -19,6 +20,7 @@ function MainPart() {
   return (
     <div className={mainPartColor} >
       <Routes>
+        <Route path='/' element={<Main />} />
         <Route index path="/upload" element={<Upload />} />
         <Route path="*" element={<NotFound />} />
       </Routes>

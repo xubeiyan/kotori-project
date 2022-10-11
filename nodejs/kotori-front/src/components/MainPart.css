@@ -1,13 +1,20 @@
 .main-part {
   min-height: calc(100vh - 4em);
-  display: flex;
-  justify-content: center;
 }
 
 .main-part.color-light {
   background: var(--first-color);
+  color: black;
 }
 
 .main-part.color-dark {
   background: var(--second-color-d);
+  color: white;
+}
+
+.main-part .flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
 }

@@ -1,0 +1,17 @@
+.main-area {
+  min-height: 25em;
+}
+
+.main-area > .title {
+  font-size: xx-large;
+  margin-bottom: 1em;
+}
+
+.main-area > .content {
+  margin-bottom: .5em;
+}
+
+.main-area a {
+  font-weight: 600;
+  text-decoration: underline;
+}

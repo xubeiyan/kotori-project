@@ -1,13 +1,17 @@
 import './MenuItem.css';
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 
 function MenuItem({ text, url }) {
+  let { pathname } = useLocation();
+
+  let current = pathname == url ? `current-path` : '';
+  let style = `menu-item ${current}`
   return (
-      <Link to={url} >
-        <span className="menu-item">
-          {text}
-        </span>
-      </Link>
+    <Link to={url} >
+      <span className={style}>
+        {text}
+      </span>
+    </Link>
   )
 }
 

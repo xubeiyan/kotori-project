@@ -12,3 +12,18 @@
   padding: .5em .75em;
   border-radius: .5em;
 }
+
+.menu-item.current-path {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.color-light .menu-item.current-path {
+  background-color: var(--first-color);
+  color: black;
+}
+
+.color-dark .menu-item.current-path {
+  background-color: var(--second-color-d);
+  color: white;
+}

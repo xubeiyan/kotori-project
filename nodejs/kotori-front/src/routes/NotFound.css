@@ -1,6 +1,5 @@
 .not-found {
   width: var(--main-width);
-  margin: 3em 0;
   display: flex;
   justify-content: center;
   align-items: center;
