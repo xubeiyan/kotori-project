@@ -1,6 +1,12 @@
+import UploadPart from "../components/UploadPart";
+
+import './Upload.css';
+
 function Upload() {
   return (
-    <div>上传</div>
+    <div className="horizon-center upload-container">
+      <UploadPart />
+    </div>
   )
 }
 

@@ -27,6 +27,11 @@
   --dark-color: #453B57;
 
   --main-width: 1200px;
+  --secondary-width: 1000px;
+}
+
+#root {
+  width: 100%;
 }
 
 a {
