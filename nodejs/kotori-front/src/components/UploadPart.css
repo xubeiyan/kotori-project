@@ -1,0 +1,71 @@
+.upload-button {
+  height: 35em;
+  width: var(--secondary-width);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: large;
+  border-radius: 3em;
+  transition: height 500ms ease-in-out;
+}
+
+.upload-button:hover {
+  cursor: pointer;
+}
+
+.upload-button .hide {
+  display: none;
+}
+
+.upload-button.thin {
+  height: 6em;
+}
+
+.color-light .upload-button {
+  background: var(--second-color);
+  border: 3px dashed var(--third-color);
+}
+
+.color-light .upload-button:hover {
+  background: var(--first-color);
+}
+
+.color-dark .upload-button {
+  background: var(--first-color-d);
+  border: 3px dashed var(--third-color-d);
+}
+
+.color-dark .upload-button:hover {
+  background: var(--second-color-d);
+}
+
+.preview-and-error {
+  list-style: none;
+  padding: .5em 1em;
+  margin: .5em 2em;
+}
+
+.preview-and-error .preview-list-item {
+  display: flex;
+  align-items: center;
+  gap: 1em;
+  padding: .5em;
+  position: relative;
+}
+
+.preview-and-error .preview-list-item .preview-image {
+  height: 6em;
+}
+
+.preview-list-item .right-align {
+  position: absolute;
+  right: 1em;
+}
+
+.color-light .preview-list-item {
+  border-bottom: 1px solid var(--fourth-color);
+}
+
+.color-dark .preview-list-item {
+  border-bottom: 1px solid var(--fourth-color-d);
+}
