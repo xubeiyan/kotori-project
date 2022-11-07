@@ -69,3 +69,8 @@
 .color-dark .preview-list-item {
   border-bottom: 1px solid var(--fourth-color-d);
 }
+
+.not-upload {
+  color: red;
+  font-weight: bold;
+}

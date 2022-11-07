@@ -1,0 +1,42 @@
+.button-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 2.5em;
+}
+
+.button-container.hide {
+  display: none;
+}
+
+.button-container > .confirm-button {
+  width: 50%;
+  transition: outline 500ms ease-in-out;
+  height: 3em;
+}
+
+
+.color-light .confirm-button {
+  background-color: var(--second-color);
+  color: black;
+}
+
+.color-light .confirm-button:hover {
+  background-color: var(--first-color);
+  border: 2px solid var(--fourth-color);
+}
+
+.color-dark .confirm-button {
+  background-color: var(--first-color-d);
+  color: white;
+}
+
+.color-dark .confirm-button:hover {
+  background-color: var(--second-color-d);
+  border: 2px solid var(--third-color-d);
+}
+
+.upload-file-count {
+  padding: 0 .2em;
+  font-weight: bold;
+}

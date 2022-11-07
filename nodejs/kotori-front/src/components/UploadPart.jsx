@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import DeleteButton from './DeleteButton';
 import Preview from './Preview';
+import ConfirmButton from './ConfirmButton';
 import './UploadPart.css';
 
 // 允许的文件类型
@@ -22,6 +23,9 @@ function UploadPart() {
 
   // 预览图源
   let [previewSrc, setPreviewSrc] = useState('');
+
+  // 确认上传按钮状态
+  let [confirmStatus, setConfirmStatus] = useState('hide');
 
   // 点击上传按钮
   const openUploadDialog = () => {
@@ -85,13 +89,22 @@ function UploadPart() {
 
     let d = [...resultData, ...uploadList];
     // 为其增加id
-    d.forEach((one, index) => {one.id = index})
+    d.forEach((one, index) => { one.id = index })
     setResultData(d);
+    setConfirmStatus('show');
   }
 
+  // 移除文件
   const removeFile = (index) => {
     // console.log(`将要删除id为${index}的文件`);
-    setResultData(resultData.filter(value => value.id !== index));
+    let filtedData = resultData.filter(value => value.id !== index)
+
+    setResultData(filtedData);
+
+    if (filtedData.length == 0) {
+      setStatus('blank');
+      setConfirmStatus('hide');
+    }
   }
 
   const showPreview = (src) => {
@@ -104,14 +117,14 @@ function UploadPart() {
 
     const listItem = data.map((d, index) => (
       <li key={index} className="preview-list-item">
-        {d.error ? '' : <img title={d.fileName} src={d.image} className="preview-image" 
+        {d.error ? '' : <img title={d.fileName} src={d.image} className="preview-image"
           onClick={() => showPreview(d.image)} />}
         <span>文件编号：{d.id}</span>
-        {d.error ? <span>待上传：否</span> : ""}
+        {d.error ? <span>待上传：<span className='not-upload'>否</span></span> : ""}
         {d.error ? <span>原因：{d.message}</span> : ''}
         {d.error ? '' : <span>文件大小：{d.size}KB</span>}
         <span className='right-align'>
-          <DeleteButton click={() => removeFile(d.id)}/>
+          <DeleteButton click={() => removeFile(d.id)} />
         </span>
       </li>
     ))
@@ -120,6 +133,11 @@ function UploadPart() {
         {listItem}
       </ul>
     )
+  }
+
+  // 确认上传
+  const confirmUpload = () => {
+    console.log('upload@')
   }
 
   return (
@@ -134,7 +152,8 @@ function UploadPart() {
         <input type="file" className='file hide' multiple="multiple" onChange={fileSelect} />
       </div>
       <PreviewList data={resultData} />
-      <Preview status={previewStatus} setStatus={setPreviewStatus} imgSrc={previewSrc}/>
+      <Preview status={previewStatus} setStatus={setPreviewStatus} imgSrc={previewSrc} />
+      <ConfirmButton confirm={confirmUpload} status={confirmStatus} uploadFileCount={resultData.length}/>
     </div>
   )
 }
