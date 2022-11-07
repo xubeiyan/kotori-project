@@ -9,7 +9,10 @@ import ColorContext from './context/colorContext.js';
 
 function App() {
   const colorTexts = ['🌞', '🌙']
-  const [toggleText, setToggleText] = useState(colorTexts[0]);
+  const [toggleText, setToggleText] = useState(() => {
+    const savedColor = localStorage.getItem('colorScheme');
+    return savedColor || colorTexts[0];
+  });
   const value = {toggleText, setToggleText};
   
   return (

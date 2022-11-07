@@ -1,17 +1,54 @@
 .not-found {
-  width: var(--main-width);
+  display: flex;
+  justify-content: center;
+}
+
+.not-found > .container {
+  margin-top: 1em;
+  height: 30em;
   display: flex;
   justify-content: center;
   align-items: center;
   border-radius: 1em;
+  gap: 3em;
 }
 
-.color-light .not-found {
+.not-found .large404 {
+  font-size: 20em;
+  font-style: italic;
+}
+
+.color-light .not-found .large404 {
+  color: var(--first-color);
+}
+
+.color-dark .not-found .large404 {
+  color: var(--second-color-d);
+}
+
+.not-found .pathname {
+  padding: .2em;
+  margin: 0 .2em;
+  font-size: large;
+  border-radius: .5em;
+}
+
+.color-light .not-found .pathname {
+  background-color: var(--third-color);
+  color: white;
+}
+
+.color-dark .not-found .pathname {
+  background-color: var(--fourth-color-d);
+  color: black;
+}
+
+.color-light .not-found .container {
   background-color: var(--light-color);
   color: black;
 }
 
-.color-dark .not-found {
+.color-dark .not-found .container {
   background-color: var(--dark-color);
   color: white;
 }

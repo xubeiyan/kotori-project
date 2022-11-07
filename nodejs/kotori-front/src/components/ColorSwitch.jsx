@@ -3,15 +3,17 @@ import './ColorSwitch.css';
 
 import ColorContext from '../context/colorContext';
 
-function ColorSwitch({default_color, alter_color}) {
+function ColorSwitch() {
   const { toggleText, setToggleText } = useContext(ColorContext);
 
   const handleChange = e => {
     if (e.target.checked) {
       setToggleText('🌙');
+      localStorage.setItem('colorScheme', '🌙');
       return;
     }
     setToggleText('🌞');
+    localStorage.setItem('colorScheme', '🌞');
   }
 
   const dark = {
@@ -21,7 +23,7 @@ function ColorSwitch({default_color, alter_color}) {
 
   return (
     <div style={dark}>
-      <input onChange={handleChange} id="switch1" type="checkbox" className='toggle' />
+      <input onChange={handleChange} id="switch1" type="checkbox" className='toggle' defaultChecked={toggleText == '🌙'}/>
       <label htmlFor="switch1">{toggleText}</label>
     </div>
   )
