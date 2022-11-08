@@ -6,6 +6,7 @@ import './UploadPart.css';
 
 // 上传路径
 import { uploadURI } from '../uploadConfig';
+import ProgressPie from './ProgressPie';
 // 允许的文件类型
 const acceptedFileType = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
 // 最大允许上传文件数
@@ -126,7 +127,7 @@ function UploadPart() {
         {d.error ? <span>原因：{d.message}</span> : ''}
 
         <span className='right-align'>
-          {d.error ? '' : <div className='upload-progress'>{d.uploadedSize}KB / {d.size}KB</div>}
+          {d.error ? '' : <ProgressPie uploaded={d.uploadedSize} total={d.size}/>}
           <DeleteButton click={() => removeFile(d.id)} />
         </span>
       </li>

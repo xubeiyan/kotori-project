@@ -1,0 +1,47 @@
+.out-circle {
+  width: 6em;
+  height: 6em;
+  border-radius: 3em;
+  position: relative;
+  background: conic-gradient(var(--fg) var(--percent, 0deg), var(--bg) var(--percent, 0deg));
+  transition: background 1s ease-in-out;
+  
+}
+
+.color-light .out-circle {
+  --fg: var(--third-color);
+  --bg: var(--second-color);
+}
+
+.color-dark .out-circle {
+  --fg: var(--third-color-d);
+  --bg: var(--first-color-d);
+}
+
+.in-circle {
+  width: 5rem;
+  height: 5rem;
+  border-radius: 5em;
+  
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  font-size: smaller;
+}
+
+.color-light .in-circle {
+  background: var(--first-color);
+}
+
+.color-dark .in-circle {
+  background: var(--second-color-d);
+}
+
+.in-circle > span {
+  line-height: 1.2em;
+}
