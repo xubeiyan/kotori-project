@@ -15,6 +15,9 @@
   height: 3em;
 }
 
+.confirm-button:disabled {
+  cursor: not-allowed;
+}
 
 .color-light .confirm-button {
   background-color: var(--second-color);

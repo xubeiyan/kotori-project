@@ -6,14 +6,25 @@
   justify-content: center;
   align-items: center;
   text-align: center;
-  color: var(--fourth-color)
 }
 
 .color-light .delete-button {
   background: var(--second-color);
+  color: var(--fourth-color)
 }
 
 .color-light .delete-button:hover,.color-dark .delete-button:hover {
+  background: red;
+  color: white;
+  border: 1px solid red;
+}
+
+.color-dark .delete-button {
+  background: var(--first-color-d);
+  color: white;
+}
+
+.color-dark .delete-button:hover,.color-dark .delete-button:hover {
   background: red;
   color: white;
   border: 1px solid red;

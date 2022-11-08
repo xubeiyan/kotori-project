@@ -59,6 +59,9 @@
 
 .preview-list-item .right-align {
   position: absolute;
+  display: flex;
+  gap: .5em;
+  align-items: center;
   right: 1em;
 }
 
@@ -73,4 +76,12 @@
 .not-upload {
   color: red;
   font-weight: bold;
+}
+
+.upload-progress {
+  width: 20em;
+  border-radius: .5em;
+  padding: 0 .5em;
+  border: 1px solid var(--third-color);
+  text-align: right;
 }
