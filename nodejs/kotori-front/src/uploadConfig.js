@@ -1,3 +1,3 @@
-const uploadURI = 'http://localhost:8080/uploads'
+const uploadURI = 'http://localhost:8080/upload'
 
 export { uploadURI };

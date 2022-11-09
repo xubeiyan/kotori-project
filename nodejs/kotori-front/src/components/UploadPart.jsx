@@ -1,12 +1,15 @@
 import { useState } from 'react';
-import DeleteButton from './DeleteButton';
 import Preview from './Preview';
 import ConfirmButton from './ConfirmButton';
+import UploadList from './UploadList';
 import './UploadPart.css';
 
 // 上传路径
 import { uploadURI } from '../uploadConfig';
-import ProgressPie from './ProgressPie';
+
+import useUploadForm from '../customHooks/hook';
+
+
 // 允许的文件类型
 const acceptedFileType = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
 // 最大允许上传文件数
@@ -22,10 +25,10 @@ function UploadPart() {
   let [resultData, setResultData] = useState([]);
 
   // 查看预览图状态
-  let [previewStatus, setPreviewStatus] = useState('hide');
-
-  // 预览图源
-  let [previewSrc, setPreviewSrc] = useState('');
+  let [preview, setPreview] = useState({
+    status: 'hide',
+    src: '',
+  });
 
   // 确认上传按钮状态
   let [confirmStatus, setConfirmStatus] = useState('hide');
@@ -72,6 +75,7 @@ function UploadPart() {
         pushObj.message = `文件大小为${Math.floor(value.size / 1024)}KB，超过了大小限制${Math.floor(PER_IMAGE_MAX_SIZE / 1024)}KB`;
       } else {
         pushObj.image = window.URL.createObjectURL(value);
+        pushObj.imageObj = value;
         pushObj.fileName = value.name;
         pushObj.size = Math.floor(value.size / 1024);
         pushObj.uploadedSize = 0;
@@ -111,48 +115,23 @@ function UploadPart() {
     }
   }
 
-  const showPreview = (src) => {
-    setPreviewStatus('show');
-    setPreviewSrc(src);
-  }
 
-  const PreviewList = ({ data }) => {
-    if (data.length == 0) return ('');
 
-    const listItem = data.map((d, index) => (
-      <li key={index} className="preview-list-item">
-        {d.error ? <span className='not-upload'>文件无法上传</span> : <img title={d.fileName} src={d.image} className="preview-image"
-          onClick={() => showPreview(d.image)} />}
-        <span>文件编号：{d.id}</span>
-        {d.error ? <span>原因：{d.message}</span> : ''}
-
-        <span className='right-align'>
-          {d.error ? '' : <ProgressPie uploaded={d.uploadedSize} total={d.size}/>}
-          <DeleteButton click={() => removeFile(d.id)} />
-        </span>
-      </li>
-    ))
-    return (
-      <ul className='preview-and-error'>
-        {listItem}
-      </ul>
-    )
-  }
+  
 
   // 确认上传
   const confirmUpload = () => {
     setConfirmStatus('uploading');
-    for (const one of resultData) {
+    for (const index in resultData) {
+      let one = resultData[index];
       if (one.error) {
         return;
       }
 
-      // 使用fetch API，其实可以换成axios
-      fetch(uploadURI, {
 
-      }).catch(e => {
-        console.log(e)
-      })
+
+      xhr.open('post', uploadURI);
+      xhr.send(form);
     }
   }
 
@@ -167,8 +146,8 @@ function UploadPart() {
         点击这里选择文件或者是把文件拖放到这里
         <input type="file" className='file hide' multiple="multiple" onChange={fileSelect} />
       </div>
-      <PreviewList data={resultData} />
-      <Preview status={previewStatus} setStatus={setPreviewStatus} imgSrc={previewSrc} />
+      <UploadList data={resultData} removeFile={removeFile} setPreview={setPreview}/>
+      <Preview status={preview.status} setStatus={setPreview} imgSrc={preview.src} />
       <ConfirmButton confirm={confirmUpload} status={confirmStatus} uploadFileCount={resultData.length} />
     </div>
   )

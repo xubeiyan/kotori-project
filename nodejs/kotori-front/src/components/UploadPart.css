@@ -39,40 +39,6 @@
   background: var(--second-color-d);
 }
 
-.preview-and-error {
-  list-style: none;
-  padding: .5em 1em;
-  margin: .5em 2em;
-}
-
-.preview-and-error .preview-list-item {
-  display: flex;
-  align-items: center;
-  gap: 1em;
-  padding: .5em;
-  position: relative;
-}
-
-.preview-and-error .preview-list-item .preview-image {
-  height: 6em;
-}
-
-.preview-list-item .right-align {
-  position: absolute;
-  display: flex;
-  gap: .5em;
-  align-items: center;
-  right: 1em;
-}
-
-.color-light .preview-list-item {
-  border-bottom: 1px solid var(--fourth-color);
-}
-
-.color-dark .preview-list-item {
-  border-bottom: 1px solid var(--fourth-color-d);
-}
-
 .not-upload {
   color: red;
   font-weight: bold;

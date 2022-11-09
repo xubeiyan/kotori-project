@@ -1,0 +1,35 @@
+.upload-list {
+  list-style: none;
+  padding: .5em 1em;
+  margin: .5em 2em;
+}
+
+.upload-list .upload-list-item {
+  display: flex;
+  align-items: center;
+  gap: 1em;
+  padding: .5em;
+  position: relative;
+}
+
+.upload-list .upload-list-item .preview-image {
+  height: 6em;
+}
+
+
+.upload-list-item .right-align {
+  position: absolute;
+  display: flex;
+  gap: .5em;
+  align-items: center;
+  right: 1em;
+}
+
+
+.color-light .preview-list-item {
+  border-bottom: 1px solid var(--fourth-color);
+}
+
+.color-dark .preview-list-item {
+  border-bottom: 1px solid var(--fourth-color-d);
+}
