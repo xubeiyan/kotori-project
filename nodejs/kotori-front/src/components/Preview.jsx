@@ -1,10 +1,10 @@
 import './Preview.css';
 
-function Preview({ imgSrc, status, setStatus }) {
+function Preview({ imgSrc, status, setPreview }) {
   return (
     <div
       className={status == 'hide' ? 'preview-background hide' : 'preview-background'}
-      onClick={() => setStatus('hide')}> 
+      onClick={() => setPreview(preview => {return {...preview, status: 'hide'}})}> 
       <img src={imgSrc} alt="" />
       <div className='close-preview-button'>&#215;</div>
     </div>

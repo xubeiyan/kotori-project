@@ -4,9 +4,6 @@ import ConfirmButton from './ConfirmButton';
 import UploadList from './UploadList';
 import './UploadPart.css';
 
-// 上传路径
-import { uploadURI } from '../uploadConfig';
-
 import useUploadForm from '../customHooks/hook';
 
 
@@ -115,23 +112,14 @@ function UploadPart() {
     }
   }
 
-
-
-  
-
   // 确认上传
   const confirmUpload = () => {
     setConfirmStatus('uploading');
-    for (const index in resultData) {
-      let one = resultData[index];
+    for (const one of resultData) {
       if (one.error) {
         return;
       }
-
-
-
-      xhr.open('post', uploadURI);
-      xhr.send(form);
+      setConfirmStatus('uploading');
     }
   }
 
@@ -146,8 +134,8 @@ function UploadPart() {
         点击这里选择文件或者是把文件拖放到这里
         <input type="file" className='file hide' multiple="multiple" onChange={fileSelect} />
       </div>
-      <UploadList data={resultData} removeFile={removeFile} setPreview={setPreview}/>
-      <Preview status={preview.status} setStatus={setPreview} imgSrc={preview.src} />
+      <UploadList data={resultData} removeFile={removeFile} setPreview={setPreview} uploadStatus={confirmStatus}/>
+      <Preview status={preview.status} setPreview={setPreview} imgSrc={preview.src} />
       <ConfirmButton confirm={confirmUpload} status={confirmStatus} uploadFileCount={resultData.length} />
     </div>
   )

@@ -1,8 +1,9 @@
 import './DeleteButton.css';
 
-function DeleteButton({click}) {
+function DeleteButton({hidden, click}) {
+  const className = hidden ? 'delete-button hidden' : 'delete-button'; 
   return (
-    <button className="delete-button" onClick={click}>
+    <button className={className} onClick={click} disabled={hidden}>
       &#215;
     </button>
   )
