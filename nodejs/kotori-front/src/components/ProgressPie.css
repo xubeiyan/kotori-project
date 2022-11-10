@@ -45,3 +45,7 @@
 .in-circle > span {
   line-height: 1.2em;
 }
+
+.warning {
+  color: red;
+}

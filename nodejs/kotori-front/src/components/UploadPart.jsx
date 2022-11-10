@@ -1,11 +1,8 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import Preview from './Preview';
 import ConfirmButton from './ConfirmButton';
 import UploadList from './UploadList';
 import './UploadPart.css';
-
-import useUploadForm from '../customHooks/hook';
-
 
 // 允许的文件类型
 const acceptedFileType = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
@@ -14,7 +11,7 @@ const IMAGE_MAX_NUM = 10;
 // 最大允许的文件大小
 const PER_IMAGE_MAX_SIZE = 2 * 1024 * 1024;
 
-function UploadPart() {
+const UploadPart = () => {
   // 当前状态，默认为 blank, add
   let [status, setStatus] = useState('blank');
 
@@ -115,13 +112,14 @@ function UploadPart() {
   // 确认上传
   const confirmUpload = () => {
     setConfirmStatus('uploading');
-    for (const one of resultData) {
-      if (one.error) {
-        return;
-      }
-      setConfirmStatus('uploading');
-    }
   }
+
+  // 待上传文件个数
+  const toUploadCount = () => {
+    let filtedData = resultData.filter(value => value.error == false);
+    return filtedData.length;
+  } 
+
 
   return (
     <div className='upload-part'>
@@ -134,9 +132,12 @@ function UploadPart() {
         点击这里选择文件或者是把文件拖放到这里
         <input type="file" className='file hide' multiple="multiple" onChange={fileSelect} />
       </div>
-      <UploadList data={resultData} removeFile={removeFile} setPreview={setPreview} uploadStatus={confirmStatus}/>
+      <UploadList 
+        data={resultData} removeFile={removeFile} 
+        setPreview={setPreview} confirmStatus={confirmStatus} 
+        setConfirmStatus={setConfirmStatus} />
       <Preview status={preview.status} setPreview={setPreview} imgSrc={preview.src} />
-      <ConfirmButton confirm={confirmUpload} status={confirmStatus} uploadFileCount={resultData.length} />
+      <ConfirmButton confirm={confirmUpload} status={confirmStatus} uploadFileCount={toUploadCount()} />
     </div>
   )
 }
