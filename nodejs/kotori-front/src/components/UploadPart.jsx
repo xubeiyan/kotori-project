@@ -26,8 +26,6 @@ const UploadPart = () => {
     src: '',
   });
 
-  // 确认上传按钮状态
-  let [confirmStatus, setConfirmStatus] = useState('hide');
   // 上传成功数
   let [successCount, setSuccessCount] = useState(0);
 
@@ -41,13 +39,14 @@ const UploadPart = () => {
   const dropFile = (e) => {
     e.preventDefault();
     let fileList = e.dataTransfer.files;
+    if (fileList.length == 0) return;
     validateFile(fileList);
   }
 
   // 选择文件（支持多个）
   const fileSelect = (e) => {
     let fileList = e.target.files;
-    // console.log(fileList);
+    if (fileList.length == 0) return;
     validateFile(fileList);
   }
 
@@ -98,7 +97,6 @@ const UploadPart = () => {
     // 为其增加id
     d.forEach((one, index) => { one.id = index })
     setResultData(d);
-    setConfirmStatus('show');
   }
 
   // 移除文件
@@ -110,7 +108,6 @@ const UploadPart = () => {
 
     if (filtedData.length == 0) {
       setStatus('blank');
-      setConfirmStatus('hide');
     }
   }
 
@@ -120,6 +117,23 @@ const UploadPart = () => {
     certain.progress = progress;
     if (progress > 0) certain.uploadStatus = 'uploading';
     if (progress >= 1) certain.uploadStatus = 'uploaded';
+
+    let prev = resultData.slice(0, index);
+    let next = resultData.slice(index + 1);
+
+    setResultData([...prev, certain, ...next])
+  }
+
+  // 根据返回结果确定上传成功或失败
+  const modifySingleFileUpload = ({index, success}) => {
+    let certain = resultData[index];
+    // certain.progress = progress;
+    if (success) {
+      certain.uploadStatus = 'uploaded';
+      setSuccessCount(successCount => successCount + 1);
+    } else {
+      certain.uploadStatus = 'failed';
+    }
 
     let prev = resultData.slice(0, index);
     let next = resultData.slice(index + 1);
@@ -137,19 +151,22 @@ const UploadPart = () => {
       return;
     }
 
-
     let noErrorData = resultData.filter(value => value.error == false);
-    setStatus('uploading');
     // console.log(noErrorData)
     let toUploadData = noErrorData.map(({imageObj, size}) => ({
       imageObj, size,
       uploadedSize: 0
     }));
-
+    
     let toUploadLength = toUploadData.length;
+    // 没有上传文件则不上传
+    if (toUploadLength == 0) return;
+    
+    setStatus('uploading');
 
+    resultData.forEach((data, index) => {
+      if (data.error) return;
 
-    toUploadData.forEach((data, index) => {
       axios.post(uploadURI, {
         image: data.imageObj
       },{
@@ -163,7 +180,8 @@ const UploadPart = () => {
         },
       }).then(res => {
         if (res.status == 200)  {
-          setSuccessCount(successCount => successCount + 1);
+          modifySingleFileUpload({index, success: res.data.status});
+          
           setStatus('finish');
         }
       });
