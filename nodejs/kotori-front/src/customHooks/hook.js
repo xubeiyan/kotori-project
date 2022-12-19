@@ -1,26 +1,32 @@
 import { useState } from "react";
+import { uploadURI } from '../uploadConfig';
 
-const useUploadForm = (url) => {
-  const [isSuccess, setIsSuccess] = useState(false);
+const useUploadForm = ({ formData }) => {
+  // const [isSuccess, setIsSuccess] = useState(false);
   const [progress, setProgress] = useState(0);
 
   const uploadForm = (formData) => {
-    let xhr = new XMLHttpRequest();
-
-    xhr.upload.addEventListener('progress', (e) => {
-      setProgress(e.loaded / e.total * 100);
+    axios.post(uploadURI, {
+      image: d.imageObj,
+    }, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+      onUploadProgress: (e) => {
+        const progress = e.loaded / e.total;
+        setProgress(progress);
+      },
+    }).then(res => {
+      if (res.status == 200) {
+        setSingleUpload('uploaded');
+      } else {
+        setSingleUpload('failed');
+      }
+      // completeCount.current += 1;
     });
-    
-    xhr.open('post', url);
-    xhr.send(formData);
-
-    xhr.addEventListener('readystatechange', (e) => {
-      console.log(e);
-      setIsSuccess(true);
-    })
   };
 
-  return { uploadForm, isSuccess, progress };
+  return { uploadForm, progress };
 };
 
 export default useUploadForm;

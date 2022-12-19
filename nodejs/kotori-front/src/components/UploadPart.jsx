@@ -1,8 +1,10 @@
-import { useState, useRef } from 'react';
+import { useState } from 'react';
 import Preview from './Preview';
 import ConfirmButton from './ConfirmButton';
 import UploadList from './UploadList';
 import './UploadPart.css';
+import axios from 'axios';
+import { uploadURI } from '../uploadConfig';
 
 // 允许的文件类型
 const acceptedFileType = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
@@ -12,7 +14,7 @@ const IMAGE_MAX_NUM = 10;
 const PER_IMAGE_MAX_SIZE = 2 * 1024 * 1024;
 
 const UploadPart = () => {
-  // 当前状态，默认为 blank, add
+  // 当前状态，默认为 blank, add, uploading, finish
   let [status, setStatus] = useState('blank');
 
   // 待上传的文件
@@ -26,6 +28,8 @@ const UploadPart = () => {
 
   // 确认上传按钮状态
   let [confirmStatus, setConfirmStatus] = useState('hide');
+  // 上传成功数
+  let [successCount, setSuccessCount] = useState(0);
 
   // 点击上传按钮
   const openUploadDialog = () => {
@@ -43,6 +47,7 @@ const UploadPart = () => {
   // 选择文件（支持多个）
   const fileSelect = (e) => {
     let fileList = e.target.files;
+    // console.log(fileList);
     validateFile(fileList);
   }
 
@@ -72,7 +77,7 @@ const UploadPart = () => {
         pushObj.imageObj = value;
         pushObj.fileName = value.name;
         pushObj.size = Math.floor(value.size / 1024);
-        pushObj.uploadedSize = 0;
+        // pushObj.uploadedSize = 0;
       }
       uploadList.push(pushObj);
     }
@@ -109,9 +114,53 @@ const UploadPart = () => {
     }
   }
 
-  // 确认上传
+  // 修改单个文件的上传和状态
+  const modifySingleFileStatus = ({index, progress}) => {
+    let certain = resultData[index];
+    certain.progress = progress;
+    if (progress > 0) certain.uploadStatus = 'uploading';
+    if (progress >= 1) certain.uploadStatus = 'uploaded';
+
+    let prev = resultData.slice(0, index);
+    let next = resultData.slice(index + 1);
+
+    setResultData([...prev, certain, ...next])
+  }
+
+  // 进行上传
   const confirmUpload = () => {
-    setConfirmStatus('uploading');
+    let noErrorData = resultData.filter(value => value.error == false);
+    setStatus('uploading');
+    // console.log(noErrorData)
+    let toUploadData = noErrorData.map(({imageObj, size}) => ({
+      imageObj, size,
+      uploadedSize: 0
+    }));
+
+    let toUploadLength = toUploadData.length;
+
+
+    toUploadData.forEach((data, index) => {
+      axios.post(uploadURI, {
+        image: data.imageObj
+      },{
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+        onUploadProgress: (e) => {
+          const progress = e.loaded / e.total;
+          modifySingleFileStatus({index, progress});
+          
+        },
+      }).then(res => {
+        if (res.status == 200)  {
+          setSuccessCount(successCount => successCount + 1);
+          setStatus('finish');
+        }
+      });
+    });
+    
+    // console.log(toUploadData);
   }
 
   // 待上传文件个数
@@ -134,10 +183,10 @@ const UploadPart = () => {
       </div>
       <UploadList 
         data={resultData} removeFile={removeFile} 
-        setPreview={setPreview} confirmStatus={confirmStatus} 
-        setConfirmStatus={setConfirmStatus} />
+        setPreview={setPreview} uploadStatus={status} 
+        />
       <Preview status={preview.status} setPreview={setPreview} imgSrc={preview.src} />
-      <ConfirmButton confirm={confirmUpload} status={confirmStatus} uploadFileCount={toUploadCount()} />
+      <ConfirmButton confirm={confirmUpload} status={status} uploadFileCount={toUploadCount()} completeCount={successCount}/>
     </div>
   )
 }
