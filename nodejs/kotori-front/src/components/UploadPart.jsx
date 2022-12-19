@@ -129,6 +129,15 @@ const UploadPart = () => {
 
   // 进行上传
   const confirmUpload = () => {
+    // 上传成功后再次点击重置所有
+    if (status == 'finish') {
+      setStatus('blank');
+      setResultData([]);
+      setSuccessCount(0);
+      return;
+    }
+
+
     let noErrorData = resultData.filter(value => value.error == false);
     setStatus('uploading');
     // console.log(noErrorData)
