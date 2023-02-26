@@ -1,10 +1,12 @@
 import { useState } from 'react';
-import Preview from './Preview';
+import axios from 'axios';
+
+import PreviewDialog from './PreviewDialog';
 import ConfirmButton from './ConfirmButton';
 import UploadList from './UploadList';
+
 import './UploadPart.css';
-import axios from 'axios';
-import { uploadURI } from '../uploadConfig';
+import { useRef } from 'react';
 
 // 允许的文件类型
 const acceptedFileType = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
@@ -14,6 +16,9 @@ const IMAGE_MAX_NUM = 10;
 const PER_IMAGE_MAX_SIZE = 2 * 1024 * 1024;
 
 const UploadPart = () => {
+  // 上传文件框ref
+  const fileInput = useRef(null);
+
   // 当前状态，默认为 blank, add, uploading, finish
   let [status, setStatus] = useState('blank');
 
@@ -31,8 +36,7 @@ const UploadPart = () => {
 
   // 点击上传按钮
   const openUploadDialog = () => {
-    const inputForm = document.querySelector('input.file');
-    inputForm.click();
+    fileInput.current.click();
   }
 
   // 拖放文件（支持多个）
@@ -167,7 +171,7 @@ const UploadPart = () => {
     resultData.forEach((data, index) => {
       if (data.error) return;
 
-      axios.post(uploadURI, {
+      axios.post('/api/upload', {
         image: data.imageObj
       },{
         headers: {
@@ -206,13 +210,13 @@ const UploadPart = () => {
         onDragOver={preventDefault}
       >
         点击这里选择文件或者是把文件拖放到这里
-        <input type="file" className='file hide' multiple="multiple" onChange={fileSelect} />
+        <input type="file" className='file hide' multiple="multiple" ref={fileInput} onChange={fileSelect} />
       </div>
       <UploadList 
         data={resultData} removeFile={removeFile} 
         setPreview={setPreview} uploadStatus={status} 
         />
-      <Preview status={preview.status} setPreview={setPreview} imgSrc={preview.src} />
+      <PreviewDialog status={preview.status} setPreview={setPreview} imgSrc={preview.src} />
       <ConfirmButton confirm={confirmUpload} status={status} uploadFileCount={toUploadCount()} completeCount={successCount}/>
     </div>
   )

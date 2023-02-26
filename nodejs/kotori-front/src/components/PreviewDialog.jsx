@@ -1,6 +1,6 @@
-import './Preview.css';
+import './PreviewDialog.css';
 
-function Preview({ imgSrc, status, setPreview }) {
+function PreviewDialog({ imgSrc, status, setPreview }) {
   return (
     <div
       className={status == 'hide' ? 'preview-background hide' : 'preview-background'}
@@ -11,4 +11,4 @@ function Preview({ imgSrc, status, setPreview }) {
   )
 }
 
-export default Preview;
+export default PreviewDialog;

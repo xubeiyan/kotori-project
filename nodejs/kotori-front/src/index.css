@@ -14,17 +14,17 @@
   -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: 100%;
 
-  --first-color: #F5EFE6;
-  --second-color: #E8DFCA;
-  --third-color: #AEBDCA;
-  --fourth-color: #7895B2;
-  --light-color: #E5DFD6;
+  --first-color: #f5efe6;
+  --second-color: #e8dfca;
+  --third-color: #aebdca;
+  --fourth-color: #7895b2;
+  --light-color: #e5dfd6;
 
-  --first-color-d: #251B37;
+  --first-color-d: #251b37;
   --second-color-d: #372948;
-  --third-color-d: #FFCACA;
-  --fourth-color-d: #FFECEF;
-  --dark-color: #453B57;
+  --third-color-d: #ffcaca;
+  --fourth-color-d: #ffecef;
+  --dark-color: #453b57;
 
   --main-width: 1200px;
   --secondary-width: 1000px;
@@ -45,6 +45,10 @@ a:hover {
 
 .color-light a {
   color: black;
+}
+
+.color-dark a:hover {
+  color: #7895b2;
 }
 
 .color-dark a {
