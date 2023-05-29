@@ -11,6 +11,7 @@ import {
 import NotFound from '../routes/NotFound';
 import Upload from '../routes/Upload';
 import Main from '../routes/Main';
+import View from '../routes/View';
 
 function MainPart() {
   const { toggleText } = useContext(ColorContext);
@@ -22,6 +23,7 @@ function MainPart() {
       <Routes>
         <Route path='/' element={<Main />} />
         <Route index path="/upload" element={<Upload />} />
+        <Route path="/view" element={<View />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </div>

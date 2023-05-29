@@ -16,6 +16,7 @@ function Header() {
       <div className="container vertical-center">
         <MenuItem url="/" text="首页"/>
         <MenuItem url="/upload" text="上传" />
+        <MenuItem url="/view" text="查看" />
       </div>
     </div>
   )

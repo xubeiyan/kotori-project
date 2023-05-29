@@ -196,6 +196,11 @@ const UploadPart = () => {
     return filtedData.length;
   } 
 
+  // 切换nsfw标记
+  const markNotSafe = () => {
+    
+  }
+
 
   return (
     <div className='upload-part'>
@@ -211,6 +216,7 @@ const UploadPart = () => {
       <UploadList 
         data={resultData} removeFile={removeFile} 
         setPreview={setPreview} uploadStatus={status} 
+        markNotSafe={markNotSafe}
         />
       <Preview status={preview.status} setPreview={setPreview} imgSrc={preview.src} />
       <ConfirmButton confirm={confirmUpload} status={status} uploadFileCount={toUploadCount()} completeCount={successCount}/>

@@ -1,3 +1,4 @@
-const uploadURI = 'http://localhost:8080/upload'
+const uploadURI = 'http://localhost:8080/upload';
+const backendURI = 'http://localhost:8080/back';
 
-export { uploadURI };
+export { uploadURI, backendURI };

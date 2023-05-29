@@ -1,0 +1,8 @@
+.horizon-center {
+  display: flex;
+  justify-content: center;
+}
+
+.view-container {
+  padding-top: 4em;
+}

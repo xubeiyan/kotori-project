@@ -3,7 +3,7 @@ import WillUpload from './WillUpload';
 
 import './UploadList.css';
 
-const UploadList = ({ data, removeFile, setPreview, uploadStatus }) => {
+const UploadList = ({ data, markNotSafe, removeFile, setPreview, uploadStatus }) => {
 
   // 显示预览图
   const showPreview = (src) => {
@@ -17,7 +17,7 @@ const UploadList = ({ data, removeFile, setPreview, uploadStatus }) => {
   const listItem = data.map((d, index) => {
     return d.error ? 
       <WillNotUpload key={index} d={d} removeFile={removeFile}/> : 
-      <WillUpload key={index} d={d} showPreview={showPreview} uploadStatus={uploadStatus} removeFile={removeFile} />
+      <WillUpload key={index} d={d} showPreview={showPreview} uploadStatus={uploadStatus} markNotSafe={markNotSafe} removeFile={removeFile} />
   });
 
   return (

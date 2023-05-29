@@ -4,14 +4,14 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const morgan = require('morgan');
 const _ = require('lodash');
+const path = require('path');
 
 const { generateRandomFileName } = require('./utils');
-const e = require('express');
 
 const app = express();
 
 // 静态文件
-app.use('/uploads', express.static('image'));
+app.use('/images', express.static(path.join(__dirname, 'uploads')));
 
 // enable files upload
 app.use(fileUpload({
@@ -75,6 +75,16 @@ app.post('/upload', async (req, res) => {
   } catch (err) {
     res.status(500).send(err);
   }
+}).get('/back/view', (req, res) => {
+  console.log(`page is ${req.query.p}, size is ${req.query.size}`);
+  res.send({
+    status: true,
+    data: [{
+      url: 'http://localhost:8080/images/293debfb-562a-42ab-b03b-dcfea528b01e.jpg'
+    }, {
+      url: 'http://localhost:8080/images/3a760893-eb18-4064-a134-66374a4ab920.webp'
+    }]
+  })
 });
 
 app.listen(port, () =>

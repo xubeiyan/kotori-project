@@ -1,0 +1,30 @@
+.nsfw-mark {
+  display: flex;
+  font-size: .75em;
+  align-items: center;
+}
+
+.nsfw-mark input[type='checkbox'] {
+  appearance: none;
+  margin: 0;
+  color: var(--first-color);
+  background-color: var(--second-color);
+  width: 1.5em;
+  height: 1.5em;
+  border: 1px solid var(--first-color);
+  display: grid;
+  place-content: center;
+}
+
+.nsfw-mark input[type='checkbox']::before {
+  content: "";
+  width: 1em;
+  height: 1em;
+  transform: scale(0);
+  transition: 120ms transform ease-in-out;
+  box-shadow: inset 1em 1em var(--third-color);
+}
+
+.nsfw-mark input[type='checkbox']:checked::before {
+  transform: scale(1);
+}
