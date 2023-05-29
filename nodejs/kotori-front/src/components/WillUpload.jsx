@@ -3,7 +3,7 @@ import DeleteButton from './DeleteButton';
 import NotSafeMark from './NotSafeMark';
 
 // 会上传的部分
-const WillUpload = ({ d, markNotSafe, showPreview, removeFile, uploadStatus}) => {
+const WillUpload = ({ d, markNotSafe, showPreview, removeFile, uploadStatus, failedText}) => {
   const hidden = uploadStatus == 'uploading' || uploadStatus == 'finish';
   return (
     <li className="upload-list-item">
@@ -11,7 +11,7 @@ const WillUpload = ({ d, markNotSafe, showPreview, removeFile, uploadStatus}) =>
         onClick={() => showPreview(d.image)} />
       <span className='right-align'>
         <NotSafeMark id={d.id} markNotSafe={markNotSafe}/>
-        <ProgressPie type={d.uploadStatus} progress={d.progress} />
+        <ProgressPie type={d.uploadStatus} progress={d.progress} failedText={failedText}/>
         <DeleteButton hidden={hidden} click={() => removeFile(d.id)} />
       </span>
     </li>

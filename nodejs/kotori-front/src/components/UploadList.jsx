@@ -15,9 +15,11 @@ const UploadList = ({ data, markNotSafe, removeFile, setPreview, uploadStatus })
   if (data.length == 0) return ('');
 
   const listItem = data.map((d, index) => {
-    return d.error ? 
-      <WillNotUpload key={index} d={d} removeFile={removeFile}/> : 
-      <WillUpload key={index} d={d} showPreview={showPreview} uploadStatus={uploadStatus} markNotSafe={markNotSafe} removeFile={removeFile} />
+    return d.error ?
+      <WillNotUpload key={index} d={d} removeFile={removeFile} /> :
+      <WillUpload key={index} d={d} showPreview={showPreview}
+        uploadStatus={uploadStatus} failedText={d.failedText} markNotSafe={markNotSafe}
+        removeFile={removeFile} />
   });
 
   return (

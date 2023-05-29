@@ -4,14 +4,23 @@
   align-items: center;
 }
 
+.color-light .nsfw-mark input[type='checkbox'] {
+  color: var(--first-color);
+  background-color: var(--second-color);
+  border: 1px solid var(--first-color);
+}
+
+.color-dark .nsfw-mark input[type='checkbox'] {
+  color: var(--first-color-d);
+  background-color: var(--second-color-d);
+  border: 1px solid var(--third-color-d);
+}
+
 .nsfw-mark input[type='checkbox'] {
   appearance: none;
   margin: 0;
-  color: var(--first-color);
-  background-color: var(--second-color);
   width: 1.5em;
   height: 1.5em;
-  border: 1px solid var(--first-color);
   display: grid;
   place-content: center;
 }

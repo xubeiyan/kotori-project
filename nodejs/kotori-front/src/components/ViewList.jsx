@@ -2,20 +2,23 @@ import axios from "axios";
 import { useEffect } from "react";
 import { useState } from "react"
 
-import { backendURI } from "../uploadConfig";
 import './ViewList.css';
+import LoadMore from "./LoadMore";
 
 const ViewList = () => {
+  // 图片加载状态
   let [status, setStatus] = useState('loaded');
+  // 图片列表
   let [list, setList] = useState([]);
+  // 分页
   let [page, setPage] = useState({
     p: 1,
     size: 20
   });
 
-  useEffect(()=> {
-    setStatus('loading');
-    axios.get(`${backendURI}/view`, {
+  // 根据pageSize和pageNum获取下一页
+  const getImages = () => {
+    axios.get(`/api/view`, {
       params: {
         p: page.p,
         size: page.size
@@ -26,22 +29,41 @@ const ViewList = () => {
     }).then(res => {
       if (res.status == 200 && res.data.status) {
         setStatus('loaded');
-        setList(res.data.data);
+        setList(list => ([...res.data.data]));
+        setPage(page => ({
+          ...page,
+          p: page.p + 1,
+        }))
       }
     }).catch(err => console.error(err))
-  }, [page])
-  
+  }
 
-  let listItem = list.map((value, index) => 
-    <li key={index}><img className="thumb" src={value.url} /></li>
+  // 加载更多
+  const handleLoadMore = () => {
+
+  }
+
+  useEffect(() => {
+    setStatus('loading');
+    getImages();
+  }, [])
+
+
+  let listItem = list.map((item, index) =>
+    <li className="image-item" key={index}>
+      <img className="thumb" src={`images/${item.url}`} />
+    </li>
   )
 
-  return (status == 'loading' ? 
+  return (status == 'loading' ?
     <span>加载中...</span> :
-    <ul>
-      {listItem}
-    </ul>
-    )
+    <div className="image-list-container">
+      <ul className="image-list">
+        {listItem}
+      </ul>
+      <LoadMore click={handleLoadMore} />
+    </div>
+  )
 }
 
 export default ViewList

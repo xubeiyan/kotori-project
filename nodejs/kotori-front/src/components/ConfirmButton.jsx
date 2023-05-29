@@ -6,7 +6,7 @@ const ConfirmButton = ({ confirm, status, uploadFileCount, completeCount }) => {
     'button-container hide' : 'button-container';
 
   let uploadText = status == 'uploading' ? <span>上传中...</span> :
-    status == 'finish' ? <span>共<span className='upload-file-count'>{completeCount}</span>张图片上传成功</span> :
+    status == 'finish' ? <span>共<span className='upload-file-count'>{completeCount}</span>张图片上传成功, 点击清除</span> :
     <span>上传这<span className="upload-file-count">{uploadFileCount}</span>张图片</span>;
 
   return (

@@ -1,3 +1,29 @@
 .thumb {
-  width: 200px;
+  height: 200px;
+}
+
+.image-list-container {
+  padding: 1em;
+  border-radius: 1em;
+  background: rgb(221, 215, 207);
+  background: linear-gradient(90deg, rgba(221, 215, 207, 1) 0%, rgba(222, 207, 172, 1) 35%, rgba(246, 229, 204, 1) 100%);
+}
+
+.image-list {
+  display: flex;
+  max-width: 1200px;
+  flex-wrap: wrap;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  gap: 1em;
+
+}
+
+.image-list>.image-item {
+  position: relative;
+}
+
+.image-item>img {
+  display: block;
 }
