@@ -1,10 +1,12 @@
 import { useState } from 'react';
-import Preview from './Preview';
+import axios from 'axios';
+
+import PreviewDialog from './PreviewDialog';
 import ConfirmButton from './ConfirmButton';
 import UploadList from './UploadList';
+
 import './UploadPart.css';
-import axios from 'axios';
-import { uploadURI } from '../uploadConfig';
+import { useRef } from 'react';
 
 // 允许的文件类型
 const acceptedFileType = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
@@ -14,6 +16,9 @@ const IMAGE_MAX_NUM = 10;
 const PER_IMAGE_MAX_SIZE = 2 * 1024 * 1024;
 
 const UploadPart = () => {
+  // 上传文件框ref
+  const fileInput = useRef(null);
+
   // 当前状态，默认为 blank, add, uploading, finish
   let [status, setStatus] = useState('blank');
 
@@ -31,8 +36,7 @@ const UploadPart = () => {
 
   // 点击上传按钮
   const openUploadDialog = () => {
-    const inputForm = document.querySelector('input.file');
-    inputForm.click();
+    fileInput.current.click();
   }
 
   // 拖放文件（支持多个）
@@ -125,14 +129,21 @@ const UploadPart = () => {
   }
 
   // 根据返回结果确定上传成功或失败
-  const modifySingleFileUpload = ({index, success}) => {
+  const modifySingleFileUpload = ({index, status}) => {
     let certain = resultData[index];
     // certain.progress = progress;
-    if (success) {
+    if (status == 'SUCCESS') {
       certain.uploadStatus = 'uploaded';
       setSuccessCount(successCount => successCount + 1);
-    } else {
+    } else if (status == 'NO_FILE_ERROR') {
       certain.uploadStatus = 'failed';
+      certain.failedText = '未接收到上传文件';
+    } else if (status == 'NOT_SUPPORT_FILE_TYPE') {
+      certain.uploadStatus = 'failed';
+      certain.failedText = '不支持的文件类型';
+    } else if (status == 'MAX_SIZE_EXCEED') {
+      certain.uploadStatus = 'failed';
+      certain.failedText = '超过了文件大小限制';
     }
 
     let prev = resultData.slice(0, index);
@@ -167,8 +178,10 @@ const UploadPart = () => {
     resultData.forEach((data, index) => {
       if (data.error) return;
 
-      axios.post(uploadURI, {
-        image: data.imageObj
+      axios.post('/api/upload', {
+        image: data.imageObj,
+        uploader: 0,
+        nsfw: data.nsfw ? 'nsfw' : 'safe',
       },{
         headers: {
           "Content-Type": "multipart/form-data",
@@ -180,7 +193,7 @@ const UploadPart = () => {
         },
       }).then(res => {
         if (res.status == 200)  {
-          modifySingleFileUpload({index, success: res.data.status});
+          modifySingleFileUpload({index, status: res.data.status});
           
           setStatus('finish');
         }
@@ -197,8 +210,10 @@ const UploadPart = () => {
   } 
 
   // 切换nsfw标记
-  const markNotSafe = () => {
-    
+  const markNotSafe = (id) => {
+    let changed = resultData;
+    changed[id].nsfw = true;
+    setResultData(changed);
   }
 
 
@@ -211,14 +226,14 @@ const UploadPart = () => {
         onDragOver={preventDefault}
       >
         点击这里选择文件或者是把文件拖放到这里
-        <input type="file" className='file hide' multiple="multiple" onChange={fileSelect} />
+        <input type="file" className='file hide' multiple="multiple" ref={fileInput} onChange={fileSelect} />
       </div>
       <UploadList 
         data={resultData} removeFile={removeFile} 
         setPreview={setPreview} uploadStatus={status} 
         markNotSafe={markNotSafe}
         />
-      <Preview status={preview.status} setPreview={setPreview} imgSrc={preview.src} />
+      <PreviewDialog status={preview.status} setPreview={setPreview} imgSrc={preview.src} />
       <ConfirmButton confirm={confirmUpload} status={status} uploadFileCount={toUploadCount()} completeCount={successCount}/>
     </div>
   )

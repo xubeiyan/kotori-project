@@ -3,4 +3,20 @@ const generateRandomFileName = () => {
   return uuidv4();
 }
 
-module.exports = { generateRandomFileName }
+// 格式化日期
+const getFormatDate = (date, format) => {
+  const map = {
+    mm: date.getMonth() + 1,
+    dd: date.getDate(),
+    yy: date.getFullYear().toString().slice(-2),
+    yyyy: date.getFullYear(),
+    HH: date.getHours(),
+    hh: date.getHours() > 12 ? date.getHours() - 12 : date.getHours(),
+    ii: date.getMinutes() > 10 ? date.getMinutes() : `0${date.getMinutes()}`,
+    ss: date.getSeconds() > 10 ? date.getSeconds() : `0${date.getSeconds()}`,
+  }
+
+  return format.replace(/yyyy|yy|mm|dd|HH|hh|ii|ss/gi, matched => map[matched]);
+}
+
+module.exports = { generateRandomFileName, getFormatDate }
