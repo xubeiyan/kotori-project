@@ -1,0 +1,14 @@
+.load-more {
+  margin-top: 1em;
+  display: flex;
+  justify-content: center;
+}
+
+.color-light .load-more > button {
+  background: var(--second-color);
+}
+
+.color-dark .load-more > button {
+  color: white;
+  background: var(--first-color-d);
+}

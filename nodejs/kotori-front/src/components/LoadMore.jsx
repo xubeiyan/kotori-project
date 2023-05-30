@@ -1,8 +1,8 @@
-import React from 'react'
+import './LoadMore.css';
 
 function LoadMore() {
   return (
-    <div style={{ marginTop: `1em`}}>
+    <div className='load-more'>
       <button>加载更多</button>
     </div>
   )
