@@ -1,5 +1,7 @@
 .thumb {
   height: 200px;
+  max-width: 300px;
+  object-fit: cover;
 }
 
 .image-list-container {
@@ -49,13 +51,23 @@
   display: flex;
   align-items: center;
   opacity: 0;
+}
+
+.color-light .likes {
   background: rgba(255, 255, 255, 0.5);
   box-shadow: 0 0 .5em .5em rgba(255, 255, 255, 0.5);
 }
 
+.color-dark .likes {
+  background: rgba(8, 8, 8, 0.5);
+  box-shadow: 0 0 .5em .5em rgba(8, 8, 8, 0.5);
+}
+
+
 .likes>.heart {
   width: 1.5em;
   height: 1.5em;
+  padding-right: .25em;
   cursor: pointer;
 }
 
