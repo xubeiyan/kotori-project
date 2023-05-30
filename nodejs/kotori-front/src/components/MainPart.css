@@ -1,5 +1,6 @@
 .main-part {
   min-height: calc(100vh - 4em);
+  padding-bottom: 1.5em;
 }
 
 .main-part.color-light {

@@ -4,6 +4,7 @@ import { useState } from "react"
 
 import './ViewList.css';
 import LoadMore from "./LoadMore";
+import HeartSvg from "../assets/Heart.jsx";
 
 const ViewList = () => {
   // 图片加载状态
@@ -52,6 +53,14 @@ const ViewList = () => {
   let listItem = list.map((item, index) =>
     <li className="image-item" key={index}>
       <img className="thumb" src={`images/${item.url}`} />
+      <div className="cover">
+        <div className="likes">
+          <div className="heart">
+            <HeartSvg />
+          </div>
+          <span className="likes-num">{item.likes}</span>
+        </div>
+      </div>
     </li>
   )
 

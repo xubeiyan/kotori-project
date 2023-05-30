@@ -105,6 +105,7 @@ router.get('/view', (req, res) => {
     url: `${image.filename}${extMap[image.filetype]}`,
     upload_time: image.upload_time,
     uploader_id: image.uploader_id,
+    likes: image.likes,
   }))
 
   res.send({

@@ -27,3 +27,34 @@
 .image-item>img {
   display: block;
 }
+
+.cover {
+  position: absolute;
+  inset: 0;
+}
+
+/* 赞 */
+.likes {
+  position: absolute;
+  left: .5em;
+  bottom: .5em;
+  display: flex;
+  align-items: center;
+  opacity: 0;
+  background: rgba(255, 255, 255, 0.5);
+  box-shadow: 0 0 .5em .5em rgba(255, 255, 255, 0.5);
+}
+
+.likes > .heart {
+  width: 1.5em;
+  height: 1.5em;
+  cursor: pointer;
+}
+
+.cover:hover .likes {
+  opacity: 1;
+}
+
+.likes > .likes-num {
+  
+}
