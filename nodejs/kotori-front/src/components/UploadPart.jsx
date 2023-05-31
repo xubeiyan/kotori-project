@@ -7,6 +7,7 @@ import UploadList from './UploadList';
 
 import './UploadPart.css';
 import { useRef } from 'react';
+import UploadNoteDialog from './UploadNoteDialog';
 
 // 允许的文件类型
 const acceptedFileType = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
@@ -116,7 +117,7 @@ const UploadPart = () => {
   }
 
   // 修改单个文件的上传和状态
-  const modifySingleFileStatus = ({index, progress}) => {
+  const modifySingleFileStatus = ({ index, progress }) => {
     let certain = resultData[index];
     certain.progress = progress;
     if (progress > 0) certain.uploadStatus = 'uploading';
@@ -129,7 +130,7 @@ const UploadPart = () => {
   }
 
   // 根据返回结果确定上传成功或失败
-  const modifySingleFileUpload = ({index, uploadURL, status}) => {
+  const modifySingleFileUpload = ({ index, uploadURL, status }) => {
     let certain = resultData[index];
     // certain.progress = progress;
     if (status == 'SUCCESS') {
@@ -165,15 +166,15 @@ const UploadPart = () => {
 
     let noErrorData = resultData.filter(value => value.error == false);
     // console.log(noErrorData)
-    let toUploadData = noErrorData.map(({imageObj, size}) => ({
+    let toUploadData = noErrorData.map(({ imageObj, size }) => ({
       imageObj, size,
       uploadedSize: 0
     }));
-    
+
     let toUploadLength = toUploadData.length;
     // 没有上传文件则不上传
     if (toUploadLength == 0) return;
-    
+
     setStatus('uploading');
 
     resultData.forEach((data, index) => {
@@ -183,28 +184,28 @@ const UploadPart = () => {
         image: data.imageObj,
         uploader: 0,
         nsfw: data.nsfw ? 'nsfw' : 'safe',
-      },{
+      }, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
         onUploadProgress: (e) => {
           const progress = e.loaded / e.total;
-          modifySingleFileStatus({index, progress});
-          
+          modifySingleFileStatus({ index, progress });
+
         },
       }).then(res => {
-        if (res.status == 200)  {
+        if (res.status == 200) {
           modifySingleFileUpload({
-            index, 
-            uploadURL: res.data.data?.saveName, 
+            index,
+            uploadURL: res.data.data?.saveName,
             status: res.data.status
           });
-          
+
           setStatus('finish');
         }
       });
     });
-    
+
     // console.log(toUploadData);
   }
 
@@ -212,7 +213,7 @@ const UploadPart = () => {
   const toUploadCount = () => {
     let filtedData = resultData.filter(value => value.error == false);
     return filtedData.length;
-  } 
+  }
 
   // 切换nsfw标记
   const markNotSafe = (id) => {
@@ -221,6 +222,26 @@ const UploadPart = () => {
     setResultData(changed);
   }
 
+  // 上传注意事项对话框
+  const [noteDialog, setNoteDialog] = useState({
+    open: false
+  });
+
+  // 打开注意事项
+  const openUploadNoteDialog = () => {
+    setNoteDialog(noteDialog => ({
+      ...noteDialog,
+      open: true,
+    }))
+  }
+
+  // 关闭注意事项
+  const closeUploadNoteDialog = () => {
+    setNoteDialog(noteDialog => ({
+      ...noteDialog,
+      open: false,
+    }))
+  }
 
   return (
     <div className='upload-part'>
@@ -233,13 +254,14 @@ const UploadPart = () => {
         点击这里选择文件或者是把文件拖放到这里
         <input type="file" className='file hide' multiple="multiple" ref={fileInput} onChange={fileSelect} />
       </div>
-      <UploadList 
-        data={resultData} removeFile={removeFile} 
-        setPreview={setPreview} uploadStatus={status} 
-        markNotSafe={markNotSafe}
-        />
+      <UploadList
+        data={resultData} removeFile={removeFile}
+        setPreview={setPreview} uploadStatus={status}
+        markNotSafe={markNotSafe} openNoteDialog={openUploadNoteDialog}
+      />
       <PreviewDialog status={preview.status} setPreview={setPreview} imgSrc={preview.src} />
-      <ConfirmButton confirm={confirmUpload} status={status} uploadFileCount={toUploadCount()} completeCount={successCount}/>
+      <ConfirmButton confirm={confirmUpload} status={status} uploadFileCount={toUploadCount()} completeCount={successCount} />
+      <UploadNoteDialog dialog={noteDialog} closeDialog={closeUploadNoteDialog} />
     </div>
   )
 }
