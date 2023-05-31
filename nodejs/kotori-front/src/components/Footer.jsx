@@ -13,7 +13,7 @@ function Footer() {
   return (
     <div className={footerColor}>
       <div className='container space-between'>
-        <span>© 2021~2022 - <a href='https://github.com/xubeiyan/kotori-project/tree/master/nodejs'>Kotori Project</a></span>
+        <span>© 2017~2023 - <a href='https://github.com/xubeiyan/kotori-project/tree/master/nodejs'>Kotori Project</a></span>
         <ColorSwitch />
       </div>
     </div>
