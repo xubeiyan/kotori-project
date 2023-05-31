@@ -21,9 +21,12 @@ const ViewList = () => {
   const [dialog, setDialog] = useState({
     open: false,
   });
+  // 加载更多text
+  const [loadMoreText, setLoadMoreText] = useState('加载更多');
 
   // 根据pageSize和pageNum获取下一页
-  const getImages = ({ pageNum, pageSize}) => {
+  const getImages = ({ pageNum, pageSize }) => {
+    setLoadMoreText('加载中...');
     axios.get(`/api/view`, {
       params: {
         p: pageNum,
@@ -35,18 +38,47 @@ const ViewList = () => {
     }).then(res => {
       if (res.status == 200 && res.data.status) {
         setStatus('loaded');
-        setList(res.data.data);
+        updateImageList(res.data.data);
       }
     }).catch(err => console.error(err))
   }
 
+  // 更新图片列表
+  const updateImageList = (toInsertImageList) => {
+    // toInsertImageList是空则修改加载更多为’没有更多‘
+    if (toInsertImageList.length == 0) {
+      setLoadMoreText('没有更多');
+      return;
+    }
+
+    // list为空则直接更新
+    if (list.length == 0) {
+      setLoadMoreText('加载更多');
+      setList(toInsertImageList);
+      return;
+    }
+
+    let lastImage = list.slice(-1);
+    let otherLastImage = toInsertImageList.slice(-1);
+    if (otherLastImage.url !== lastImage.url) {
+      setLoadMoreText('加载更多');
+      return;
+    }
+
+    setList(list => ([
+      ...list,
+      ...toInsertImageList,
+    ]));
+    setLoadMoreText('加载更多');
+  }
+
   // 加载更多
   const handleLoadMore = () => {
-    getImages({pageNum: 2, pageSize: 20});
+    getImages({ pageNum: page.p + 1, pageSize: 20 });
   }
 
   // 打开图片详情对话框
-  const showImageDetailDialog = ({ url, likes, time, id}) => {
+  const showImageDetailDialog = ({ url, likes, time, id }) => {
     setDialog(dialog => ({
       ...dialog,
       open: true,
@@ -71,7 +103,7 @@ const ViewList = () => {
 
   useEffect(() => {
     setStatus('loading');
-    getImages({pageNum: page.p, pageSize: page.size});
+    getImages({ pageNum: page.p, pageSize: page.size });
   }, [])
 
 
@@ -100,7 +132,7 @@ const ViewList = () => {
       <ul className="image-list">
         {listItem}
       </ul>
-      <LoadMore click={handleLoadMore} />
+      <LoadMore click={handleLoadMore} text={loadMoreText}/>
       <ViewDialog dialog={dialog} closeDialog={closeImageDetailDialog} />
     </div>
   )

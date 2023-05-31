@@ -92,7 +92,21 @@ router.post('/upload', async (req, res) => {
 
 // 列出文件
 router.get('/view', (req, res) => {
-  const result = queryImages({ pageNum: req.query.p, pageSize: req.query.size });
+  let pageNum = 1;
+
+  let parsePageNum = parseInt(req.query.p);
+  if (typeof parsePageNum == 'number' && parsePageNum > 0) {
+    pageNum = parsePageNum;
+  }
+
+  let pageSize = 20;
+  let parsePageSize = parseInt(req.query.size);
+
+  if (typeof parsePageSize == 'number' && parsePageSize > 0 & parsePageSize <= 20) {
+    pageSize = parsePageSize;
+  }
+
+  const result = queryImages({ pageNum, pageSize });
 
   const extMap = {
     'image/png': '.png',
@@ -115,6 +129,11 @@ router.get('/view', (req, res) => {
     },
     data,
   })
+});
+
+// 为文件加一个赞
+router.post('/addLike', (req, res) => {
+
 });
 
 

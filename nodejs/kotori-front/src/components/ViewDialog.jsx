@@ -1,4 +1,4 @@
-import Close from '../assets/Close';
+import CloseButton from './CloseButton';
 import './ViewDialog.css';
 
 function ViewDialog({ dialog, closeDialog }) {
@@ -35,9 +35,7 @@ function ViewDialog({ dialog, closeDialog }) {
               <span>由 ID 为 {dialog.uploader_id} 的用户上传于 {dialog.upload_time}</span>
               <button className='download-button' onClick={downloadImage}>下载图片</button>
             </div>
-            <div className='close-button'>
-              <Close />
-            </div>
+            <CloseButton click={closeDialog}/>
           </div>
         </div>
         : null}

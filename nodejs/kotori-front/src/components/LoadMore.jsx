@@ -1,9 +1,9 @@
 import './LoadMore.css';
 
-function LoadMore({ click }) {
+function LoadMore({ click, text }) {
   return (
     <div className='load-more'>
-      <button onClick={click}>加载更多</button>
+      <button onClick={click} disabled={text !== '加载更多'}>{text}</button>
     </div>
   )
 }

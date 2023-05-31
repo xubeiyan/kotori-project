@@ -1,3 +1,4 @@
+import CloseButton from './CloseButton';
 import './PreviewDialog.css';
 
 function PreviewDialog({ imgSrc, status, setPreview }) {
@@ -6,7 +7,7 @@ function PreviewDialog({ imgSrc, status, setPreview }) {
       className={status == 'hide' ? 'preview-background hide' : 'preview-background'}
       onClick={() => setPreview(preview => {return {...preview, status: 'hide'}})}> 
       <img src={imgSrc} alt="" />
-      <div className='close-preview-button'>&#215;</div>
+      <CloseButton />
     </div>
   )
 }
