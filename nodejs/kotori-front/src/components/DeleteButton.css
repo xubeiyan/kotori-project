@@ -8,11 +8,6 @@
   text-align: center;
 }
 
-.delete-button.hidden {
-  opacity: 0;
-  cursor: not-allowed;
-}
-
 .color-light .delete-button {
   background: var(--second-color);
   color: var(--fourth-color)

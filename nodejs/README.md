@@ -4,16 +4,8 @@
 
 `kotori-front`是使用React框架结合[`vite`项目](https://vitejs.dev/)写的前端
 
-## 使用方式
+# Kotori Project
 
-* 进入kotori-project目录（假设当前目录即为本文件所在目录）
+使用`Express`框架编写的后端和使用`React`框架编写的前端
 
-  `cd kotori-project`
-
-* 使用`pnpm`安装环境
-
-  `pnpm i`
-
-* 启动项目（开发）
-
-  `pnpm run dev`
+详细请参考`kotori-back`和`kotori-front`中的`README.md`

@@ -1,0 +1,69 @@
+.copy-url-button {
+  width: 2em;
+  height: 2em;
+  padding: .25em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  position: relative;
+}
+
+
+
+.color-light .copy-url-button {
+  background-color: var(--second-color);
+}
+
+.color-light .copy-url-button path {
+  fill: var(--third-color);
+}
+
+.color-dark .copy-url-button {
+  background-color: var(--first-color-d);
+}
+
+.color-dark .copy-url-button path {
+  fill: var(--third-color-d);
+}
+
+.copy-url-button:hover::before {
+  width: 5em;
+  padding: .25em;
+  position: absolute;
+  bottom: calc(100% + .7em);
+  content: '复制URL';
+  border-radius: .5em;
+}
+
+.copy-url-button:hover::after {
+  position: absolute;
+  bottom: calc(100% + .2em);
+  width: 0;
+  height: 0;
+  border-left: .5em solid transparent;
+  border-right: .5em solid transparent;
+  background: transparent;
+  content: '';
+}
+
+.copy-url-button.copied:hover::before {
+  content: '已复制';
+}
+
+.color-light .copy-url-button:hover::before {
+  background: var(--second-color);
+}
+
+.color-light .copy-url-button:hover::after {
+  border-top: .5em solid var(--second-color);
+}
+
+.color-dark .copy-url-button:hover::before {
+  background: var(--first-color-d);
+  color: white;
+}
+
+.color-dark .copy-url-button:hover::after {
+  border-top: .5em solid var(--first-color-d);
+}

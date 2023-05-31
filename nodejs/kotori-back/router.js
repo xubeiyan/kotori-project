@@ -81,7 +81,7 @@ router.post('/upload', async (req, res) => {
       status: 'SUCCESS',
       message: 'File is uploaded',
       data: {
-        saveName: filename
+        saveName: `${filename}.${ext}`,
       }
     });
 

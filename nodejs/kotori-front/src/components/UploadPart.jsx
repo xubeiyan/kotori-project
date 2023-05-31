@@ -129,11 +129,12 @@ const UploadPart = () => {
   }
 
   // 根据返回结果确定上传成功或失败
-  const modifySingleFileUpload = ({index, status}) => {
+  const modifySingleFileUpload = ({index, uploadURL, status}) => {
     let certain = resultData[index];
     // certain.progress = progress;
     if (status == 'SUCCESS') {
       certain.uploadStatus = 'uploaded';
+      certain.uploadURL = uploadURL;
       setSuccessCount(successCount => successCount + 1);
     } else if (status == 'NO_FILE_ERROR') {
       certain.uploadStatus = 'failed';
@@ -193,7 +194,11 @@ const UploadPart = () => {
         },
       }).then(res => {
         if (res.status == 200)  {
-          modifySingleFileUpload({index, status: res.data.status});
+          modifySingleFileUpload({
+            index, 
+            uploadURL: res.data.data?.saveName, 
+            status: res.data.status
+          });
           
           setStatus('finish');
         }
