@@ -75,6 +75,10 @@ const ViewList = () => {
   // 加载更多
   const handleLoadMore = () => {
     getImages({ pageNum: page.p + 1, pageSize: 20 });
+    setPage(page => ({
+      ...page,
+      p: page.p + 1,
+    }));
   }
 
   // 打开图片详情对话框
