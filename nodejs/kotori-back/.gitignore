@@ -5,3 +5,6 @@ uploads/*
 
 # 数据库
 db/kotori.db
+
+# 环境文件
+.env

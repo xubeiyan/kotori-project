@@ -1,16 +1,22 @@
 const Database = require("better-sqlite3");
-const filepath = './db/kotori.db';
+const { log } = require('./utils');
+// .env file
+require('dotenv').config();
+
+const filepath = process.env.DATABASE_PATH || './db/kotori.db';
 
 const scriptName = 'db.js';
+
 
 const createDbConnection = () => {
   const option = {
     fileMustExist: true,
-    verbose: console.log,
+    // 生产模式不输出SQL语句
+    verbose: process.env.PRODUCTION ? null : console.log,
   }
   const db = new Database(filepath, option);
 
-  console.log(`[${scriptName}] connection with sqlite has been established`);
+  log(`[${scriptName}] connection with sqlite has been established`);
 
   return db;
 }

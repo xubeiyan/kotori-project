@@ -1,13 +1,13 @@
 const express = require('express');
 const router = express.Router();
-const { generateRandomFileName, getFormatDate } = require('./utils')
+const { generateRandomFileName, getFormatDate, log } = require('./utils')
 
 const { addImage, queryImages } = require('./database');
 const { FILE_SIZE_LIMIT } = require('./config');
 
 // 输出一个时间
 router.use((req, res, next) => {
-  console.log('Time: ', getFormatDate(new Date(), 'yyyy/mm/dd HH:ii:ss'));
+  log('Time: ', getFormatDate(new Date(), 'yyyy/mm/dd HH:ii:ss'));
   next();
 });
 

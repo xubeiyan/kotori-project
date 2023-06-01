@@ -5,8 +5,11 @@ const bodyParser = require('body-parser');
 const morgan = require('morgan');
 const _ = require('lodash');
 const path = require('path');
+
 const router = require('./router');
 
+// .env file
+require('dotenv').config();
 
 const app = express();
 
@@ -26,7 +29,9 @@ app.use(fileUpload({
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(morgan('dev'));
+
+const morgan_log_type = process.env.PRODUCTION ? 'combined' : 'dev';
+app.use(morgan(morgan_log_type));
 
 // api路由处理api
 app.use('/api', router);

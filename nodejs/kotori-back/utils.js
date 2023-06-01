@@ -19,4 +19,16 @@ const getFormatDate = (date, format) => {
   return format.replace(/yyyy|yy|mm|dd|HH|hh|ii|ss/gi, matched => map[matched]);
 }
 
-module.exports = { generateRandomFileName, getFormatDate }
+
+// .env file
+require('dotenv').config();
+// 输出日志
+const log = (text) => {
+  if (process.env.PRODUCTION) {
+    return;
+  }
+
+  console.log(text);
+}
+
+module.exports = { generateRandomFileName, getFormatDate, log }
