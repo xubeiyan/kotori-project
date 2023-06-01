@@ -5,6 +5,8 @@ CREATE TABLE "images" (
 	"filesize"	INTEGER NOT NULL,
 	"upload_time"	TEXT NOT NULL,
 	"uploader_id"	INTEGER NOT NULL,
+	"mark"	TEXT NOT NULL DEFAULT 'safe',
+	"likes"	INTEGER NOT NULL DEFAULT 0,
 	PRIMARY KEY("id" AUTOINCREMENT)
 );
 
