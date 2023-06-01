@@ -11,10 +11,36 @@
 
   `cd kotori-back`
 
-* 使用`pnpm`安装环境
+* 使用`pnpm`安装所需包
+
+  `pnpm i --production`
+
+* 生成数据库（拥有可省略）
+
+  `node db/create_db.js kotori_project.db`
+
+* 配置生产环境变量文件`.env`
+  
+  `cp .env.example .env`
+
+  修改其中项目，根据数据库和图片文件存放路径修改`DATABASE_PATH`和`IMAGE_APTH`的值
+
+* 启动项目（生产环境）
+
+  `pnpm run serve`
+
+  建议使用例如`pm2`, `forever`这类型进程管理器来启动
+
+## 贡献代码
+
+* 使用`pnpm`安装所需包
 
   `pnpm i`
 
-* 启动项目（开发）
+* 生成数据库（拥有可省略）
+
+  `node db/create_db.js kotori_project.db`
+
+* 启动开发环境
 
   `pnpm run dev`

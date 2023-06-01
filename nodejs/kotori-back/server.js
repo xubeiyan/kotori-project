@@ -13,8 +13,9 @@ require('dotenv').config();
 
 const app = express();
 
-// 静态文件
-app.use('/images', express.static(path.join(__dirname, 'uploads')));
+// 图片文件
+const imagePath = process.env.IMAGE_PATH || 'uploads';
+app.use('/images', express.static(path.join(__dirname, imagePath)));
 
 // enable files upload
 app.use(fileUpload({
