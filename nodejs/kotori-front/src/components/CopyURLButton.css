@@ -9,8 +9,6 @@
   position: relative;
 }
 
-
-
 .color-light .copy-url-button {
   background-color: var(--second-color);
 }
@@ -51,6 +49,11 @@
   content: '已复制';
 }
 
+.copy-url-button.failed:hover::before {
+  color: red;
+  content: '复制失败';
+}
+
 .color-light .copy-url-button:hover::before {
   background: var(--second-color);
 }
@@ -61,6 +64,9 @@
 
 .color-dark .copy-url-button:hover::before {
   background: var(--first-color-d);
+}
+
+.color-dark .copy-url-button::before {
   color: white;
 }
 
