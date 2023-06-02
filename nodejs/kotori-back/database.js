@@ -40,7 +40,7 @@ const queryImages = ({ pageNum, pageSize }) => {
 
   stmt = db.prepare(`SELECT 
     filename, filetype, upload_time, uploader_id, likes
-    FROM 'images' WHERE mark = 'safe' 
+    FROM 'images' WHERE mark = 'safe' ORDER BY upload_time DESC
     LIMIT   ? OFFSET                 ? `).bind([
     pageSize, (pageNum - 1) * pageSize
   ]);
