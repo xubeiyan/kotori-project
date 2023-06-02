@@ -2,7 +2,7 @@
   width: 100%;
   display: flex;
   justify-content: center;
-  margin-bottom: 2.5em;
+  margin: 2em 0;
 }
 
 .button-container.hide {
@@ -10,9 +10,9 @@
 }
 
 .button-container > .confirm-button {
-  width: 50%;
+  width: 15em;
+  max-width: 90%;
   transition: outline 500ms ease-in-out;
-  height: 3em;
 }
 
 .confirm-button:disabled {

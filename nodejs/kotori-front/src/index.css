@@ -26,8 +26,8 @@
   --fourth-color-d: #ffecef;
   --dark-color: #453b57;
 
-  --main-width: 1200px;
-  --secondary-width: 1000px;
+  --main-width: 70em;
+  --secondary-width: 35em;
 }
 
 #root {

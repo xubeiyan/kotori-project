@@ -1,5 +1,6 @@
 .dialog-small {
-  width: 50%;
+  width: 40em;
+  max-width: 90%;
   max-height: 80em;
   padding: 1em;
   border-radius: 1em;

@@ -1,12 +1,17 @@
+.upload-part {
+  width: 96%;
+  max-width: var(--main-width);
+}
+
 .upload-button {
-  height: 35em;
-  width: var(--secondary-width);
+  height: 30em;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: large;
   border-radius: 3em;
   transition: height 500ms ease-in-out;
+  padding: 1em;
 }
 
 .upload-button:hover {
