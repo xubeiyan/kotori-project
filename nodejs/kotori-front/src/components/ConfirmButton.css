@@ -10,7 +10,7 @@
 }
 
 .button-container > .confirm-button {
-  width: 15em;
+  width: 18em;
   max-width: 90%;
   transition: outline 500ms ease-in-out;
 }

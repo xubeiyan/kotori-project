@@ -6,17 +6,26 @@ const generateRandomFileName = () => {
 // 格式化日期
 const getFormatDate = (date, format) => {
   const map = {
-    mm: date.getMonth() + 1,
-    dd: date.getDate(),
-    yy: date.getFullYear().toString().slice(-2),
-    yyyy: date.getFullYear(),
-    HH: date.getHours(),
-    hh: date.getHours() > 12 ? date.getHours() - 12 : date.getHours(),
-    ii: date.getMinutes() > 10 ? date.getMinutes() : `0${date.getMinutes()}`,
-    ss: date.getSeconds() > 10 ? date.getSeconds() : `0${date.getSeconds()}`,
+    mm: () => date.getMonth() + 1,
+    dd: () => date.getDate(),
+    yy: () => date.getFullYear().toString().slice(-2),
+    yyyy: () => date.getFullYear(),
+    HH: () => date.getHours(),
+    hh: () => { 
+      const hour = date.getHours();
+      return hour > 12 ? `${hour - 12}` : `${hour}`; 
+    },
+    ii: () => {
+      const min = date.getMinutes();
+      return min >= 10 ? `${min}` : `0${min}`
+    },
+    ss: () => {
+      const sec = date.getSeconds();
+      return sec >= 10 ? `${sec}` : `0${sec}`
+    },
   }
 
-  return format.replace(/yyyy|yy|mm|dd|HH|hh|ii|ss/gi, matched => map[matched]);
+  return format.replace(/yyyy|yy|mm|dd|HH|hh|ii|ss/gi, matched => map[matched]());
 }
 
 

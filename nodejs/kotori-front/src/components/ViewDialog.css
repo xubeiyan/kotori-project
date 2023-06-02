@@ -34,11 +34,15 @@
 }
 
 .status-bar {
-  height: 3em;
   display: flex;
   gap: 1em;
   align-items: center;
   justify-content: center;
+}
+
+.download-button {
+  min-width: 6em;
+  padding: .5em;
 }
 
 .color-light .download-button {
