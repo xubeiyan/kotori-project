@@ -14,6 +14,10 @@ export default defineConfig({
       '/images': {
         target: 'http://localhost:9000',
         changeOrigin: true,
+      },
+      '/thumbs': {
+        target: 'http://localhost:9000',
+        changeOrigin: true,
       }
 
     }

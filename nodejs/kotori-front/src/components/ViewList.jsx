@@ -112,8 +112,9 @@ const ViewList = () => {
 
 
   let listItem = list.map((item, index) =>
-    <li className="image-item" key={index}>
-      <img className="thumb" src={`images/${item.url}`} />
+    <li className="image-item" key={index} style={{ backgroundImage: `url(thumbs/${item.url})` }}>
+      <img className="thumb" src={`images/${item.url}`} loading="lazy"
+        onLoad={e => e.currentTarget.classList.add('load')} />
       <div className="cover" onClick={() => showImageDetailDialog({
         url: item.url,
         likes: item.likes,
@@ -136,7 +137,7 @@ const ViewList = () => {
       <ul className="image-list">
         {listItem}
       </ul>
-      <LoadMore click={handleLoadMore} text={loadMoreText}/>
+      <LoadMore click={handleLoadMore} text={loadMoreText} />
       <ViewDialog dialog={dialog} closeDialog={closeImageDetailDialog} />
     </div>
   )
