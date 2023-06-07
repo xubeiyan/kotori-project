@@ -4,7 +4,6 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const morgan = require('morgan');
 const _ = require('lodash');
-const path = require('path');
 
 const router = require('./router');
 
@@ -13,9 +12,11 @@ require('dotenv').config();
 
 const app = express();
 
-// 图片文件
-const imagePath = process.env.IMAGE_PATH || 'uploads';
-app.use('/images', express.static(path.join(__dirname, imagePath)));
+// 图片和略缩图文件
+const imagePath = process.env.IMAGE_PATH || './uploads';
+const thumbPath = process.env.THUMBNAIL_PATH || './thumbnails';
+app.use('/images', express.static(imagePath));
+app.use('/thumbs', express.static(thumbPath));
 
 // enable files upload
 app.use(fileUpload({
@@ -39,7 +40,6 @@ app.use('/api', router);
 
 //start app 
 const port = process.env.PORT || 8080;
-
 
 app.listen(port, () =>
   console.log(`[server.js] App is listening on port ${port}.`)

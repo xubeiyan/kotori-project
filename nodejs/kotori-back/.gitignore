@@ -3,6 +3,9 @@ node_modules/
 # 上传的文件
 uploads/*
 
+# 略缩图文件
+thumbnails/*
+
 # 数据库
 db/kotori.db
 

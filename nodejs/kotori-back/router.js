@@ -1,9 +1,18 @@
 const express = require('express');
 const router = express.Router();
+const sharp = require('sharp');
+
 const { generateRandomFileName, getFormatDate, log } = require('./utils')
 
 const { addImage, queryImages } = require('./database');
 const { FILE_SIZE_LIMIT } = require('./config');
+
+// .env file
+require('dotenv').config();
+
+// 图片文件
+const imagePath = process.env.IMAGE_PATH || './uploads';
+const thumbPath = process.env.THUMBNAIL_APTH || './thumbnails';
 
 // 输出一个时间
 router.use((req, res, next) => {
@@ -54,12 +63,15 @@ router.post('/upload', async (req, res) => {
     else if (extname == 'image/gif') ext = 'gif';
 
     //Use the mv() method to place the file in the upload directory (i.e. "uploads")
-    avatar.mv(`./uploads/${filename}.${ext}`);
+    avatar.mv(`${imagePath}/${filename}.${ext}`);
 
+    
     const uploadTime = getFormatDate(new Date(), 'yyyy/mm/dd HH:ii:ss');
-
+    
     let { nsfw, uploader } = req.body;
     if (nsfw !== 'nsfw') {
+      // 需要view中展示的将文件转换为略缩图
+      sharp(avatar.data).resize(50).toFile(`${thumbPath}/${filename}.${ext}`);
       nsfw = 'safe';
     }
     if (uploader !== 0) {

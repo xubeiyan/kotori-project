@@ -23,7 +23,9 @@
   
   `cp .env.example .env`
 
-  修改其中项目，根据数据库和图片文件存放路径修改`DATABASE_PATH`和`IMAGE_APTH`的值
+  修改项目，根据数据库和图片文件存放路径修改`DATABASE_PATH`, `IMAGE_PATH`和`THUMBNAIL_PATH`的值
+
+  例如新建文件夹`uploads`和`thumbnails`
 
 * 启动项目（生产环境）
 
