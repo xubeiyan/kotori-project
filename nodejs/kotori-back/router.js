@@ -12,7 +12,7 @@ require('dotenv').config();
 
 // 图片文件
 const imagePath = process.env.IMAGE_PATH || './uploads';
-const thumbPath = process.env.THUMBNAIL_APTH || './thumbnails';
+const thumbPath = process.env.THUMBNAIL_PATH || './thumbnails';
 
 // 输出一个时间
 router.use((req, res, next) => {
