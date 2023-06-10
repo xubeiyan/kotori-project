@@ -6,8 +6,14 @@ const generateRandomFileName = () => {
 // 格式化日期
 const getFormatDate = (date, format) => {
   const map = {
-    mm: () => date.getMonth() + 1,
-    dd: () => date.getDate(),
+    mm: () => {
+	  const month = date.getMonth() + 1;
+	  return month >= 10 ? `${month}` : `0${month}`;
+	},
+    dd: () => {
+	  const day = date.getDate();
+	  return day >= 10 ? `${day}` : `0${day}`;
+    },
     yy: () => date.getFullYear().toString().slice(-2),
     yyyy: () => date.getFullYear(),
     HH: () => date.getHours(),
