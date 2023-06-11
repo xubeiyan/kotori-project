@@ -7,6 +7,8 @@ const { generateRandomFileName, getFormatDate, log } = require('./utils')
 const { addImage, queryImages } = require('./database');
 const { FILE_SIZE_LIMIT } = require('./config');
 
+const scriptName = 'router.js';
+
 // .env file
 require('dotenv').config();
 
@@ -16,7 +18,8 @@ const thumbPath = process.env.THUMBNAIL_PATH || './thumbnails';
 
 // 输出一个时间
 router.use((req, res, next) => {
-  log('Time: ', getFormatDate(new Date(), 'yyyy/mm/dd HH:ii:ss'));
+  const timeStr = getFormatDate(new Date(), 'yyyy/mm/dd HH:ii:ss');
+  log(`[${scriptName}] Time: ${timeStr}`);
   next();
 });
 
@@ -65,8 +68,10 @@ router.post('/upload', async (req, res) => {
     //Use the mv() method to place the file in the upload directory (i.e. "uploads")
     avatar.mv(`${imagePath}/${filename}.${ext}`);
 
-    
-    const uploadTime = getFormatDate(new Date(), 'yyyy/mm/dd HH:ii:ss');
+    // 由于万恶的SQLite只支持类似ISO-8601格式的datetime string: %Y-%m-%d %H:%M:%S
+    // 月和分和其他的语言有着巨大差异，其他大多数使用M代表月03，而m代表月份3，而使用分则用I和i
+    // 为了避免硬编码日期格式带来的不确定性，upload_time存储使用unix TimeStamp
+    const uploadTime = new Date().getTime();
     
     let { nsfw, uploader } = req.body;
     if (nsfw !== 'nsfw') {
@@ -129,7 +134,7 @@ router.get('/view', (req, res) => {
 
   let data = result.imageData.map(image => ({
     url: `${image.filename}${extMap[image.filetype]}`,
-    upload_time: image.upload_time,
+    upload_time: getFormatDate(new Date(image.upload_time), 'yyyy年mm月dd日 HH:ii:ss'),
     uploader_id: image.uploader_id,
     likes: image.likes,
   }))

@@ -39,7 +39,7 @@ app.use(morgan(morgan_log_type));
 app.use('/api', router);
 
 //start app 
-const port = process.env.PORT || 8080;
+const port = process.env.PORT || 9000;
 
 app.listen(port, () =>
   console.log(`[server.js] App is listening on port ${port}.`)

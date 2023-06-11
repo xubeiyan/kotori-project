@@ -40,13 +40,15 @@ const queryImages = ({ pageNum, pageSize }) => {
 
   stmt = db.prepare(`SELECT 
     filename, filetype, upload_time, uploader_id, likes
-    FROM 'images' WHERE mark = 'safe' ORDER BY datetime(upload_time) DESC
+    FROM 'images' WHERE mark = 'safe' ORDER BY upload_time DESC
     LIMIT   ? OFFSET                 ? `).bind([
     pageSize, (pageNum - 1) * pageSize
   ]);
 
   result = stmt.all();
 
+
+  console.log(result)
   return {
     counts,
     imageData: result,
