@@ -47,8 +47,6 @@ const queryImages = ({ pageNum, pageSize }) => {
 
   result = stmt.all();
 
-
-  console.log(result)
   return {
     counts,
     imageData: result,
